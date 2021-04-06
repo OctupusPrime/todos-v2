@@ -1,0 +1,75 @@
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    background: #F5F5F5;
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* ====================
+    Typography
+==================== */
+
+h1, h2, h3, h4, h5, h6, a, p {
+    margin: 0;
+}
+
+h1 {
+    font-weight: 900;
+}
+
+h2 {
+    font-weight: 700;
+}
+
+h3 {
+    font-weight: 600;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+/* ====================
+    Layout
+==================== */
+
+.container {
+    width: 95%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn {
+    user-select: none;
+    cursor: pointer;
+}
+
+.bg-white {
+    background: #fff;
+}
+
+.bold {
+    font-weight: 700;
+}
+.semi-bold {
+    font-weight: 600;
+}
+
+/* ====================
+    Media
+==================== */
