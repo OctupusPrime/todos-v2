@@ -1,18 +1,17 @@
 <template>
-    <div class="todo-list-ghost bg-white"
+    <div class="todo-task-ghost bg-white"
         :style="{width: width + 'px', left: position.left + 'px', top: position.top + 'px', transform: 'translate(' + -offSet.left + 'px, '+ -offSet.top + 'px) rotate(5deg)'}"
         v-if="isActive"
         :data-clone-index="index.colum + '' + index.task">
         <h3 class="todo-title">{{data.title}}</h3>
 
-
-                    <div class="todo-opts"
-                        :class="data.priopaty">
-                        <p class="todo-prioraty bold">{{data.priopaty}}</p>
-                    </div>
-                    <div class="todo-opts blue">
-                        <p class="todo-deadline semi-bold">{{data.deadline}}</p>
-                    </div>
+        <div class="todo-opts"
+            :class="data.priopaty">
+            <p class="todo-prioraty bold">{{data.priopaty}}</p>
+        </div>
+        <div class="todo-opts blue">
+            <p class="todo-deadline semi-bold">{{data.deadline}}</p>
+        </div>
     </div>    
 </template>
 
@@ -46,7 +45,7 @@ export default {
             this.width = width;
 
             this.position.left = left;
-            this.position.top = top;
+            this.position.top  = top;
 
             this.offSet = Object.assign({}, offSet);
             this.isActive = true;
@@ -110,14 +109,12 @@ export default {
 </script>
 
 <style scoped>
-    .todo-list-ghost {
+    .todo-task-ghost {
         padding: .375em .75em;
         box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.1);
 
         position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 99;
+        z-index: 2;
         user-select: none;
     }
 

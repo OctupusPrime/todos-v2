@@ -8,8 +8,10 @@
                                 :class="{'ghost': !!task.height}"
                                 :data-todo-index="columIndex + '' + index" 
                                 
-                                @mousedown="taskClicked($event, $event.currentTarget, task, index)"
-                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, task, index)">
+                                @mousedown.left="taskClicked($event, $event.currentTarget, task, index)"
+                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, task, index)"
+                                
+                                @click.right.prevent="openQuickMenu($event.currentTarget, task)">
                     <h3 class="todo-title">{{task.title}}</h3>
 
                     <div class="todo-opts"
@@ -52,22 +54,28 @@ export default {
     },
   methods: {
     taskClicked(e, currentTarget, task, taskIndex) {
-      let parentBlock = document.getElementById('main').getBoundingClientRect();
-      let thisBlock = currentTarget.getBoundingClientRect();
+        let parentBlock = document.getElementById('main').getBoundingClientRect();
+        let thisBlock = currentTarget.getBoundingClientRect();
 
-      height = thisBlock.height + 'px';
+        height = thisBlock.height + 'px';
 
-      let offSet = {
-        left: e.clientX - thisBlock.left,
-        top:  e.clientY - thisBlock.top
-      }
+        let offSet = {
+            left: e.clientX - thisBlock.left,
+            top:  e.clientY - thisBlock.top
+        };
 
-      let index = {
-        colum: this.columIndex,
-        task: taskIndex
-      };
+        let index = {
+            colum: this.columIndex,
+            task: taskIndex
+        };
 
-      this.$emit('activateGhost', {e, task, index, width: thisBlock.width, left: e.clientX - parentBlock.left, top: e.clientY - parentBlock.top, offSet});
+        this.$emit('activateGhost', {e, task, index, width: thisBlock.width, left: e.clientX - parentBlock.left, top: e.clientY - parentBlock.top, offSet});
+    },
+    openQuickMenu(currentTarget, task) {
+        let parentBlock = document.getElementById('main').getBoundingClientRect();
+        let thisBlock = currentTarget.getBoundingClientRect();
+
+        this.$emit('openQuickMenu', {task, width: thisBlock.width, left: thisBlock.left - parentBlock.left, top: thisBlock.top});
     }
   }
 }

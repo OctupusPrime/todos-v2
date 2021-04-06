@@ -6,13 +6,23 @@
               :ghostColum="ghostIndex.colum "
               :ghostTask="ghostIndex.task"
               
-              @activateGhost="activateGhost"/>
+              @activateGhost="activateGhost"
+              @openQuickMenu="openQuickTodoMenu"/>
     <TodoGhost  :data="ghostData"
                 :index="ghostIndex"
 
                 @removeTaskFromArr="removeTaskFromArr" 
                 @isertTaskToArr="isertTaskToArr"
                 ref="clone"/>
+
+    <TodoQuickMenu  :data="currentTaskData" 
+                    ref="todoQuickMenu"/>
+    <BaseTodoMenu :data="todoMenuData"
+                  @openTask="menuOpenTask"
+                  ref="baseTodoMenu"/>
+
+    <button @click="$store.commit('overlay/open')">Show overlay</button>
+
     <TodoSliderController />
   </main>
 </template>
@@ -44,11 +54,28 @@ export default {
         }]
       }],
 
+      todoMenuData: [{
+        title: 'Open',
+        emit: 'openTask',
+      },{
+        title: 'Move',
+        emit: 'moveTask' 
+      }, {
+        title: 'Edit',
+        emit: 'editTask'
+      }, {
+        title: 'Delete',
+        emit: 'deleteTask',
+        class: 'red'
+      }], 
+
       ghostIndex: {
         colum: '-',
         task: '-'
       },
-      ghostData: {}
+      ghostData: {},
+
+      currentTaskData: {}
     }
   },
   methods: {
@@ -74,6 +101,17 @@ export default {
     },
     isertTaskToArr() {
       this.todoContent[Number(this.ghostIndex.colum)].context.splice(this.ghostIndex.task, 0, Object.assign({}, this.ghostData));
+    },
+    //Menu config
+    openQuickTodoMenu(val) {
+      this.currentTaskData = val.task;
+
+      this.$refs.todoQuickMenu.open(val);
+      this.$refs.baseTodoMenu.open(val.top, val.left + 10 + val.width);
+      this.$store.commit('overlay/open');
+    },
+    menuOpenTask() {
+      console.log(1);
     }
   }
 }

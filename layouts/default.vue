@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="app">
     <Header />
+    <BaseOverlayBg />
     <div class="container">
        <Nuxt />
     </div>
@@ -10,7 +11,16 @@
   </div>
 </template>
 
+<script>
+export default {
+}
+</script>
+
 <style scoped> 
+  .app {
+    position: relative;
+  }
+
   .settings-aside {
     width: 500px;
     position: fixed;
