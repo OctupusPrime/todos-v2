@@ -1,17 +1,34 @@
 <template>
-    <div class="todo-task-quick-menu bg-white"
-        :style="{width: width + 'px', left: position.left + 'px', top: position.top + 'px'}"
-        v-if="isShow">
-        <h3 class="todo-title">{{data.title}}</h3>
+    <ul class="todo-quick-menu bg-white" 
+            :style="{left: position.left + 'px', top: position.top + 'px'}"
+            v-if="isShow">
+        <li class="quick-menu-item btn" @click="initEmit('openTask')">
+            <h3 class="quick-menu-item-title normal">Open</h3>
+        </li>
+        <li class="quick-menu-item btn" @click="openForm">
+            <h3 class="quick-menu-item-title normal">Move</h3>
+            <div class="quick-menu-item-form-container" v-show="isMoveOpened">
+                <form @submit.prevent="initEmit('moveTask')" class="quick-menu-item-form">
+                    <label for="move" class="semi-bold">Move task</label>
+                    <select name="move">
+                        <option value="0">New</option>
+                        <option value="1">Processed</option>
+                        <option value="2">Done</option>
+                    </select>
 
-        <div class="todo-opts"
-            :class="data.priopaty">
-            <p class="todo-prioraty bold">{{data.priopaty}}</p>
-        </div>
-        <div class="todo-opts blue">
-            <p class="todo-deadline semi-bold">{{data.deadline}}</p>
-        </div>
-    </div>    
+                    <input type="submit" value="Move">
+                </form>
+            </div>
+
+
+        </li>
+        <li class="quick-menu-item btn" @click="initEmit('editTask')">
+            <h3 class="quick-menu-item-title normal">Edit</h3>
+        </li>
+        <li class="quick-menu-item red btn" @click="initEmit('deleteTask')">
+            <h3 class="quick-menu-item-title normal">Delete</h3>
+        </li>
+    </ul>    
 </template>
 
 <script>
@@ -20,7 +37,7 @@ export default {
     data: () => {
         return {
             isClicked: false,
-            width: 100,
+            isMoveOpened: false,
 
             position: {
                 left: 0,
@@ -41,12 +58,7 @@ export default {
         }
     },
     methods: {
-        open(query) {
-
-            const {width, left, top} = query;
-
-            this.width = width;
-
+        open(top, left) {
             this.position.left = left;
             this.position.top  = top;
 
@@ -54,19 +66,52 @@ export default {
         },
         close() {
             this.isClicked = false;
+        },
+        initEmit(emit) {
+            this.$emit(emit);
+        },
+        openForm() {
+            this.isMoveOpened = true;
         }
     }
 }   
 </script>
 
 <style scoped>
-    .todo-task-quick-menu {
-        padding: .375em .75em;
-        box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.1);
+    .todo-quick-menu {
+        padding: .25rem .65rem;
+        border-radius: 7px;
 
         position: absolute;
         z-index: 10;
-        user-select: none;
     }
-</style>>
+ /* Typography */
+    .quick-menu-item-title {
+        font-size: 1rem;
+    }
 
+    .red {
+        color: #FA3333;
+    }
+
+/* Layout */    
+    .quick-menu-item {
+        position: relative;
+    }
+    .quick-menu-item + .quick-menu-item {
+        margin-top: .25em
+    }
+
+    .quick-menu-item-form-container {
+        background: #EBEBEB;
+        padding: .65rem;
+        border-radius: 7px;
+
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transform: translate(0, calc(100% + .25em));
+        z-index: 11;
+    }
+
+</style>

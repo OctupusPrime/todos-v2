@@ -21,16 +21,15 @@
                 @isertTaskToArr="isertTaskToArr"
                 ref="clone"/>
 
-    <TodoQuickMenu  :data="currentTaskData" 
-                    ref="todoQuickMenu"/>
+    <TodoOverlayedTask  :data="currentTaskData" 
+                        ref="TodoOverlayedTask"/>
 
     <TodoOpenedTask :data="currentTaskData"
                     ref="todoOpenTask"/>
 
-    <BaseTodoMenu :data="todoMenuData"
-                  @openTask="menuOpenTask"
-                  @moveTask="moveTask"
-                  ref="baseTodoMenu"/>
+    <TodoQuickMenu  @openTask="menuOpenTask"
+                    @moveTask="moveTask"
+                    ref="TodoQuickMenu"/>
 
     <TodoSliderController />
   </div>
@@ -64,21 +63,6 @@ export default {
         }]
       }],
 
-      todoMenuData: [{
-        title: 'Open',
-        emit: 'openTask',
-      },{
-        title: 'Move',
-        emit: 'moveTask' 
-      }, {
-        title: 'Edit',
-        emit: 'editTask'
-      }, {
-        title: 'Delete',
-        emit: 'deleteTask',
-        class: 'red'
-      }], 
-
       ghostIndex: {
         colum: '-',
         task: '-'
@@ -106,7 +90,7 @@ export default {
          this.$refs.clone.end();
       }.bind(this));   
     },
-    removeTaskFromArr() {
+    removeTaskFromArr() {//Сделать отдельную функцию удаления
       this.todoContent[Number(this.ghostIndex.colum)].context.splice(this.ghostIndex.task, 1);
     },
     isertTaskToArr() {
@@ -116,18 +100,18 @@ export default {
     openQuickTodoMenu(val) {
       this.currentTaskData = val.task;
 
-      this.$refs.todoQuickMenu.open(val);
-      this.$refs.baseTodoMenu.open(val.top, val.left + 10 + val.width);
+      this.$refs.TodoOverlayedTask.open(val);
+      this.$refs.TodoQuickMenu.open(val.top, val.left + 10 + val.width);
       this.$store.commit('overlay/open');
     },
     menuOpenTask() {
       this.$refs.todoOpenTask.open();
-      this.$refs.todoQuickMenu.close();
+      this.$refs.TodoOverlayedTask.close();
 
       this.$nextTick(() => {
         let todoOpened = document.querySelector('.todo-opened-task').getBoundingClientRect();
 
-        this.$refs.baseTodoMenu.open(todoOpened.top, todoOpened.left + todoOpened.width + 10);
+        this.$refs.TodoQuickMenu.open(todoOpened.top, todoOpened.left + todoOpened.width + 10);
       });
 
     },
