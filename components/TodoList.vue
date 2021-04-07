@@ -1,6 +1,9 @@
 <template>
     <article class="todo-row">
-        <h2>{{data.title}}</h2>
+        <h2 class="todo-row-title">
+            {{data.title}} 
+            <p class="todo-row-length" v-if="data.context.length > 0">{{data.context.length}}</p> 
+        </h2>
             <div class="todo-row-list">
                 <p v-if="arrWithGhost.length === 0" class="todo-list-placeholder">Nothing here 😪</p>
                 <div class="todo-list-item bg-white" v-for="(task, index) in arrWithGhost" :key="task.title"
@@ -36,20 +39,20 @@ export default {
     props: ['data', 'columIndex', 'ghostColum', 'ghostTask'],
     computed: {
         arrWithGhost() {
-        let arr = [];
+            let arr = [];
 
-        this.data.context.forEach(task => {
-            arr.push(Object.assign({}, task));
-        });
+            this.data.context.forEach(task => {
+                arr.push(Object.assign({}, task));
+            });
 
-        if ((this.columIndex === this.ghostColum)) {
-            let cont = {
-            height
-            };
-            arr.splice(this.ghostTask, 0, cont);
-        }
+            if (this.columIndex === this.ghostColum) {
+                let cont = {
+                height
+                };
+                arr.splice(this.ghostTask, 0, cont);
+            }
 
-        return arr;
+            return arr;
         }
     },
   methods: {
@@ -92,9 +95,25 @@ export default {
 
 /* Typography */
 
-    h2 {
+    .todo-row-title {
+        display: inline-block;
+        position: relative;
         font-size: 1.35rem;
         margin-bottom: .5em;
+    }
+    .todo-row-length {
+        font-weight: 500;
+        font-size: .95rem;
+        padding: 1px .5em;
+
+        background: #EBEBEB;
+        color: #636363;
+        border-radius: 50%;
+
+        position: absolute;
+        right: -12px;
+        top: 50%;
+        transform: translate(100%, -50%);
     }
 
     .todo-title {
