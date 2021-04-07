@@ -54,7 +54,6 @@ export default {
     },
   methods: {
     taskClicked(e, currentTarget, task, taskIndex) {
-        let parentBlock = document.getElementById('main').getBoundingClientRect();
         let thisBlock = currentTarget.getBoundingClientRect();
 
         height = thisBlock.height + 'px';
@@ -69,19 +68,18 @@ export default {
             task: taskIndex
         };
 
-        this.$emit('activateGhost', {e, task, index, width: thisBlock.width, left: e.clientX - parentBlock.left, top: e.clientY - parentBlock.top, offSet});
+        this.$emit('activateGhost', {e, task, index, width: thisBlock.width, left: e.clientX, top: e.clientY, offSet});
     },
     openQuickMenu(currentTarget, task) {
-        let parentBlock = document.getElementById('main').getBoundingClientRect();
         let thisBlock = currentTarget.getBoundingClientRect();
 
-        this.$emit('openQuickMenu', {task, width: thisBlock.width, left: thisBlock.left - parentBlock.left, top: thisBlock.top});
+        this.$emit('openQuickMenu', {task, width: thisBlock.width, left: thisBlock.left, top: thisBlock.top});
     }
   }
 }
 </script>
 
-<style scoped>
+<style>
     .todo-row {
         display: inline-block;
         min-width: 300px;

@@ -1,7 +1,7 @@
 <template>
     <ul class="todo-quick-menu bg-white" 
             :style="{left: position.left + 'px', top: position.top + 'px'}"
-            v-show="$store.getters['overlay/getOverlayVal'] && isClicked">
+            v-if="$store.getters['overlay/getOverlayVal'] && isClicked">
         <li class="quick-menu-item btn" v-for="item in data" :key="item.emit"
                 :class="item.class"
                 @click="initEmit(item.emit)">

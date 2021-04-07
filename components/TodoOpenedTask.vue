@@ -1,7 +1,5 @@
 <template>
-    <div class="todo-task-quick-menu bg-white"
-        :style="{width: width + 'px', left: position.left + 'px', top: position.top + 'px'}"
-        v-if="isShow">
+    <div class="todo-opened-task bg-white" v-if="isShow">
         <h3 class="todo-title">{{data.title}}</h3>
 
         <div class="todo-opts"
@@ -11,6 +9,9 @@
         <div class="todo-opts blue">
             <p class="todo-deadline semi-bold">{{data.deadline}}</p>
         </div>
+
+        <h4 class="semi-bold">Desctiption </h4>
+        <p class="todo-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente hic debitis ullam, voluptatum nostrum aspernatur.</p>
     </div>    
 </template>
 
@@ -19,13 +20,7 @@ export default {
     props: ['data'],
     data: () => {
         return {
-            isClicked: false,
-            width: 100,
-
-            position: {
-                left: 0,
-                top: 0
-            },
+            isClicked: false
         }
     },
     computed: {
@@ -41,32 +36,40 @@ export default {
         }
     },
     methods: {
-        open(query) {
-
-            const {width, left, top} = query;
-
-            this.width = width;
-
-            this.position.left = left;
-            this.position.top  = top;
-
+        open() {
             this.isClicked = true;
         },
         close() {
             this.isClicked = false;
         }
     }
-}   
+}
 </script>
 
 <style scoped>
-    .todo-task-quick-menu {
-        padding: .375em .75em;
-        box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.1);
+    .todo-opened-task {
+        width: 100%;
+        max-width: 500px;
+
+        padding: .65em 1.3em;
 
         position: absolute;
+        left: 50%;
+        top: 20%;
+        transform: translate(-50%, -50%);
         z-index: 10;
-        user-select: none;
     }
-</style>>
 
+/* Typography */
+    h4 {
+        font-size: 1.125rem;
+        margin: .625em 0;
+    }
+
+    .todo-body {
+        line-height: 1.5em;
+        padding: .5em 1em;
+
+        background: #F5F5F5;
+    }
+</style>

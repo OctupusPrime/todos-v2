@@ -45,6 +45,13 @@ ul, li {
     list-style: none; 
 }
 
+.bold {
+    font-weight: 700;
+}
+.semi-bold {
+    font-weight: 600;
+}
+
 /* ====================
     Layout
 ==================== */
@@ -67,13 +74,6 @@ ul, li {
 
 .bg-white {
     background: #fff;
-}
-
-.bold {
-    font-weight: 700;
-}
-.semi-bold {
-    font-weight: 600;
 }
 
 /* ====================

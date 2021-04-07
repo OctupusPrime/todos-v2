@@ -1,13 +1,19 @@
 <template>
-  <main role="main" id="main">
-    <TodoList v-for="(item, index) in todoContent" :key="index" 
-              :data="item"
-              :columIndex="index" 
-              :ghostColum="ghostIndex.colum "
-              :ghostTask="ghostIndex.task"
-              
-              @activateGhost="activateGhost"
-              @openQuickMenu="openQuickTodoMenu"/>
+  <div class="main-wrapper">
+    <div class="container">
+      <main role="main" id="main">
+        <TodoList v-for="(item, index) in todoContent" :key="index" 
+                  :data="item"
+                  :columIndex="index" 
+                  :ghostColum="ghostIndex.colum "
+                  :ghostTask="ghostIndex.task"
+                  
+                  @activateGhost="activateGhost"
+                  @openQuickMenu="openQuickTodoMenu"/>
+
+        <button @click="$store.commit('overlay/open')">Show overlay</button>
+      </main>
+    </div>
     <TodoGhost  :data="ghostData"
                 :index="ghostIndex"
 
@@ -17,14 +23,18 @@
 
     <TodoQuickMenu  :data="currentTaskData" 
                     ref="todoQuickMenu"/>
+
+    <TodoOpenedTask :data="currentTaskData"
+                    ref="todoOpenTask"/>
+
     <BaseTodoMenu :data="todoMenuData"
                   @openTask="menuOpenTask"
+                  @moveTask="moveTask"
                   ref="baseTodoMenu"/>
 
-    <button @click="$store.commit('overlay/open')">Show overlay</button>
-
     <TodoSliderController />
-  </main>
+  </div>
+
 </template>
 
 <script>
@@ -111,13 +121,34 @@ export default {
       this.$store.commit('overlay/open');
     },
     menuOpenTask() {
-      console.log(1);
+      this.$refs.todoOpenTask.open();
+      this.$refs.todoQuickMenu.close();
+
+      this.$nextTick(() => {
+        let todoOpened = document.querySelector('.todo-opened-task').getBoundingClientRect();
+
+        this.$refs.baseTodoMenu.open(todoOpened.top, todoOpened.left + todoOpened.width + 10);
+      });
+
+    },
+    moveTask() {
+      console.log(2);
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
+  .main-wrapper {
+    position: relative;
+
+    overflow: hidden;
+  }
+  .container {
+    height: 100vh;
+
+    overflow-y: hidden;
+  }
   main {
     display: flex;
     align-items: flex-start;
@@ -127,10 +158,13 @@ export default {
     padding-top: 125px; /* Padding from fixed header */
     padding-bottom: 20px;
 
-    position: relative; 
+
   }
 
   @media (max-width: 600px) {
+    .container {
+      overflow: hidden;
+    }
     main {
       width: 100%;
       padding-top: 80px; /* Padding from fixed header */

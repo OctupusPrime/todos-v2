@@ -17,7 +17,6 @@
 
 <script>
 let columBoxs;
-let parentBlock;
 export default {
     props: ['data', 'index'],
     data: () => {
@@ -40,7 +39,6 @@ export default {
             const {width, left, top, offSet} = query;
 
             columBoxs = document.querySelectorAll('.todo-row');
-            parentBlock = document.getElementById('main').getBoundingClientRect();
 
             this.width = width;
 
@@ -56,8 +54,8 @@ export default {
         },
         drag(e) {
             if (this.isActive) {
-                this.position.left = e.clientX - parentBlock.left;
-                this.position.top = e.clientY - parentBlock.top;
+                this.position.left = e.clientX;
+                this.position.top = e.clientY;
 
                 this.posEngine();
             }
@@ -72,26 +70,26 @@ export default {
         posEngine() {
             if ((this.index.colum + 1) < columBoxs.length) { //right
                 let nextColum = columBoxs[this.index.colum + 1].getBoundingClientRect()
-                if (this.position.left > (nextColum.left - parentBlock.left)) {
+                if (this.position.left > nextColum.left) {
                     this.index.colum = this.index.colum + 1;
                 }
             }
             if ((this.index.colum - 1) > -1) { //left
                 let pastColum = columBoxs[this.index.colum - 1].getBoundingClientRect();
-                if (this.position.left < (pastColum.left + pastColum.width - parentBlock.left + 35)) {
+                if (this.position.left < (pastColum.left + pastColum.width + 35)) {
                     this.index.colum = this.index.colum - 1;
                 }
             }             
             
             if (document.querySelector("[data-todo-index=" + JSON.stringify(this.index.colum + '' + (this.index.task + 1))  + "]")) {//bottom
                 let nextTask = document.querySelector("[data-todo-index=" + JSON.stringify(this.index.colum + '' + (this.index.task + 1))  + "]").getBoundingClientRect();
-                if (this.position.top > nextTask.top - parentBlock.top) {
+                if (this.position.top > nextTask.top) {
                     this.index.task = this.index.task + 1;  
                 }
             }
             if (document.querySelector("[data-todo-index=" + JSON.stringify(this.index.colum + '' + (this.index.task - 1)) + "]")) { //top
                 let pastTask = document.querySelector("[data-todo-index=" + JSON.stringify(this.index.colum + '' + (this.index.task - 1)) + "]").getBoundingClientRect();
-                if (this.position.top < pastTask.top + pastTask.height*2/3 - parentBlock.top) {
+                if (this.position.top < pastTask.top + pastTask.height*2/3) {
                     this.index.task = this.index.task - 1;
                 }
             }      
@@ -117,46 +115,4 @@ export default {
         z-index: 2;
         user-select: none;
     }
-
-/* Typography */
-
-    .todo-title {
-        font-size: 1.25rem;
-        padding-bottom: .15em;
-    }
-
-    .todo-prioraty,
-    .todo-deadline {
-        font-size: .875rem;
-    }
-
-/* Layout */
-
-    .todo-opts{
-        display: inline-block;
-        margin-right: .625em;
-        padding: .3em .6em;
-        border-radius: 5px;
-    }
-    .low {
-        background: #deebd9;
-        color: #32A000;
-        text-shadow: 0px 0px 5px rgba(50, 160, 0, 0.5);
-    }
-    .medium {
-        background: #f8e9d9;
-        color: #E6AA68;
-        text-shadow: 0px 0px 5px rgba(230, 170, 104, 0.5);
-    }
-    .high {
-        background: #fdcccc;
-        color: #FA3333;
-        text-shadow: 0px 0px 5px rgba(250, 51, 51, 0.5);
-    }
-    .blue {
-        background: #cee0ff;
-        color: #3B86FF;
-        text-shadow: 0px 0px 5px rgba(59, 134, 255, 0.5);
-    }
-
 </style>
