@@ -84,7 +84,7 @@ export default {
 }   
 </script>
 
-<style scoped>
+<style>
     .todo-quick-menu {
         padding: .25rem .65rem;
 

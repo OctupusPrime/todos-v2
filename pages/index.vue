@@ -25,7 +25,10 @@
                         ref="TodoOverlayedTask"/>
 
     <TodoOpenedTask :data="currentTaskData"
-                    :colum="todoContent[openedTaskIndex.colum].title"
+                    :colum="Number(openedTaskIndex.colum)"
+
+                    @moveTask="moveTask"
+                    @deleteTask="deleteTask"
                     ref="todoOpenTask"/>
 
     <TodoQuickMenu  :colum="Number(openedTaskIndex.colum)"
@@ -119,13 +122,7 @@ export default {
     menuOpenTask() {
       this.$refs.todoOpenTask.open();
       this.$refs.TodoOverlayedTask.close();
-
-      this.$nextTick(() => {
-        let todoOpened = document.querySelector('.todo-opened-task').getBoundingClientRect();
-
-        this.$refs.TodoQuickMenu.open(todoOpened.top, todoOpened.left + todoOpened.width + 10);
-      });
-
+      this.$refs.TodoQuickMenu.close();
     },
     moveTask(colum) {
       this.$store.commit('overlay/close');
