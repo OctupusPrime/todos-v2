@@ -7,8 +7,12 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="" class="current-page">Home</a></li>
-                    <li><a href="">About author</a></li>
+                    <li>
+                        <nuxt-link exact no-prefetch active-class="current-page" to="/">Home</nuxt-link>
+                    </li>
+                    <li>
+                        <nuxt-link active-class="current-page" to="/about">About author</nuxt-link>
+                    </li>
                 </ul>
             </nav>
             <div class="settings btn">
@@ -35,6 +39,8 @@
         top: 0;
         left: 0;
         right: 0;
+
+        z-index: 2;
     }
 
     .container {

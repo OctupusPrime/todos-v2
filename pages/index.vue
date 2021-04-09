@@ -14,21 +14,24 @@
         <button @click="$store.commit('overlay/open')">Show overlay</button>
       </main>
     </div>
-    <TodoGhost  :data="ghostData"
+    <TodoGhost  :data="currentTaskData"
                 :index="ghostIndex"
 
-                @removeTaskFromArr="removeTaskFromArr" 
-                @isertTaskToArr="isertTaskToArr"
+                @removeTaskFromArr="removeTaskFromArr(ghostIndex.colum, ghostIndex.task)" 
+                @isertTaskToArr="isertTaskToArr(ghostIndex.colum, ghostIndex.task, currentTaskData)"
                 ref="clone"/>
 
     <TodoOverlayedTask  :data="currentTaskData" 
                         ref="TodoOverlayedTask"/>
 
     <TodoOpenedTask :data="currentTaskData"
+                    :colum="todoContent[openedTaskIndex.colum].title"
                     ref="todoOpenTask"/>
 
-    <TodoQuickMenu  @openTask="menuOpenTask"
+    <TodoQuickMenu  :colum="Number(openedTaskIndex.colum)"
+                    @openTask="menuOpenTask"
                     @moveTask="moveTask"
+                    @deleteTask="deleteTask"
                     ref="TodoQuickMenu"/>
 
     <TodoSliderController />
@@ -67,20 +70,30 @@ export default {
         colum: '-',
         task: '-'
       },
-      ghostData: {},
 
-      currentTaskData: {}
+      currentTaskData: {},
+
+      openedTaskIndex: {
+        colum: 0,
+        task: 0
+      }
     }
   },
   methods: {
+    removeTaskFromArr(colum, task) {//Сделать отдельную функцию удаления
+      this.todoContent[Number(colum)].context.splice(Number(task), 1);
+    },
+    isertTaskToArr(colum, task, data) {
+      this.todoContent[Number(colum)].context.splice(Number(task), 0, Object.assign({}, data));
+    },
     //Ghost config
     activateGhost(val) {      
-      const {e, task, index} = val;
-      this.ghostData = task;
+      const {e, task, index, width, left, top, offSet} = val;
+      this.currentTaskData = task;
       
       this.ghostIndex = Object.assign({}, index);
 
-      this.$refs.clone.start(val);
+      this.$refs.clone.start(width, left, top, offSet);
 
       e.target.addEventListener('touchmove', function(e) {
         e.preventDefault();
@@ -90,20 +103,19 @@ export default {
          this.$refs.clone.end();
       }.bind(this));   
     },
-    removeTaskFromArr() {//Сделать отдельную функцию удаления
-      this.todoContent[Number(this.ghostIndex.colum)].context.splice(this.ghostIndex.task, 1);
-    },
-    isertTaskToArr() {
-      this.todoContent[Number(this.ghostIndex.colum)].context.splice(this.ghostIndex.task, 0, Object.assign({}, this.ghostData));
-    },
-    //Menu config
+    //OverlayTask
     openQuickTodoMenu(val) {
-      this.currentTaskData = val.task;
+      const {task, index, width, left, top} = val;
 
-      this.$refs.TodoOverlayedTask.open(val);
-      this.$refs.TodoQuickMenu.open(val.top, val.left + 10 + val.width);
+      this.currentTaskData = task;
+
+      this.openedTaskIndex = index;
+
+      this.$refs.TodoOverlayedTask.open(width, left, top);
+      this.$refs.TodoQuickMenu.open(top, left + 10 + width);
       this.$store.commit('overlay/open');
     },
+    //Menu config
     menuOpenTask() {
       this.$refs.todoOpenTask.open();
       this.$refs.TodoOverlayedTask.close();
@@ -115,8 +127,15 @@ export default {
       });
 
     },
-    moveTask() {
-      console.log(2);
+    moveTask(colum) {
+      this.$store.commit('overlay/close');
+
+      this.removeTaskFromArr(this.openedTaskIndex.colum, this.openedTaskIndex.task);
+      this.isertTaskToArr(colum, 0, this.currentTaskData);
+    },
+    deleteTask() {
+      this.$store.commit('overlay/close');
+      this.removeTaskFromArr(this.openedTaskIndex.colum, this.openedTaskIndex.task);
     }
   }
 }

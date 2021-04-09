@@ -1,39 +1,37 @@
 <template>
-    <ul class="todo-quick-menu bg-white" 
+    <ul class="todo-quick-menu" 
             :style="{left: position.left + 'px', top: position.top + 'px'}"
             v-if="isShow">
         <li class="quick-menu-item btn" @click="initEmit('openTask')">
             <h3 class="quick-menu-item-title normal">Open</h3>
         </li>
-        <li class="quick-menu-item btn" @click="openForm">
-            <h3 class="quick-menu-item-title normal">Move</h3>
-            <div class="quick-menu-item-form-container" v-show="isMoveOpened">
-                <form @submit.prevent="initEmit('moveTask')" class="quick-menu-item-form">
-                    <label for="move" class="semi-bold">Move task</label>
-                    <select name="move">
-                        <option value="0">New</option>
-                        <option value="1">Processed</option>
-                        <option value="2">Done</option>
-                    </select>
+        <li class="quick-menu-item btn">
+            <h3 class="quick-menu-item-title normal" @click="openForm">Move</h3>
 
-                    <input type="submit" value="Move">
-                </form>
+            <div class="quick-menu-item-form-container bg-white" v-if="isMoveOpened">
+                <div class="quick-menu-item-form-title">
+                    <h3 class="normal">Move task</h3>
+                    <span class="icon" @click="closeForm">
+                        <font-awesome-icon icon="times" />
+                    </span>
+
+                </div>
+                <BaseSelectOptn :data="selectData" 
+                                :current="colum"
+                                @changedChoise="changedChoise"/>
+                <p class="item-form-submit btn" @click="initEmit('moveTask', moveSelectValue)">Move</p>
             </div>
 
-
         </li>
-        <li class="quick-menu-item btn" @click="initEmit('editTask')">
-            <h3 class="quick-menu-item-title normal">Edit</h3>
-        </li>
-        <li class="quick-menu-item red btn" @click="initEmit('deleteTask')">
-            <h3 class="quick-menu-item-title normal">Delete</h3>
+        <li class="quick-menu-item btn" @click="initEmit('deleteTask')">
+            <h3 class="quick-menu-item-title red normal">Delete</h3>
         </li>
     </ul>    
 </template>
 
 <script>
 export default {
-    props: ['data'],
+    props: ['data', 'colum'],
     data: () => {
         return {
             isClicked: false,
@@ -43,6 +41,8 @@ export default {
                 left: 0,
                 top: 0
             },
+            selectData: ['New', 'Processed', 'Done'],
+            moveSelectValue: 0
         }
     },
     computed: {
@@ -55,7 +55,7 @@ export default {
                 return true;
             }
             return false;
-        }
+        },
     },
     methods: {
         open(top, left) {
@@ -66,12 +66,19 @@ export default {
         },
         close() {
             this.isClicked = false;
+            this.closeForm();
         },
-        initEmit(emit) {
-            this.$emit(emit);
+        initEmit(emit, val) {
+            this.$emit(emit, val);
         },
         openForm() {
             this.isMoveOpened = true;
+        },
+        closeForm() {
+            this.isMoveOpened = false; 
+        },
+        changedChoise(val) {
+            this.moveSelectValue = val
         }
     }
 }   
@@ -80,19 +87,40 @@ export default {
 <style scoped>
     .todo-quick-menu {
         padding: .25rem .65rem;
-        border-radius: 7px;
 
         position: absolute;
         z-index: 10;
+
+        background: #F5F5F5;
     }
  /* Typography */
     .quick-menu-item-title {
-        font-size: 1rem;
+        font-size: 1.125rem;
+        color: #767676;
     }
 
     .red {
         color: #FA3333;
     }
+
+    .quick-menu-item-form-title h3 {
+        font-size: 1rem;
+        white-space: nowrap;
+    }
+
+    .quick-menu-item-form-title .icon {
+        font-size: .75rem;
+        margin-left: 1em;
+    }
+
+    .item-form-submit {
+        display: inline-block;
+        border-radius: 5px;
+        background: #3B86FF;
+        color: #fff;
+        padding: .25em .7em;
+    }
+
 
 /* Layout */    
     .quick-menu-item {
@@ -103,15 +131,27 @@ export default {
     }
 
     .quick-menu-item-form-container {
-        background: #EBEBEB;
-        padding: .65rem;
-        border-radius: 7px;
+        padding: .3em .65em;
+
+        box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.25);
 
         position: absolute;
         bottom: 0;
         left: 0;
         transform: translate(0, calc(100% + .25em));
         z-index: 11;
+    }
+
+    .quick-menu-item-form-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: .25em;
+    }
+
+    .select-container {
+        margin-bottom: .5em;
     }
 
 </style>

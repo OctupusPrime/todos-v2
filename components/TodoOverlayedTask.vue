@@ -41,10 +41,7 @@ export default {
         }
     },
     methods: {
-        open(query) {
-
-            const {width, left, top} = query;
-
+        open(width, left, top) {
             this.width = width;
 
             this.position.left = left;

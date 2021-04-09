@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <Header />
-    <BaseOverlayBg />
+    <OverlayBg />
 
        <Nuxt />
 

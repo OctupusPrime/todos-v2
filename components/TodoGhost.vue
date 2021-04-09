@@ -1,8 +1,7 @@
 <template>
     <div class="todo-task-ghost bg-white"
         :style="{width: width + 'px', left: position.left + 'px', top: position.top + 'px', transform: 'translate(' + -offSet.left + 'px, '+ -offSet.top + 'px) rotate(5deg)'}"
-        v-if="isActive"
-        :data-clone-index="index.colum + '' + index.task">
+        v-if="isActive">
         <h3 class="todo-title">{{data.title}}</h3>
 
         <div class="todo-opts"
@@ -35,9 +34,7 @@ export default {
         }
     },
     methods: {
-        start(query) {
-            const {width, left, top, offSet} = query;
-
+        start(width, left, top, offSet) {
             columBoxs = document.querySelectorAll('.todo-row');
 
             this.width = width;
@@ -45,7 +42,7 @@ export default {
             this.position.left = left;
             this.position.top  = top;
 
-            this.offSet = Object.assign({}, offSet);
+            this.offSet = offSet;
             this.isActive = true;
 
             this.$nextTick(() => {

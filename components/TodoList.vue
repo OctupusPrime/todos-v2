@@ -14,7 +14,7 @@
                                 @mousedown.left="taskClicked($event, $event.currentTarget, task, index)"
                                 @touchstart="taskClicked($event.touches[0], $event.currentTarget, task, index)"
                                 
-                                @click.right.prevent="openQuickMenu($event.currentTarget, task)">
+                                @click.right.prevent="openQuickMenu($event.currentTarget, task, index)">
                     <h3 class="todo-title">{{task.title}}</h3>
 
                     <div class="todo-opts"
@@ -73,10 +73,15 @@ export default {
 
         this.$emit('activateGhost', {e, task, index, width: thisBlock.width, left: e.clientX, top: e.clientY, offSet});
     },
-    openQuickMenu(currentTarget, task) {
+    openQuickMenu(currentTarget, task, taskIndex) {
         let thisBlock = currentTarget.getBoundingClientRect();
+        
+        let index = {
+            colum: this.columIndex,
+            task: taskIndex
+        };
 
-        this.$emit('openQuickMenu', {task, width: thisBlock.width, left: thisBlock.left, top: thisBlock.top});
+        this.$emit('openQuickMenu', {task, index, width: thisBlock.width, left: thisBlock.left, top: thisBlock.top});
     }
   }
 }

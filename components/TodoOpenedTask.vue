@@ -1,6 +1,7 @@
 <template>
     <div class="todo-opened-task bg-white" v-if="isShow">
         <h3 class="todo-title">{{data.title}}</h3>
+        <p class="todo-subtittle">In colum {{colum}}</p>
 
         <div class="todo-opts"
             :class="data.priopaty">
@@ -17,7 +18,7 @@
 
 <script>
 export default {
-    props: ['data'],
+    props: ['data', 'colum'],
     data: () => {
         return {
             isClicked: false
@@ -61,6 +62,15 @@ export default {
     }
 
 /* Typography */
+    .todo-title {
+        padding-bottom: 0;
+    }
+    .todo-subtittle {
+        font-size: .875rem;
+        color: #737373;
+        padding-bottom: .75em;
+    }
+
     h4 {
         font-size: 1.125rem;
         margin: .625em 0;
