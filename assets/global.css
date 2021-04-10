@@ -55,6 +55,10 @@ textarea {
     outline: none;
 }
 
+input {
+    font-family: 'Montserrat', sans-serif; 
+}
+
 .normal{
     font-weight: 500;
 }

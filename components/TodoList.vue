@@ -25,7 +25,23 @@
                         <p class="todo-deadline semi-bold">{{task.deadline}}</p>
                     </div>
                 </div>
-                <div class="todo-add-card btn">
+
+                <div class="todo-list-add-task bg-white" v-if="isAdd">
+                    <textarea-autosize class="todo-title-textArea semi-bold" 
+                            rows="1"
+                            :max-height="100"
+                            v-model="newTask"
+                            placeholder="New task title..."/> 
+
+                    <BaseRadioBtn :switchValue="radioPrioratyValue"/>
+
+                    <div class="todo-list-buttons-row">
+                        <p class="btn-item btn">Cancel</p>
+                        <p class="btn-item btn bg-blue">Add</p>    
+                    </div> 
+                </div>
+
+                <div class="todo-add-card btn" v-else @click="showAddTask">
                     <font-awesome-icon icon="plus" />
                     <p class="semi-bold">Card</p>
                 </div>
@@ -37,6 +53,22 @@
 let height = 0;
 export default {
     props: ['data', 'columIndex', 'ghostColum', 'ghostTask'],
+    data: () => {
+        return {
+            newTask: '',
+            isAdd: false,
+
+            radioPrioratyValue: {
+                checked: 'low',
+                value: [
+                    {txt: 'low' , value: 'low'},
+                    {txt: 'medium' , value: 'medium'},
+                    {txt: 'high' , value: 'high'},
+                ],
+                name: 'prioraty'
+            },
+        }
+    },
     computed: {
         arrWithGhost() {
             let arr = [];
@@ -82,6 +114,10 @@ export default {
         };
 
         this.$emit('openQuickMenu', {task, index, width: thisBlock.width, left: thisBlock.left, top: thisBlock.top});
+    },
+
+    showAddTask() {
+        this.isAdd = true;
     }
   }
 }
@@ -153,6 +189,17 @@ export default {
         margin-bottom: .1em;
     }
 
+    .btn-item {
+        border-radius: 5px;
+        background: #000;
+        color: #fff;
+        padding: .25em .7em;
+    }
+
+    .bg-blue {
+        background: #3B86FF;
+    }
+
 /* Layout */
     .todo-row-list {
         background: #EBEBEB;
@@ -167,13 +214,19 @@ export default {
 
         position: relative;
     }
+
+    .todo-list-add-task {
+        margin-bottom: .75em;
+    }
     
-    .todo-list-item {
+    .todo-list-item,
+    .todo-list-add-task {
         padding: .375em .75em;
 
         box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.1);
     }
-    .todo-list-item + .todo-list-item {
+    .todo-list-item + .todo-list-item,
+    .todo-list-add-task{
         margin-top: .75em;
     }
     .ghost {
@@ -213,7 +266,6 @@ export default {
     .todo-add-card {
         width: 95%;
         margin-top: .5em;
-        padding-bottom: .3755em;
         padding: .25em 0 .375em 0;
 
         text-align: center;
@@ -228,6 +280,13 @@ export default {
         left: 50%;
         margin-right: -50%;
         transform: translate(-50%, 0)
+    }
+
+    .todo-list-buttons-row {
+        display: flex;
+        justify-content: space-between;
+
+        padding-top: .375em;
     }
 
 
