@@ -139,7 +139,7 @@ export default {
         bottom: 0;
         left: 0;
         transform: translate(0, calc(100% + .25em));
-        z-index: 11;
+        z-index: inherit;
     }
 
     .quick-menu-item-form-title {

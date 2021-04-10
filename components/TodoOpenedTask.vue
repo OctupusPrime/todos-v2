@@ -91,7 +91,7 @@ export default {
 
 <style scoped>
     .todo-opened-task {
-        width: 100%;
+        width: 95%;
         max-width: 500px;
 
         padding: .65em 1.3em;
@@ -99,7 +99,7 @@ export default {
         position: absolute;
         left: 50%;
         top: 20%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, 0);
         z-index: 10;
 
         display: flex;

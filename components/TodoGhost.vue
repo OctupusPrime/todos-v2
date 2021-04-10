@@ -105,6 +105,7 @@ export default {
 
 <style scoped>
     .todo-task-ghost {
+        cursor: grabbing;
         padding: .375em .75em;
         box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.1);
 

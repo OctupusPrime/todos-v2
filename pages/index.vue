@@ -28,14 +28,19 @@
                     :colum="Number(openedTaskIndex.colum)"
 
                     @moveTask="moveTask"
-                    @deleteTask="deleteTask"
+                    @deleteTask="openWarningDelete"
                     ref="todoOpenTask"/>
 
     <TodoQuickMenu  :colum="Number(openedTaskIndex.colum)"
                     @openTask="menuOpenTask"
                     @moveTask="moveTask"
-                    @deleteTask="deleteTask"
+                    @deleteTask="openWarningDelete"
                     ref="TodoQuickMenu"/>
+
+    <ActionWarning  :data="warningText"
+                    :emit="watningEmitVal"
+                    @deleteTask="deleteTask"
+                    ref="ActionWarning"/>
 
     <TodoSliderController />
   </div>
@@ -43,7 +48,9 @@
 </template>
 
 <script>
+import ActionWarning from '../components/ActionWarning.vue';
 export default {
+  components: { ActionWarning },
   data: () => {
     return {
       todoContent: [{
@@ -79,7 +86,10 @@ export default {
       openedTaskIndex: {
         colum: 0,
         task: 0
-      }
+      },
+
+      warningText: 'delete the task.',
+      watningEmitVal: 'deleteTask'
     }
   },
   methods: {
@@ -133,6 +143,13 @@ export default {
     deleteTask() {
       this.$store.commit('overlay/close');
       this.removeTaskFromArr(this.openedTaskIndex.colum, this.openedTaskIndex.task);
+    },
+    openWarningDelete() {
+      this.$refs.todoOpenTask.close();
+      this.$refs.TodoOverlayedTask.close();
+      this.$refs.TodoQuickMenu.close();
+
+      this.$refs.ActionWarning.open();
     }
   }
 }
