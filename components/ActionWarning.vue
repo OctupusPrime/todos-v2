@@ -4,7 +4,7 @@
         <p class="warning-body">Are you sure you want to {{data}}</p>
         <div class="warning-buttons-row">
             <p class="btn" @click="close">Cancel</p>
-            <p class="btn bg-blue" @click="submit">Ok</p>    
+            <p class="btn bg-blue" @click="submit">Yes</p>    
         </div> 
     </div>    
 </template>

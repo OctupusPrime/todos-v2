@@ -45,6 +45,16 @@ ul, li {
     list-style: none; 
 }
 
+textarea {
+    display: block;
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
 .normal{
     font-weight: 500;
 }

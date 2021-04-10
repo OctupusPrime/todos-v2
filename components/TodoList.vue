@@ -11,10 +11,10 @@
                                 :class="{'ghost': !!task.height}"
                                 :data-todo-index="columIndex + '' + index" 
                                 
-                                @mousedown.left="taskClicked($event, $event.currentTarget, task, index)"
-                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, task, index)"
+                                @mousedown.left="taskClicked($event, $event.currentTarget, data.context[index], index)"
+                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, data.context[index], index)"
                                 
-                                @click.right.prevent="openQuickMenu($event.currentTarget, task, index)">
+                                @click.right.prevent="openQuickMenu($event.currentTarget, data.context[index], index)">
                     <h3 class="todo-title">{{task.title}}</h3>
 
                     <div class="todo-opts"
@@ -124,6 +124,11 @@ export default {
     .todo-title {
         font-size: 1.25rem;
         padding-bottom: .15em;
+    }
+
+    .todo-title-textArea {
+        font-size: 1.25rem;
+        padding-bottom: .1em;
     }
 
     .todo-list-placeholder {

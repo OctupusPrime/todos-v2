@@ -10,8 +10,6 @@
                   
                   @activateGhost="activateGhost"
                   @openQuickMenu="openQuickTodoMenu"/>
-
-        <button @click="$store.commit('overlay/open')">Show overlay</button>
       </main>
     </div>
     <TodoGhost  :data="currentTaskData"

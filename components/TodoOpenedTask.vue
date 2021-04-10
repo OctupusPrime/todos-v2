@@ -1,7 +1,10 @@
 <template>
     <div class="todo-opened-task bg-white" v-if="isShow">
         <div class="main-todo-info">
-            <h3 class="todo-title">{{data.title}}</h3>
+            <textarea-autosize class="todo-title-textArea semi-bold" 
+                    rows="1"
+                    :max-height="100"
+                    v-model="data.title"/> 
             <p class="todo-subtittle">In colum {{selectData[colum]}}</p>
 
             <div class="todo-opts"
@@ -13,8 +16,13 @@
             </div>
 
             <h4 class="semi-bold">Desctiption </h4>
-            <p class="todo-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente hic debitis ullam, voluptatum nostrum aspernatur.</p>
+            <textarea-autosize class="todo-body-textArea" 
+                    rows="1"
+                    :max-height="200"
+                    v-model="bodyValue"/> 
         </div>
+
+
         <ul class="aside-todo-menu">
             <li class="quick-menu-item btn">
                 <h3 class="quick-menu-item-title normal" @click="openForm">Move</h3>
@@ -50,7 +58,8 @@ export default {
             isMoveOpened: false,
 
             selectData: ['New', 'Processed', 'Done'],
-            moveSelectValue: 0
+            moveSelectValue: 0,
+            bodyValue: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente hic debitis ullam, voluptatum nostrum aspernatur.'
         }
     },
     computed: {
@@ -107,6 +116,10 @@ export default {
     }
 
 /* Typography */
+    .main-todo-info {
+        flex-grow: 2;
+    }
+
     .todo-title {
         padding-bottom: 0;
     }
@@ -121,7 +134,8 @@ export default {
         margin: .625em 0;
     }
 
-    .todo-body {
+    .todo-body-textArea {
+        font-size: 1rem;
         line-height: 1.5em;
         padding: .5em 1em;
 

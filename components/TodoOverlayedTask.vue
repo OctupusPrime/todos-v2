@@ -2,7 +2,10 @@
     <div class="todo-overlayed-task bg-white"
         :style="{width: width + 'px', left: position.left + 'px', top: position.top + 'px'}"
         v-if="isShow">
-        <h3 class="todo-title">{{data.title}}</h3>
+        <textarea-autosize class="todo-title-textArea semi-bold" 
+                rows="1"
+                :max-height="100"
+                v-model="data.title"/> 
 
         <div class="todo-opts"
             :class="data.priopaty">
@@ -25,7 +28,7 @@ export default {
             position: {
                 left: 0,
                 top: 0
-            },
+            }
         }
     },
     computed: {
