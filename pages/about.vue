@@ -1,28 +1,36 @@
 <template>
     <div class="container">
-        <BaseSelectOptn :data="selectData" 
-                        @changedChoise="changedChoise"/>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam in, iusto, provident sint magnam alias quas praesentium delectus amet quia necessitatibus, ea veniam quo doloremque.</p>
+        <main>
+            <BaseResizeTextArea name="first" 
+                                :maxHeight="100"
+                                :enterSubmit="true"
+                                @submitTextArea="submitTextArea"
+                                v-model="msg"/>
+            <p>{{msg}}</p>
+        </main>
+
     </div>
 </template>
 
 <script>
+import BaseResizeTextArea from '../components/BaseResizeTextArea.vue';
 export default {
+  components: { BaseResizeTextArea },
     data: () => {
         return {
-            selectData: ['New', 'Processed', 'Done']
+ 	        msg: ''
         }
     },
     methods: {
-        changedChoise(val) {
-            console.log(val);
+        submitTextArea() {
+            console.log(1);
         }
     }
 }
 </script>
 
 <style scoped>
-    .container {
+    main {
         padding-top: 125px;
     }
 </style>

@@ -26,17 +26,18 @@
                     </div>
                 </div>
 
+
                 <div class="todo-list-add-task bg-white" v-if="isAdd">
-                    <textarea-autosize class="todo-title-textArea semi-bold" 
-                            rows="1"
-                            :max-height="100"
-                            v-model="newTask"
-                            placeholder="New task title..."/> 
+                    <BaseResizeTextArea name="add-task-title" 
+                                        :maxHeight="100"
+                                        :enterSubmit="true"
+                                        placeholder="Init task title"
+                                        v-model="addTaskTitle"/>
 
                     <BaseRadioBtn :switchValue="radioPrioratyValue"/>
 
                     <div class="todo-list-buttons-row">
-                        <p class="btn-item btn">Cancel</p>
+                        <p class="btn-item btn" @click="hideAddTask">Cancel</p>
                         <p class="btn-item btn bg-blue">Add</p>    
                     </div> 
                 </div>
@@ -55,18 +56,18 @@ export default {
     props: ['data', 'columIndex', 'ghostColum', 'ghostTask'],
     data: () => {
         return {
-            newTask: '',
+            addTaskTitle: '',
             isAdd: false,
 
             radioPrioratyValue: {
                 checked: 'low',
                 value: [
-                    {txt: 'low' , value: 'low'},
-                    {txt: 'medium' , value: 'medium'},
-                    {txt: 'high' , value: 'high'},
+                    {txt: 'low' , value: 'low', color: '50,160,0'},
+                    {txt: 'medium' , value: 'medium', color: '230,170,104'},
+                    {txt: 'high' , value: 'high', color: '250,51,51'},
                 ],
                 name: 'prioraty'
-            },
+            }
         }
     },
     computed: {
@@ -88,6 +89,7 @@ export default {
         }
     },
   methods: {
+    //Ghost config
     taskClicked(e, currentTarget, task, taskIndex) {
         let thisBlock = currentTarget.getBoundingClientRect();
 
@@ -105,6 +107,7 @@ export default {
 
         this.$emit('activateGhost', {e, task, index, width: thisBlock.width, left: e.clientX, top: e.clientY, offSet});
     },
+    //Quick menu config
     openQuickMenu(currentTarget, task, taskIndex) {
         let thisBlock = currentTarget.getBoundingClientRect();
         
@@ -115,9 +118,17 @@ export default {
 
         this.$emit('openQuickMenu', {task, index, width: thisBlock.width, left: thisBlock.left, top: thisBlock.top});
     },
-
+    //Add Task config
     showAddTask() {
         this.isAdd = true;
+        
+        // this.$nextTick(() => {
+        //     document.querySelector('.resible-text-area').focus();
+        // });   
+
+    },
+    hideAddTask() {
+        this.isAdd = false;
     }
   }
 }
@@ -157,9 +168,10 @@ export default {
         transform: translate(100%, -50%);
     }
 
-    .todo-title {
+    .todo-title,
+    .resible-text-area {
         font-size: 1.25rem;
-        padding-bottom: .15em;
+        padding-bottom: .3em;
     }
 
     .todo-title-textArea {
@@ -193,7 +205,7 @@ export default {
         border-radius: 5px;
         background: #000;
         color: #fff;
-        padding: .25em .7em;
+        padding: .3em .6em;
     }
 
     .bg-blue {
