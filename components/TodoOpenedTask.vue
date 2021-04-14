@@ -1,10 +1,10 @@
 <template>
     <div class="todo-opened-task bg-white" v-if="isShow">
         <div class="main-todo-info">
-            <textarea-autosize class="todo-title-textArea semi-bold" 
+            <!-- <textarea-autosize class="todo-title-textArea semi-bold" 
                     rows="1"
                     :max-height="100"
-                    v-model="data.title"/> 
+                    v-model="data.title"/>  -->
             <p class="todo-subtittle">In colum {{selectData[colum]}}</p>
 
             <div class="todo-opts"

@@ -2,10 +2,10 @@
     <div class="todo-overlayed-task bg-white"
         :style="{width: width + 'px', left: position.left + 'px', top: position.top + 'px'}"
         v-if="isShow">
-        <textarea-autosize class="todo-title-textArea semi-bold" 
+        <!-- <textarea-autosize class="todo-title-textArea semi-bold" 
                 rows="1"
                 :max-height="100"
-                v-model="data.title"/> 
+                v-model="data.title"/>  -->
 
         <div class="todo-opts"
             :class="data.priopaty">

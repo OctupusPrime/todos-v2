@@ -1,30 +1,20 @@
 <template>
     <div class="container">
         <main>
-            <BaseResizeTextArea name="first" 
-                                :maxHeight="100"
-                                :enterSubmit="true"
-                                @submitTextArea="submitTextArea"
-                                v-model="msg"/>
-            <p>{{msg}}</p>
+            <TodoDeadline :finishDate="1618423999999"/>
         </main>
-
     </div>
 </template>
 
 <script>
-import BaseResizeTextArea from '../components/BaseResizeTextArea.vue';
 export default {
-  components: { BaseResizeTextArea },
-    data: () => {
+    data: ()=> {
         return {
- 	        msg: ''
+            dateFinish: new Date()
         }
     },
-    methods: {
-        submitTextArea() {
-            console.log(1);
-        }
+    mounted: function () { 
+      this.dateFinish.setMinutes(this.dateFinish.getMinutes() + 2);
     }
 }
 </script>
