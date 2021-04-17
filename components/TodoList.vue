@@ -11,15 +11,17 @@
                                 :class="{'ghost': !!task.height}"
                                 :data-todo-index="columIndex + '' + index" 
                                 
-                                @mousedown.left.self="taskClicked($event, $event.currentTarget, data.context[index], index)"
-                                @touchstart.self="taskClicked($event.touches[0], $event.currentTarget, data.context[index], index)"
+                                @mousedown.left="taskClicked($event, $event.currentTarget, data.context[index], index, $event.path)"
+                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, data.context[index], index, $event.path)"
                                 
-                                @click.right.prevent="openQuickMenu(columIndex + '' + index, data.context[index], index)">
-                    <h3 class="todo-title">{{task.title}}                     
-                        <span class="icon btn" @click.stop="openQuickMenu(columIndex + '' + index, data.context[index], index)">
+                                @click.right.prevent="openQuickMenu(data.context[index], index)">
+
+                    <div class="todo-title-container">
+                        <h3 class="todo-title">{{task.title}}</h3>
+                        <span class="reduct-icon btn">
                             <font-awesome-icon icon="pen" />
                         </span>
-                    </h3>
+                    </div>
 
                     <div class="todo-opts"
                         :class="task.prioraty">
@@ -106,7 +108,10 @@ export default {
     },
   methods: {
     //Ghost config
-    taskClicked(e, currentTarget, task, taskIndex) {
+    taskClicked(e, currentTarget, task, taskIndex, path) {
+        if (path.includes(document.querySelector('.reduct-icon'))) 
+            return this.openQuickMenu(task, taskIndex);
+
         let thisBlock = currentTarget.getBoundingClientRect();
 
         height = thisBlock.height + 'px';
@@ -124,12 +129,12 @@ export default {
         this.$emit('activateGhost', {e, task, index, width: thisBlock.width, left: e.clientX, top: e.clientY, offSet});
     },
     //Quick menu config
-    openQuickMenu(taskIndex, task, position) {
-        let thisBlock = document.querySelector("[data-todo-index=" + JSON.stringify(taskIndex) + "]").getBoundingClientRect();
+    openQuickMenu(task, taskIndex) {
+        let thisBlock = document.querySelector("[data-todo-index=" + JSON.stringify(this.columIndex + '' + taskIndex) + "]").getBoundingClientRect();
 
         let index = {
             colum: this.columIndex,
-            task: position
+            task: taskIndex
         };
 
         this.$emit('openQuickMenu', {task, index, height: thisBlock.height , width: thisBlock.width, left: thisBlock.left, top: thisBlock.top});
@@ -201,11 +206,6 @@ export default {
     .resible-text-area {
         font-size: 1.25rem;
         margin-bottom: .3em;
-    }
-
-    .todo-title .icon {
-        float: right;
-        font-size: 1rem;
     }
 
     .todo-title-textArea {
@@ -281,6 +281,12 @@ export default {
     .ghost .todo-opts,
     .ghost .todo-title {
         display: none;
+    }
+
+    .todo-title-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
     }
 
     .todo-opts{
