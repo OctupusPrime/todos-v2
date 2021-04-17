@@ -6,16 +6,20 @@
         </h2>
             <div class="todo-row-list">
                 <p v-if="arrWithGhost.length === 0" class="todo-list-placeholder">Nothing here 😪</p>
-                <div class="todo-list-item bg-white" v-for="(task, index) in arrWithGhost" :key="task.title"
+                <div class="todo-list-item bg-white" v-for="(task, index) in arrWithGhost" :key="task.title" 
                                 :style="{height: task.height}"
                                 :class="{'ghost': !!task.height}"
                                 :data-todo-index="columIndex + '' + index" 
                                 
-                                @mousedown.left="taskClicked($event, $event.currentTarget, data.context[index], index)"
-                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, data.context[index], index)"
+                                @mousedown.left.self="taskClicked($event, $event.currentTarget, data.context[index], index)"
+                                @touchstart.self="taskClicked($event.touches[0], $event.currentTarget, data.context[index], index)"
                                 
-                                @click.right.prevent="openQuickMenu($event.currentTarget, data.context[index], index)">
-                    <h3 class="todo-title">{{task.title}}</h3>
+                                @click.right.prevent="openQuickMenu(columIndex + '' + index, data.context[index], index)">
+                    <h3 class="todo-title">{{task.title}}                     
+                        <span class="icon btn" @click.stop="openQuickMenu(columIndex + '' + index, data.context[index], index)">
+                            <font-awesome-icon icon="pen" />
+                        </span>
+                    </h3>
 
                     <div class="todo-opts"
                         :class="task.prioraty">
@@ -120,15 +124,15 @@ export default {
         this.$emit('activateGhost', {e, task, index, width: thisBlock.width, left: e.clientX, top: e.clientY, offSet});
     },
     //Quick menu config
-    openQuickMenu(currentTarget, task, taskIndex) {
-        let thisBlock = currentTarget.getBoundingClientRect();
-        
+    openQuickMenu(taskIndex, task, position) {
+        let thisBlock = document.querySelector("[data-todo-index=" + JSON.stringify(taskIndex) + "]").getBoundingClientRect();
+
         let index = {
             colum: this.columIndex,
-            task: taskIndex
+            task: position
         };
 
-        this.$emit('openQuickMenu', {task, index, width: thisBlock.width, left: thisBlock.left, top: thisBlock.top});
+        this.$emit('openQuickMenu', {task, index, height: thisBlock.height , width: thisBlock.width, left: thisBlock.left, top: thisBlock.top});
     },
     //Add Task config
     showAddTask() {
@@ -196,7 +200,12 @@ export default {
     .todo-title,
     .resible-text-area {
         font-size: 1.25rem;
-        padding-bottom: .3em;
+        margin-bottom: .3em;
+    }
+
+    .todo-title .icon {
+        float: right;
+        font-size: 1rem;
     }
 
     .todo-title-textArea {
@@ -269,7 +278,8 @@ export default {
     .ghost {
         background: #C6C6C6;
     }
-    .ghost .todo-opts {
+    .ghost .todo-opts,
+    .ghost .todo-title {
         display: none;
     }
 

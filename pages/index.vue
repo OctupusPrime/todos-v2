@@ -48,6 +48,7 @@
 
 <script>
 import ActionWarning from '../components/ActionWarning.vue';
+let menuWidht = 81;
 export default {
   components: { ActionWarning },
   data: () => {
@@ -86,6 +87,9 @@ export default {
     isertTaskToArr(colum, task, data) {
       this.todoContent[Number(colum)].context.splice(Number(task), 0, Object.assign({}, data));
     },
+    addTaskToColumn(data) {
+      this.isertTaskToArr(data.index, this.todoContent[data.index].context.length, data.task);
+    },
     //Ghost config
     activateGhost(val) {      
       const {e, task, index, width, left, top, offSet} = val;
@@ -105,14 +109,18 @@ export default {
     },
     //OverlayTask
     openQuickTodoMenu(val) {
-      const {task, index, width, left, top} = val;
-
+      const {task, index, width, height, left, top} = val;
       this.currentTaskData = task;
 
       this.openedTaskIndex = index;
-
+    
       this.$refs.TodoOverlayedTask.open(width, left, top);
-      this.$refs.TodoQuickMenu.open(top, left + 10 + width);
+
+      if (left + width + 10 + menuWidht > document.body.offsetWidth)//mb переделать
+        this.$refs.TodoQuickMenu.open(top + height + 10, left);
+      else
+        this.$refs.TodoQuickMenu.open(top, left + width + 10);
+
       this.$store.commit('overlay/open');
     },
     //Menu config
@@ -137,9 +145,6 @@ export default {
       this.$refs.TodoQuickMenu.close();
 
       this.$refs.ActionWarning.open();
-    },
-    addTaskToColumn(data) {
-      this.isertTaskToArr(data.index, this.todoContent[data.index].context.length, data.task);
     }
   }
 }

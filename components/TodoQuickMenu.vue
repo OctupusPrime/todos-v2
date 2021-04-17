@@ -1,7 +1,8 @@
 <template>
     <ul class="todo-quick-menu" 
             :style="{left: position.left + 'px', top: position.top + 'px'}"
-            v-if="isShow">
+            v-show="isShow"
+            ref="menu">
         <li class="quick-menu-item btn" @click="initEmit('openTask')">
             <h3 class="quick-menu-item-title normal">Open</h3>
         </li>
