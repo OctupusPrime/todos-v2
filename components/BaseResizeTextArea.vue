@@ -6,9 +6,10 @@
                 :style="{'min-height': minHeight + 'px','max-height': maxHeight + 'px'}"
                 :value="value"
 
-                @input="$emit('input', $event.target.value); resize($event);"
-                @keydown.enter="submitArea($event)"
-                @blur="submitArea($event)"/>    
+                @input="$emit('input', $event.target.value); resize($event.target);"
+                @keydown.enter="submitArea($event.target)"
+                @blur="submitArea($event.target)"
+                ref="textArea"/>    
 </template>
 
 <script>
@@ -28,16 +29,19 @@ export default {
     },
     methods: {
         resize(e) {
-            e.target.style.height = 'auto';
-            e.target.style.height = e.target.scrollHeight + 'px'
+            e.style.height = 'auto';
+            e.style.height = e.scrollHeight + 'px'
         },
         submitArea(e) {
             if (this.enterSubmit) {
-                e.target.blur();
+                e.blur();
                 this.$emit('submitTextArea')
             }
-
         }
+    },
+    mounted() {
+        const elem = this.$refs.textArea;
+        this.resize(elem);
     }
 }
 </script>

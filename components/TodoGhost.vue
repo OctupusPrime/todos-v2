@@ -5,12 +5,10 @@
         <h3 class="todo-title">{{data.title}}</h3>
 
         <div class="todo-opts"
-            :class="data.priopaty">
-            <p class="todo-prioraty bold">{{data.priopaty}}</p>
+            :class="data.prioraty">
+            <p class="todo-prioraty bold">{{data.prioraty}}</p>
         </div>
-        <div class="todo-opts blue">
-            <p class="todo-deadline semi-bold">{{data.deadline}}</p>
-        </div>
+        <TodoDeadline :finishDate="data.deadline"/> 
     </div>    
 </template>
 

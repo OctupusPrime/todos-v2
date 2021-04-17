@@ -6,26 +6,14 @@
                 :name="switchValue.name" 
                 :data-title="switchVal.txt" 
                 :value="switchVal.value"
-                v-model="value">
+                :checked="switchVal.value == switchValue.model"
+                @input="$emit('input', $event.target.value)">
     </div>
 </template>
 
 <script>
 export default {
-    props: ['switchValue'],  
-    data: function () {
-        return {
-            value: '',
-        }
-    },
-    watch: { 
-        'value'(){
-            this.$emit('initSwitch', this.value);   
-        }
-    },   
-    mounted: function () {   
-        this.value = this.switchValue.checked;
-    }
+    props: ['switchValue']
 }
 </script>
 

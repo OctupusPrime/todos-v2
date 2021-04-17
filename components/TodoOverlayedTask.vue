@@ -2,18 +2,16 @@
     <div class="todo-overlayed-task bg-white"
         :style="{width: width + 'px', left: position.left + 'px', top: position.top + 'px'}"
         v-if="isShow">
-        <!-- <textarea-autosize class="todo-title-textArea semi-bold" 
-                rows="1"
-                :max-height="100"
-                v-model="data.title"/>  -->
-
+        <BaseResizeTextArea name="overlayred-task-title" 
+                            :maxHeight="100"
+                            :enterSubmit="true"
+                            placeholder="Init task title"
+                            v-model="data.title"/>
         <div class="todo-opts"
-            :class="data.priopaty">
-            <p class="todo-prioraty bold">{{data.priopaty}}</p>
+            :class="data.prioraty">
+            <p class="todo-prioraty bold">{{data.prioraty}}</p>
         </div>
-        <div class="todo-opts blue">
-            <p class="todo-deadline semi-bold">{{data.deadline}}</p>
-        </div>
+        <TodoDeadline :finishDate="data.deadline"/> 
     </div>    
 </template>
 

@@ -18,12 +18,10 @@
                     <h3 class="todo-title">{{task.title}}</h3>
 
                     <div class="todo-opts"
-                        :class="task.priopaty">
-                        <p class="todo-prioraty bold">{{task.priopaty}}</p>
+                        :class="task.prioraty">
+                        <p class="todo-prioraty bold">{{task.prioraty}}</p>
                     </div>
-                    <div class="todo-opts blue">
-                        <p class="todo-deadline semi-bold">{{task.deadline}}</p>
-                    </div>
+                    <TodoDeadline :finishDate="task.deadline"/> 
                 </div>
 
 
@@ -34,11 +32,13 @@
                                         placeholder="Init task title"
                                         v-model="addTaskTitle"/>
 
-                    <BaseRadioBtn :switchValue="radioPrioratyValue"/>
+                    <BaseRadioBtn :switchValue="radioPrioratyValue" v-model="radioPrioratyValue.model"/>
+
+                    <BaseNumberInput :inputVal="numberInputVal"/>
 
                     <div class="todo-list-buttons-row">
                         <p class="btn-item btn" @click="hideAddTask">Cancel</p>
-                        <p class="btn-item btn bg-blue">Add</p>    
+                        <p class="btn-item btn bg-blue" @click="commitAddTask">Add</p>    
                     </div> 
                 </div>
 
@@ -58,16 +58,28 @@ export default {
         return {
             addTaskTitle: '',
             isAdd: false,
-
             radioPrioratyValue: {
-                checked: 'low',
+                model: 'low',
                 value: [
                     {txt: 'low' , value: 'low', color: '50,160,0'},
                     {txt: 'medium' , value: 'medium', color: '230,170,104'},
                     {txt: 'high' , value: 'high', color: '250,51,51'},
                 ],
                 name: 'prioraty'
-            }
+            },
+            numberInputVal: [{
+                name: 'deadline-days',
+                model: '',
+                max: 999
+            },{
+                name: 'deadline-hours',
+                model: '',
+                max: 24               
+            },{
+                name: 'deadline-minutes',
+                model: '',
+                max: 60
+            }]
         }
     },
     computed: {
@@ -121,14 +133,27 @@ export default {
     //Add Task config
     showAddTask() {
         this.isAdd = true;
-        
-        // this.$nextTick(() => {
-        //     document.querySelector('.resible-text-area').focus();
-        // });   
-
     },
     hideAddTask() {
         this.isAdd = false;
+
+        this.addTaskTitle = this.numberInputVal[0].model = this.numberInputVal[1].model = this.numberInputVal[2].model = '';
+        this.radioPrioratyValue.model = 'low';
+    },
+    commitAddTask() {
+        let deadline = new Date();
+        deadline.setDate(deadline.getDate() + Number(this.numberInputVal[0].model));
+        deadline.setHours(deadline.getHours() + Number(this.numberInputVal[1].model));
+        deadline.setMinutes(deadline.getMinutes() + Number(this.numberInputVal[2].model));
+        let task = {
+            title: this.addTaskTitle,
+            prioraty: this.radioPrioratyValue.model,
+            deadline: deadline.getTime(),
+            description: ''
+        };
+
+        this.$emit('addTask', {index: this.columIndex, task});
+        this.hideAddTask();
     }
   }
 }
@@ -292,6 +317,10 @@ export default {
         left: 50%;
         margin-right: -50%;
         transform: translate(-50%, 0)
+    }
+
+    .radio-btn {
+        margin-bottom: 6px;
     }
 
     .todo-list-buttons-row {

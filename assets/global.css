@@ -45,6 +45,7 @@ ul, li {
     list-style: none; 
 }
 
+input,
 textarea {
     display: block;
     width: 100%;
@@ -53,10 +54,6 @@ textarea {
     background-color: transparent;
     border: none;
     outline: none;
-}
-
-input {
-    font-family: 'Montserrat', sans-serif; 
 }
 
 .normal{

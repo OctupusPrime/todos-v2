@@ -9,7 +9,8 @@
                   :ghostTask="ghostIndex.task"
                   
                   @activateGhost="activateGhost"
-                  @openQuickMenu="openQuickTodoMenu"/>
+                  @openQuickMenu="openQuickTodoMenu"
+                  @addTask="addTaskToColumn"/>
       </main>
     </div>
     <TodoGhost  :data="currentTaskData"
@@ -53,25 +54,13 @@ export default {
     return {
       todoContent: [{
         title: 'New',
-        context: [{
-          title: 'Create Todos',
-          priopaty: 'low',
-          deadline: '0 : 23 : 13'
-        },{
-          title: 'Make app',
-          priopaty: 'high',
-          deadline: '0 : 12 : 13'     
-        }]
+        context: []
       },{
         title: 'Processed',
         context: []
       }, {
         title: 'Done',
-        context: [{
-          title: 'Make design',
-          priopaty: 'medium',
-          deadline: 'finished'     
-        }]
+        context: []
       }],
 
       ghostIndex: {
@@ -148,6 +137,9 @@ export default {
       this.$refs.TodoQuickMenu.close();
 
       this.$refs.ActionWarning.open();
+    },
+    addTaskToColumn(data) {
+      this.isertTaskToArr(data.index, this.todoContent[data.index].context.length, data.task);
     }
   }
 }

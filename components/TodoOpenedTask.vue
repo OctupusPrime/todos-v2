@@ -1,25 +1,27 @@
 <template>
     <div class="todo-opened-task bg-white" v-if="isShow">
         <div class="main-todo-info">
-            <!-- <textarea-autosize class="todo-title-textArea semi-bold" 
-                    rows="1"
-                    :max-height="100"
-                    v-model="data.title"/>  -->
+            <BaseResizeTextArea name="opened-task-title" 
+                                :maxHeight="100"
+                                :enterSubmit="true"
+                                placeholder="Init task title"
+                                v-model="data.title"/>
             <p class="todo-subtittle">In colum {{selectData[colum]}}</p>
 
             <div class="todo-opts"
-                :class="data.priopaty">
-                <p class="todo-prioraty bold">{{data.priopaty}}</p>
+                :class="data.prioraty">
+                <p class="todo-prioraty bold">{{data.prioraty}}</p>
             </div>
-            <div class="todo-opts blue">
-                <p class="todo-deadline semi-bold">{{data.deadline}}</p>
+            <TodoDeadline :finishDate="data.deadline"/> 
+
+            <h4 class="semi-bold">Description</h4> 
+            <div class="todo-description">
+                <BaseResizeTextArea name="opened-task-description" 
+                                    :maxHeight="250"
+                                    placeholder="Init task description"
+                                    v-model="data.description"/>
             </div>
 
-            <h4 class="semi-bold">Desctiption </h4>
-            <textarea-autosize class="todo-body-textArea" 
-                    rows="1"
-                    :max-height="200"
-                    v-model="bodyValue"/> 
         </div>
 
 
@@ -145,5 +147,17 @@ export default {
     .quick-menu-item-form-container {
         left: auto;
         right: 0;
+    }
+
+    .todo-description {
+        padding: .5em .75em;
+        background: #F5F5F5;
+    }
+
+    .todo-description textarea {
+        font-size: 1rem;
+        font-weight: 500 !important; 
+        background: #F5F5F5;
+        padding: 0;
     }
 </style>
