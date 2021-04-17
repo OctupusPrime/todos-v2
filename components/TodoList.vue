@@ -16,18 +16,17 @@
                                 
                                 @click.right.prevent="openQuickMenu(data.context[index], index)">
 
-                    <div class="todo-title-container">
-                        <h3 class="todo-title">{{task.title}}</h3>
-                        <span class="reduct-icon btn">
-                            <font-awesome-icon icon="pen" />
-                        </span>
-                    </div>
+                    <h3 class="todo-title">{{task.title}}</h3>
 
                     <div class="todo-opts"
                         :class="task.prioraty">
                         <p class="todo-prioraty bold">{{task.prioraty}}</p>
                     </div>
                     <TodoDeadline :finishDate="task.deadline"/> 
+
+                    <span class="reduct-icon btn">
+                        <font-awesome-icon icon="pen" />
+                    </span>
                 </div>
 
 
@@ -171,7 +170,7 @@ export default {
 <style>
     .todo-row {
         display: inline-block;
-        min-width: 300px;
+        width: 300px;
         height: 100%;
         box-sizing: border-box;
     }
@@ -200,6 +199,12 @@ export default {
         right: -12px;
         top: 50%;
         transform: translate(100%, -50%);
+    }
+
+    .todo-title {
+        max-height: 100px;
+        overflow: auto;
+        white-space: pre-wrap;
     }
 
     .todo-title,
@@ -279,14 +284,13 @@ export default {
         background: #C6C6C6;
     }
     .ghost .todo-opts,
-    .ghost .todo-title {
+    .ghost .todo-title,
+    .ghost .reduct-icon {
         display: none;
     }
 
-    .todo-title-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
+    .reduct-icon {
+        float: right;
     }
 
     .todo-opts{
