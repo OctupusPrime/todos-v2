@@ -16,7 +16,11 @@
                                 
                                 @click.right.prevent="openQuickMenu(data.context[index], index)">
 
-                    <h3 class="todo-title">{{task.title}}</h3>
+                    <BaseResizeTextArea name="todo-title" 
+                                        :maxHeight="100"
+                                        v-model="task.title"
+                                        class="todo-title"
+                                        readonly/>
 
                     <div class="todo-opts"
                         :class="task.prioraty">
@@ -108,7 +112,8 @@ export default {
   methods: {
     //Ghost config
     taskClicked(e, currentTarget, task, taskIndex, path) {
-        if (path.includes(document.querySelector('.reduct-icon'))) 
+        let ReductBtnObj = currentTarget.querySelector('.reduct-icon');
+        if (path.includes(ReductBtnObj)) 
             return this.openQuickMenu(task, taskIndex);
 
         let thisBlock = currentTarget.getBoundingClientRect();
@@ -201,21 +206,13 @@ export default {
         transform: translate(100%, -50%);
     }
 
-    .todo-title {
-        max-height: 100px;
-        overflow: auto;
-        white-space: pre-wrap;
-    }
-
-    .todo-title,
     .resible-text-area {
         font-size: 1.25rem;
         margin-bottom: .3em;
     }
 
-    .todo-title-textArea {
-        font-size: 1.25rem;
-        padding-bottom: .1em;
+    .todo-title {
+        cursor: default;
     }
 
     .todo-list-placeholder {
@@ -336,7 +333,7 @@ export default {
         bottom: 0;
         left: 50%;
         margin-right: -50%;
-        transform: translate(-50%, 0)
+        transform: translate(-50%, 0);
     }
 
     .radio-btn {

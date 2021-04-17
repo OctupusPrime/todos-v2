@@ -14,6 +14,10 @@
             </div>
             <TodoDeadline :finishDate="data.deadline"/> 
 
+            <span class="reduct-icon btn">
+                <font-awesome-icon icon="pen" />
+            </span>
+
             <h4 class="semi-bold">Description</h4> 
             <div class="todo-description">
                 <BaseResizeTextArea name="opened-task-description" 
@@ -52,6 +56,7 @@
 </template>
 
 <script>
+//Переделать textarea desc
 export default {
     props: ['data', 'colum'],
     data: () => {
@@ -105,7 +110,7 @@ export default {
         width: 95%;
         max-width: 500px;
 
-        padding: .65em 1.3em;
+        padding: .4em .8em;
 
         position: absolute;
         left: 50%;
@@ -159,5 +164,11 @@ export default {
         font-weight: 500 !important; 
         background: #F5F5F5;
         padding: 0;
+    }
+/* Layout */
+    .aside-todo-menu {
+        border-left: 1px solid #767676;;
+        padding-left: .5em;
+        margin-left: .5em;
     }
 </style>

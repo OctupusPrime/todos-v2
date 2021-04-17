@@ -2,7 +2,12 @@
     <div class="todo-task-ghost bg-white"
         :style="{width: width + 'px', left: position.left + 'px', top: position.top + 'px', transform: 'translate(' + -offSet.left + 'px, '+ -offSet.top + 'px) rotate(5deg)'}"
         v-if="isActive">
-        <h3 class="todo-title">{{data.title}}</h3>
+
+                    <BaseResizeTextArea name="todo-title" 
+                                        :maxHeight="100"
+                                        v-model="data.title"
+                                        class="todo-title"
+                                        readonly/>
 
         <div class="todo-opts"
             :class="data.prioraty">
@@ -110,5 +115,9 @@ export default {
         position: absolute;
         z-index: 2;
         user-select: none;
+    }
+
+    .todo-title {
+        cursor: grabbing;
     }
 </style>
