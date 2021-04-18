@@ -1,7 +1,8 @@
 <template>
   <div class="main-wrapper">
-    <div class="container">
-      <main role="main" id="main">
+    <div class="container" ref="sliderContainer">
+      <main role="main" id="main" :style="sliderScrollX" :class="{'animate': isAnimate}">
+        <resize-observer @notify="handleResize" />
         <TodoList v-for="(item, index) in todoContent" :key="index" 
                   :data="item"
                   :columIndex="index" 
@@ -44,7 +45,11 @@
                     @deleteTask="deleteTask"
                     ref="ActionWarning"/>
 
-    <TodoSliderController />
+    <TodoSliderController :taskMargin="50" 
+                          :slidesAmount="todoContent.length"
+                          @changePosition="changePosition" 
+                          @isAnimated="isAnimated"
+                          ref="todoSlider"/>
   </div>
 
 </template>
@@ -80,10 +85,27 @@ export default {
       },
 
       warningText: 'delete the task.',
-      watningEmitVal: 'deleteTask'
+      watningEmitVal: 'deleteTask',
+
+      sliderScrollX: 'transform: translateX(0px);',
+      isAnimate: false
     }
   },
   methods: {
+    handleResize ({ width, height }) {
+      if (width > 600) 
+        return this.sliderScrollX = 'transform: translateX(0px);';
+        
+      this.$refs.todoSlider.resized(width);
+      this.$refs.sliderContainer.scrollLeft = 0;
+    },
+    //Slider config
+    changePosition(val) {
+      this.sliderScrollX = val;
+    },
+    isAnimated(val) {
+      this.isAnimate = val;
+    },
     removeTaskFromArr(colum, task) {//Сделать отдельную функцию удаления
       this.todoContent[Number(colum)].context.splice(Number(task), 1);
     },
@@ -175,6 +197,7 @@ export default {
     overflow-y: hidden;
   }
   main {
+    position: relative;
     display: flex;
     align-items: flex-start;
     width: fit-content;
@@ -182,8 +205,9 @@ export default {
 
     padding-top: 125px; /* Padding from fixed header */
     padding-bottom: 20px;
-
-
+  }
+  .animate {
+    transition: transform .3s ease;
   }
 
   @media (max-width: 600px) {
