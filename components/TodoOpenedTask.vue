@@ -1,5 +1,5 @@
 <template>
-    <div class="todo-opened-task bg-white" v-if="isShow">
+    <div class="todo-opened-task bg-white" v-if="isShow" key="openedTask">
         <div class="main-todo-info">
             <BaseResizeTextArea name="opened-task-title" 
                                 :maxHeight="100"
@@ -8,15 +8,29 @@
                                 v-model="data.title"/>
             <p class="todo-subtittle">In colum {{selectData[colum]}}</p>
 
-            <div class="todo-opts"
-                :class="data.prioraty">
-                <p class="todo-prioraty bold">{{data.prioraty}}</p>
-            </div>
-            <TodoDeadline :finishDate="data.deadline"/> 
+            <div class="todo-info" v-if="!isReduct">
+                <div class="todo-opts"
+                    :class="data.prioraty">
+                    <p class="todo-prioraty bold">{{data.prioraty}}</p>
+                </div>
+                <TodoDeadline :finishDate="data.deadline"/> 
 
-            <span class="reduct-icon btn">
-                <font-awesome-icon icon="pen" />
-            </span>
+                <span class="reduct-icon btn" @click="openReductTask">
+                    <font-awesome-icon icon="pen" />
+                </span>
+            </div>
+
+            <div class="todo-reduct" v-else>
+                <BaseRadioBtn :switchValue="radioPrioratyValue" v-model="radioPrioratyValue.model"/>
+
+                <BaseNumberInput :inputVal="numberInputVal"/>
+
+                <div class="todo-list-buttons-row">
+                    <p class="btn-item btn" @click="hideReductTask">Cancel</p>
+                    <p class="btn-item btn bg-blue" @click="commitReductTask">Reduct</p>    
+                </div> 
+            </div>
+
 
             <h4 class="semi-bold">Description</h4> 
             <div class="todo-description">
@@ -57,21 +71,48 @@
 
 <script>
 //Переделать textarea desc
+const   cd = 24 * 60 * 60 * 1000,// hr, min, sec, ms
+        ch = 60 * 60 * 1000;//min, sec, ms
 export default {
     props: ['data', 'colum'],
     data: () => {
         return {
             isClicked: false,
             isMoveOpened: false,
+            isReduct: false,
 
             selectData: ['New', 'Processed', 'Done'],
             moveSelectValue: 0,
-            bodyValue: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente hic debitis ullam, voluptatum nostrum aspernatur.'
+
+            radioPrioratyValue: {
+                model: '',
+                value: [
+                    {txt: 'low' , value: 'low', color: '50,160,0'},
+                    {txt: 'medium' , value: 'medium', color: '230,170,104'},
+                    {txt: 'high' , value: 'high', color: '250,51,51'},
+                ],
+                name: 'reduct-prioraty'
+            },
+            numberInputVal: [{
+                name: 'reduct-deadline-days',
+                model: '',
+                max: 999
+            },{
+                name: 'reduct-deadline-hours',
+                model: '',
+                max: 24               
+            },{
+                name: 'reduct-deadline-minutes',
+                model: '',
+                max: 60
+            }],
+            isExpired: false
         }
     },
     computed: {
         isShow() {
             if (this.isClicked) {
+                this.currentTaskReductData();
                 if (!this.$store.getters['overlay/getOverlayVal']) {
                     this.close();
                     return false;
@@ -88,7 +129,33 @@ export default {
         close() {
             this.isClicked = false;
             this.closeForm();
+            this.hideReductTask();
         },
+        currentTaskReductData() {
+            let difference_ms = this.data.deadline - new Date().getTime();
+            let days = Math.floor(Math.abs(difference_ms) / cd);
+            let hours = Math.floor( (Math.abs(difference_ms) - days * cd) / ch);
+            let minutes = Math.round( (Math.abs(difference_ms) - days * cd - hours * ch) / 60000);
+
+            if( minutes === 60 ){
+                hours++;
+                minutes = 0;
+            }
+            if( hours === 24 ){
+                days++;
+                hours = 0;
+            }
+
+            if (difference_ms <  -60000)
+                this.isExpired = true; 
+
+            this.numberInputVal[0].model = days;
+            this.numberInputVal[1].model = hours;
+            this.numberInputVal[2].model = minutes;
+
+            this.radioPrioratyValue.model = this.data.prioraty;
+        },
+        //Menu config
         initEmit(emit, val) {
             this.$emit(emit, val);
         },
@@ -100,6 +167,24 @@ export default {
         },
         changedChoise(val) {
             this.moveSelectValue = val
+        },
+        //Reduct config
+        openReductTask() {
+            this.isReduct = true;
+        },
+        hideReductTask() {
+            this.isReduct = false
+        },
+        commitReductTask() {
+            let deadline = new Date();
+                deadline.setDate(deadline.getDate() + Number(this.numberInputVal[0].model));
+                deadline.setHours(deadline.getHours() + Number(this.numberInputVal[1].model));
+                deadline.setMinutes(deadline.getMinutes() + Number(this.numberInputVal[2].model));
+            
+            this.data.prioraty = this.radioPrioratyValue.model;
+            this.data.deadline = deadline.getTime();
+
+            this.hideReductTask();
         }
     }
 }
@@ -114,7 +199,7 @@ export default {
 
         position: absolute;
         left: 50%;
-        top: 20%;
+        top: 15%;
         transform: translate(-50%, 0);
         z-index: 10;
 

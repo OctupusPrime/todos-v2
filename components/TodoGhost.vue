@@ -3,11 +3,11 @@
         :style="{width: width + 'px', left: position.left + 'px', top: position.top + 'px', transform: 'translate(' + -offSet.left + 'px, '+ -offSet.top + 'px) rotate(5deg)'}"
         v-if="isActive">
 
-                    <BaseResizeTextArea name="todo-title" 
-                                        :maxHeight="100"
-                                        v-model="data.title"
-                                        class="todo-title"
-                                        readonly/>
+        <BaseResizeTextArea name="ghost-todo-title" 
+                            :maxHeight="100"
+                            v-model="data.title"
+                            class="todo-title"
+                            readonly/>
 
         <div class="todo-opts"
             :class="data.prioraty">

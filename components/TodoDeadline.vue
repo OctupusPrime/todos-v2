@@ -17,6 +17,8 @@ export default {
     },
     computed: {
         timerValues() {
+            this.difference_ms = this.finishDate - new Date().getTime();
+
             let days = Math.floor(Math.abs(this.difference_ms) / cd);
             let hours = Math.floor( (Math.abs(this.difference_ms) - days * cd) / ch);
             let minutes = Math.round( (Math.abs(this.difference_ms) - days * cd - hours * ch) / 60000);
@@ -44,11 +46,6 @@ export default {
             this.difference_ms = this.difference_ms - 60000;    
         }
     },  
-    mounted: function () { 
-        this.$nextTick(() => {
-            this.difference_ms = this.finishDate - new Date().getTime();
-        })
-    },
     created() {
         var self = this
         setInterval(function () {

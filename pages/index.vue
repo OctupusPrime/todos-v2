@@ -9,7 +9,10 @@
                   :ghostTask="ghostIndex.task"
                   
                   @activateGhost="activateGhost"
+
                   @openQuickMenu="openQuickTodoMenu"
+                  @openTask="openTask"
+                  
                   @addTask="addTaskToColumn"/>
       </main>
     </div>
@@ -91,7 +94,7 @@ export default {
       this.isertTaskToArr(data.index, this.todoContent[data.index].context.length, data.task);
     },
     //Ghost config
-    activateGhost(val) {      
+    activateGhost(val) {    
       const {e, task, index, width, left, top, offSet} = val;
       this.currentTaskData = task;
       
@@ -123,8 +126,18 @@ export default {
 
       this.$store.commit('overlay/open');
     },
+    //OpenedTAsk 
+    openTask(val) {
+      const {task, index} = val;
+      this.currentTaskData = task;
+      this.openedTaskIndex = index;
+
+      this.menuOpenTask();
+    },
     //Menu config
     menuOpenTask() {
+      this.$store.commit('overlay/open');
+
       this.$refs.todoOpenTask.open();
       this.$refs.TodoOverlayedTask.close();
       this.$refs.TodoQuickMenu.close();

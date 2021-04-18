@@ -114,7 +114,7 @@ export default {
     taskClicked(e, currentTarget, task, taskIndex, path) {
         let ReductBtnObj = currentTarget.querySelector('.reduct-icon');
         if (path.includes(ReductBtnObj)) 
-            return this.openQuickMenu(task, taskIndex);
+            return this.openTask(task, taskIndex);
 
         let thisBlock = currentTarget.getBoundingClientRect();
 
@@ -142,6 +142,14 @@ export default {
         };
 
         this.$emit('openQuickMenu', {task, index, height: thisBlock.height , width: thisBlock.width, left: thisBlock.left, top: thisBlock.top});
+    },
+    openTask(task, taskIndex) {
+        let index = {
+            colum: this.columIndex,
+            task: taskIndex
+        };     
+
+        this.$emit('openTask', {task, index});
     },
     //Add Task config
     showAddTask() {
