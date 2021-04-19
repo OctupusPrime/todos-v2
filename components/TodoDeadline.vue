@@ -8,17 +8,23 @@
 var cd = 24 * 60 * 60 * 1000,// hr, min, sec, ms
     ch = 60 * 60 * 1000;//min, sec, ms
 export default {
-    props: ['finishDate'],
+    props: ['finishDate', 'dateNow'],
     data: () => {
         return {
             difference_ms: 1,
             isExpired: false
         }
     },
+    watch: {
+        'finishDate'() {
+            this.difference_ms = this.finishDate - this.dateNow;
+        },
+        'dateNow'() {
+            this.difference_ms = this.finishDate - this.dateNow;
+        }
+    },
     computed: {
         timerValues() {
-            this.difference_ms = this.finishDate - new Date().getTime();
-
             let days = Math.floor(Math.abs(this.difference_ms) / cd);
             let hours = Math.floor( (Math.abs(this.difference_ms) - days * cd) / ch);
             let minutes = Math.round( (Math.abs(this.difference_ms) - days * cd - hours * ch) / 60000);
@@ -46,11 +52,8 @@ export default {
             this.difference_ms = this.difference_ms - 60000;    
         }
     },  
-    created() {
-        var self = this
-        setInterval(function () {
-            self.changeTimerVal();
-        }, 60000)//60000
-    },
+    mounted() {
+        this.difference_ms = this.finishDate - this.dateNow;
+    }
 }
 </script>

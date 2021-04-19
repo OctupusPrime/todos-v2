@@ -1,21 +1,27 @@
 <template>
     <div class="container">
         <main>
-            <p ref="pClass">Hello</p>
+            <TodoDeadline :finishDate="1618760934450" :dateNow="dateNow"/> 
+            <TodoDeadline :finishDate="1618750934450" :dateNow="dateNow"/> 
+            <TodoDeadline :finishDate="1618760934450" :dateNow="dateNow"/> 
         </main>
     </div>
-</template>
+</template> 
 
 <script>
+//Спросить у Maveldus
 export default {
     data: () => {
         return {
+            dateNow: new Date().getTime()
         }
     },
-    mounted() { 
-        console.log(this.$refs.pClass.getBoundingClientRect());
-        console.log(document.body.offsetWidth);
-    }
+    created() {
+        var self = this
+        setInterval(function () {
+            self.dateNow = new Date().getTime();
+        }, 60000)
+    },
 }
 </script>
 

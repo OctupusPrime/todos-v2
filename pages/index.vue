@@ -106,7 +106,7 @@ export default {
     isAnimated(val) {
       this.isAnimate = val;
     },
-    removeTaskFromArr(colum, task) {//Сделать отдельную функцию удаления
+    removeTaskFromArr(colum, task) {
       this.todoContent[Number(colum)].context.splice(Number(task), 1);
     },
     isertTaskToArr(colum, task, data) {
