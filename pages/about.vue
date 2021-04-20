@@ -16,12 +16,15 @@ export default {
             dateNow: new Date().getTime()
         }
     },
+    mounted() {
+        console.log(this.$store.getters['token/getToken']);
+    },
     created() {
         var self = this
         setInterval(function () {
             self.dateNow = new Date().getTime();
         }, 60000)
-    },
+    }
 }
 </script>
 

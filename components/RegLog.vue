@@ -67,6 +67,7 @@ export default {
             })
             .then(res => {
                 console.log(res);
+                this.$store.dispatch('token/login', res.data.token);
             })
         }
     }
