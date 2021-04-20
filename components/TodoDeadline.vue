@@ -47,11 +47,6 @@ export default {
                 return `${days} : ${hours} : ${minutes}`;
         }
     },
-    methods: {
-        changeTimerVal() {
-            this.difference_ms = this.difference_ms - 60000;    
-        }
-    },  
     mounted() {
         this.difference_ms = this.finishDate - this.dateNow;
     }

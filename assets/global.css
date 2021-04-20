@@ -56,6 +56,19 @@ textarea {
     outline: none;
 }
 
+button {
+    border: none;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    background: transparent;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 700;
+}
+
 .normal{
     font-weight: 500;
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="todo-opened-task bg-white" v-if="isShow" key="openedTask">
+    <div class="todo-opened-task bg-white" v-if="isShow">
         <div class="main-todo-info">
             <BaseResizeTextArea name="opened-task-title" 
                                 :maxHeight="100"

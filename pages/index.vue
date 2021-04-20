@@ -203,7 +203,6 @@ export default {
     width: fit-content;
     height: 100%;
 
-    padding-top: 125px; /* Padding from fixed header */
     padding-bottom: 20px;
   }
   .animate {
@@ -216,7 +215,6 @@ export default {
     }
     main {
       width: 100%;
-      padding-top: 80px; /* Padding from fixed header */
       padding-bottom: 64px; /* Padding from sldier controller */
     }
   }

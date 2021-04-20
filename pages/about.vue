@@ -9,8 +9,8 @@
 </template> 
 
 <script>
-//Спросить у Maveldus
 export default {
+    layout: 'noAuth',
     data: () => {
         return {
             dateNow: new Date().getTime()
@@ -26,7 +26,4 @@ export default {
 </script>
 
 <style scoped>
-    main {
-        padding-top: 125px;
-    }
 </style>
