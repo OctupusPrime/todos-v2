@@ -18,6 +18,7 @@ export default {
     },
     mounted() {
         console.log(this.$store.getters['token/getToken']);
+         console.log(this.$cookies.get('token'));
     },
     created() {
         var self = this

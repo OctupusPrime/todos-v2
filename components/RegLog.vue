@@ -56,6 +56,7 @@ export default {
         toggleForm() {
             this.isLog = !this.isLog;
         },
+        //Form config
         logIn() {
             this.$axios({                
                 method: 'post',
@@ -69,6 +70,10 @@ export default {
                 console.log(res);
                 this.$store.dispatch('token/login', res.data.token);
             })
+        },
+        Register() {
+            this.$store.dispatch('token/logout');
+            //Дописать
         }
     }
 }

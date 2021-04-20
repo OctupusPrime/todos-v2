@@ -26,8 +26,6 @@ function getTasksList(arr) {
            prioraty: task.prioraty,
            deadline: task.deadline
         }
-        if (content.deadline < dateNow)
-            content.deadline = false
         if (!acc[status]) {
             acc["New"] = { columTitle: "New", taskList: [] },
             acc["Processed"] = { columTitle: "Processed", taskList: [] },  
@@ -94,7 +92,7 @@ class TaskListController {
             task = {
                 title: title,
                 description: description,
-                deadline: new Date().getTime() + Number(deadline),
+                deadline: Number(deadline),
                 prioraty: prioraty,
                 index: statusNewTasksArr.length
             }         

@@ -45,11 +45,15 @@ export default {
   modules: [
     '@nuxtjs/axios',
     ['nuxt-vuex-localstorage', {
-      localStorage: ['token'],
-    }]
+      localStorage: ['token']
+    }],
+    'cookie-universal-nuxt'
   ],
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
+  // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+    transpile: [
+      'nuxt-vuex-localstorage'
+    ]
   }
 }

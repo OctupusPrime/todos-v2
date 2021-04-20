@@ -1,8 +1,8 @@
 <template>
     <article class="todo-row">
         <h2 class="todo-row-title">
-            {{data.title}} 
-            <p class="todo-row-length" v-if="data.context.length > 0">{{data.context.length}}</p> 
+            {{data.columTitle}} 
+            <p class="todo-row-length" v-if="data.taskList.length > 0">{{data.taskList.length}}</p> 
         </h2>
             <div class="todo-row-list">
                 <p v-if="arrWithGhost.length === 0" class="todo-list-placeholder">Nothing here 😪</p>
@@ -11,10 +11,10 @@
                                 :class="{'ghost': !!task.height}"
                                 :data-todo-index="columIndex + '' + index" 
                                 
-                                @mousedown.left="taskClicked($event, $event.currentTarget, data.context[index], index, $event.path)"
-                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, data.context[index], index, $event.path)"
+                                @mousedown.left="taskClicked($event, $event.currentTarget, data.taskList[index], index, $event.path)"
+                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, data.taskList[index], index, $event.path)"
                                 
-                                @click.right.prevent="openQuickMenu(data.context[index], index)">
+                                @click.right.prevent="openQuickMenu(data.taskList[index], index)">
 
                     <BaseResizeTextArea name="todo-title" 
                                         :maxHeight="100"
@@ -26,7 +26,7 @@
                         :class="task.prioraty">
                         <p class="todo-prioraty bold">{{task.prioraty}}</p>
                     </div>
-                    <TodoDeadline :finishDate="task.deadline"/> 
+                    <TodoDeadline :finishDate="task.deadline" :dateNow="dateNow"/> 
 
                     <span class="reduct-icon btn">
                         <font-awesome-icon icon="pen" />
@@ -34,7 +34,8 @@
                 </div>
 
 
-                <div class="todo-list-add-task bg-white" v-if="isAdd">
+                <form class="todo-list-add-task bg-white" v-if="isAdd"
+                    @submit.prevent="commitAddTask">
                     <BaseResizeTextArea name="add-task-title" 
                                         :maxHeight="100"
                                         :enterSubmit="true"
@@ -46,10 +47,10 @@
                     <BaseNumberInput :inputVal="numberInputVal"/>
 
                     <div class="todo-list-buttons-row">
-                        <p class="btn-item btn" @click="hideAddTask">Cancel</p>
-                        <p class="btn-item btn bg-blue" @click="commitAddTask">Add</p>    
+                        <button class="btn-item btn" @click="hideAddTask">Cancel</button>
+                        <button type="submit" class="btn-item btn bg-blue">Add</button>    
                     </div> 
-                </div>
+                </form>
 
                 <div class="todo-add-card btn" v-else @click="showAddTask">
                     <font-awesome-icon icon="plus" />
@@ -62,7 +63,7 @@
 <script>
 let height = 0;
 export default {
-    props: ['data', 'columIndex', 'ghostColum', 'ghostTask'],
+    props: ['data', 'columIndex', 'ghostColum', 'ghostTask', 'dateNow'],
     data: () => {
         return {
             addTaskTitle: '',
@@ -95,7 +96,7 @@ export default {
         arrWithGhost() {
             let arr = [];
 
-            this.data.context.forEach(task => {
+            this.data.taskList.forEach(task => {
                 arr.push(Object.assign({}, task));
             });
 
@@ -163,9 +164,14 @@ export default {
     },
     commitAddTask() {
         let deadline = new Date();
-        deadline.setDate(deadline.getDate() + Number(this.numberInputVal[0].model));
-        deadline.setHours(deadline.getHours() + Number(this.numberInputVal[1].model));
-        deadline.setMinutes(deadline.getMinutes() + Number(this.numberInputVal[2].model));
+        if (Number(this.numberInputVal[0].model) + Number(this.numberInputVal[1].model) + Number(this.numberInputVal[2].model) == 0)
+            deadline.setDate(deadline.getDate() + 1); 
+        else {
+            deadline.setDate(deadline.getDate() + Number(this.numberInputVal[0].model));
+            deadline.setHours(deadline.getHours() + Number(this.numberInputVal[1].model));
+            deadline.setMinutes(deadline.getMinutes() + Number(this.numberInputVal[2].model));
+        }
+
         let task = {
             title: this.addTaskTitle,
             prioraty: this.radioPrioratyValue.model,
@@ -173,8 +179,28 @@ export default {
             description: ''
         };
 
-        this.$emit('addTask', {index: this.columIndex, task});
-        this.hideAddTask();
+        this.$axios({                
+            method: 'post',
+            url: '/api/tasks',
+            data: {
+                title: this.addTaskTitle,
+                prioraty: this.radioPrioratyValue.model,
+                deadline: deadline.getTime(),
+                description: ''           
+            },
+            headers: {
+                'Authorization': `token ${this.$store.getters['token/getToken']}`
+            }
+        })
+        .then(res => {
+            console.log(res);
+            this.$emit('addTask', {index: this.columIndex, task});
+            this.hideAddTask();
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
     }
   }
 }

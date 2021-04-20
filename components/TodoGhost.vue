@@ -13,14 +13,15 @@
             :class="data.prioraty">
             <p class="todo-prioraty bold">{{data.prioraty}}</p>
         </div>
-        <TodoDeadline :finishDate="data.deadline"/> 
+        <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow"/> 
     </div>    
 </template>
 
 <script>
 let columBoxs;
+let firstPos;
 export default {
-    props: ['data', 'index'],
+    props: ['data', 'index', 'dateNow'],
     data: () => {
         return {
             width: 0,
@@ -37,7 +38,8 @@ export default {
         }
     },
     methods: {
-        start(width, left, top, offSet) {
+        start(val) {
+            const {width, left, top, offSet, index} = val;
             columBoxs = document.querySelectorAll('.todo-row');
 
             this.width = width;
@@ -47,6 +49,8 @@ export default {
 
             this.offSet = offSet;
             this.isActive = true;
+
+            firstPos = index;
 
             this.$nextTick(() => {
                 this.$emit('removeTaskFromArr');
@@ -64,6 +68,11 @@ export default {
             if (this.isActive) {
                 this.isActive = false;
                 this.$emit('isertTaskToArr');
+
+                if (firstPos.task === this.index.task && firstPos.colum === this.index.colum);
+                else    
+                    this.$emit('initReq', {status: this.index.colum, index: this.index.task});
+
                 this.index.colum = this.index.task = '-';
             }
         },

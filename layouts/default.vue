@@ -9,7 +9,7 @@
             <nav>
                 <ul>
                     <li>
-                        <nuxt-link exact no-prefetch active-class="current-page" to="/">Home</nuxt-link>
+                        <nuxt-link active-class="current-page" to="/tasks">Home</nuxt-link>
                     </li>
                     <li>
                         <nuxt-link active-class="current-page" to="/about">About author</nuxt-link>

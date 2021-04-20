@@ -6,18 +6,20 @@
                             :maxHeight="100"
                             :enterSubmit="true"
                             placeholder="Init task title"
+                            @submitTextArea="initReq"
                             v-model="data.title"/>
         <div class="todo-opts"
             :class="data.prioraty">
             <p class="todo-prioraty bold">{{data.prioraty}}</p>
         </div>
-        <TodoDeadline :finishDate="data.deadline"/> 
+        <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow"/> 
     </div>    
 </template>
 
 <script>
+let title = '';
 export default {
-    props: ['data'],
+    props: ['data', 'dateNow'],
     data: () => {
         return {
             isClicked: false,
@@ -27,6 +29,11 @@ export default {
                 left: 0,
                 top: 0
             }
+        }
+    },
+    watch: {
+        'isClicked'() {
+            title = this.data.title;
         }
     },
     computed: {
@@ -52,6 +59,25 @@ export default {
         },
         close() {
             this.isClicked = false;
+        },
+        initReq() {
+            if (title != this.data.title) {
+                let reqUrl = '/api/tasks/' + title.replace(' ', '%20');
+
+                this.$axios({                
+                    method: 'put',
+                    url: reqUrl,
+                    headers: {
+                    'Authorization': `token ${this.$store.getters['token/getToken']}`
+                    },
+                    data: {
+                        title: this.data.title
+                    }
+                })
+                .then(res => {
+                    this.$store.commit('overlay/close');
+                })
+            }
         }
     }
 }   

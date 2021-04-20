@@ -7,7 +7,7 @@
                 :value="value"
 
                 @input="$emit('input', $event.target.value); resize($event.target);"
-                @keydown.enter="submitArea($event.target)"
+                @keydown.enter="blur($event.target)"
                 @blur="submitArea($event.target)"
                 ref="textArea"/>    
 </template>
@@ -33,10 +33,11 @@ export default {
             e.style.height = e.scrollHeight + 'px'
         },
         submitArea(e) {
-            if (this.enterSubmit) {
+            this.$emit('submitTextArea')
+        },
+        blur(e) {
+            if (this.enterSubmit)
                 e.blur();
-                this.$emit('submitTextArea')
-            }
         }
     },
     mounted() {

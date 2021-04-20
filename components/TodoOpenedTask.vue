@@ -5,6 +5,7 @@
                                 :maxHeight="100"
                                 :enterSubmit="true"
                                 placeholder="Init task title"
+                                @submitTextArea="initReqTitle"
                                 v-model="data.title"/>
             <p class="todo-subtittle">In colum {{selectData[colum]}}</p>
 
@@ -13,7 +14,7 @@
                     :class="data.prioraty">
                     <p class="todo-prioraty bold">{{data.prioraty}}</p>
                 </div>
-                <TodoDeadline :finishDate="data.deadline"/> 
+                <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow"/> 
 
                 <span class="reduct-icon btn" @click="openReductTask">
                     <font-awesome-icon icon="pen" />
@@ -37,7 +38,9 @@
                 <BaseResizeTextArea name="opened-task-description" 
                                     :maxHeight="250"
                                     placeholder="Init task description"
-                                    v-model="data.description"/>
+                                    v-model="data.description"
+                                    @submitTextArea="initReqDesc"/>
+                                    
             </div>
 
         </div>
@@ -70,11 +73,13 @@
 </template>
 
 <script>
-//Переделать textarea desc
+let title  = '';
+let desc   = '';
+let reqUrl = '';
 const   cd = 24 * 60 * 60 * 1000,// hr, min, sec, ms
         ch = 60 * 60 * 1000;//min, sec, ms
 export default {
-    props: ['data', 'colum'],
+    props: ['data', 'colum', 'dateNow'],
     data: () => {
         return {
             isClicked: false,
@@ -107,6 +112,13 @@ export default {
                 max: 60
             }],
             isExpired: false
+        }
+    },
+    watch: {
+        'isClicked'() {
+            title = this.data.title;
+            desc = this.data.description;
+            reqUrl = '/api/tasks/' + title.replace(' ', '%20');
         }
     },
     computed: {
@@ -184,7 +196,48 @@ export default {
             this.data.prioraty = this.radioPrioratyValue.model;
             this.data.deadline = deadline.getTime();
 
-            this.hideReductTask();
+            this.$axios({                
+                method: 'put',
+                url: reqUrl,
+                headers: {
+                    'Authorization': `token ${this.$store.getters['token/getToken']}`
+                },
+                data: {
+                    prioraty: this.data.prioraty,
+                    deadline: this.data.deadline
+                }
+            })
+            .then(res => {
+                this.hideReductTask();
+            })
+        },
+        initReqTitle() {
+            if (title != this.data.title) {
+                this.$axios({                
+                    method: 'put',
+                    url: reqUrl,
+                    headers: {
+                        'Authorization': `token ${this.$store.getters['token/getToken']}`
+                    },
+                    data: {
+                        title: this.data.title
+                    }
+                })
+            }
+        },
+        initReqDesc() {
+            if (desc != this.data.description) {
+                this.$axios({                
+                    method: 'put',
+                    url: reqUrl,
+                    headers: {
+                        'Authorization': `token ${this.$store.getters['token/getToken']}`
+                    },
+                    data: {
+                        description: this.data.description
+                    }
+                });
+            }
         }
     }
 }
