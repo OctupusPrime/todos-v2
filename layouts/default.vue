@@ -20,8 +20,8 @@
                 <font-awesome-icon icon="cog" />
             </div>
         </div>
-        <div class="container flex bg-white mobile">
-            <div class="nav btn">
+        <div class="container flex bg-white mobile"><!-- Mobile menu -->
+            <div class="nav btn" @click="activeMobMenu">
                 <font-awesome-icon icon="bars" />
             </div>
             <div class="site-logo">
@@ -31,6 +31,20 @@
                 <font-awesome-icon icon="cog" />
             </div>
         </div>
+
+        <aside class="mobile-menu-nav bg-white" :class="{'mobile-nav-active': isShow}">
+            <nav>
+                <ul>
+                    <li @click="closeMobMenu">
+                        <nuxt-link active-class="current-page" to="/tasks">Home</nuxt-link>
+                    </li>
+                    <li @click="closeMobMenu">
+                        <nuxt-link active-class="current-page" to="/about">About author</nuxt-link>
+                    </li>
+                </ul>
+            </nav>        
+        </aside>
+
     </header>
 
     <div class="overlay-background" :class="{'active': $store.getters['overlay/getOverlayVal'] }" @click="closeOverlay"/>
@@ -44,11 +58,69 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
-    methods: {
-        closeOverlay() {
-            this.$store.commit('overlay/close')
+    middleware: ['auth'],
+    data: () => {
+      return {
+        isMobileClick: false
+      }
+    },
+    computed: {
+        isShow() {
+            if (this.isMobileClick) {
+                if (!this.$store.getters['overlay/getOverlayVal']) {
+                    this.closeMobMenu();
+                    return false;
+                }
+                return true;
+            }
+            return false;
         }
+    },
+    methods: {
+      ...mapActions('todos', ['getTodos']),
+        closeOverlay() {
+            this.$store.commit('overlay/close');
+        },
+        activeMobMenu() {
+          this.$store.commit('overlay/open');
+          this.isMobileClick = true;
+        },
+        closeMobMenu() {
+          this.isMobileClick = false;
+          this.$store.commit('overlay/close');
+        },
+
+        async logout() {
+          try {
+            await this.$axios.$post('auth/logout');
+            this.$cookies.remove('isAuth');
+            this.$router.push('/');
+          } catch (e) {
+            console.log(e);
+          }
+        },
+        async refreshToken() {
+          try {
+            await this.$axios.$post('auth/refresh-token');
+            this.getTodos();
+            this.$cookies.set('isAuth', true, {
+                path: '/',
+                maxAge: 604800
+            });
+          } catch (e) {
+            console.log(e);
+            this.logout();
+          }
+      }
+    },
+    beforeMount() {
+      this.refreshToken();
+
+      setInterval(function () {
+        this.refreshToken();
+      }.bind(this), 1800000)//30m
     }
 }
 </script>
@@ -56,6 +128,7 @@ export default {
 <style> 
   .app {
     position: relative;
+    min-height: 100vh;    
   }
 
   .settings-aside {
@@ -67,7 +140,7 @@ export default {
     transform: translate(100%, 0);
   }
 
-  header {
+  header .container {
     position: fixed;
     top: 0;
     left: 0;
@@ -97,9 +170,10 @@ export default {
   }
 
   nav a {
+    display: block;
     font-size: 1.125rem;
     text-transform: uppercase;
-    padding-bottom: 3BVpx;
+    padding-bottom: 3px;
   }
 
   header svg {
@@ -148,6 +222,31 @@ export default {
 
   .current-page {
     border-bottom: 2px solid #737373;
+  }
+
+  .mobile-menu-nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+    transform: translate(-100%, 0);
+    width: fit-content;
+    transition: all .3s ease;
+  }
+  .mobile-menu-nav nav{
+    padding: 0;
+    margin-top: 1em;
+  }
+  .mobile-menu-nav nav ul {
+    flex-direction: column;
+  }
+  .mobile-menu-nav  nav li {
+    padding: 1.5em 1em;
+    text-align: center;
+  }
+  .mobile-nav-active {
+    transform: translate(0, 0);
   }
 
   .overlay-background {

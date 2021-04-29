@@ -110,99 +110,80 @@ export default {
             return arr;
         }
     },
-  methods: {
-    //Ghost config
-    taskClicked(e, currentTarget, task, taskIndex, path) {
-        let ReductBtnObj = currentTarget.querySelector('.reduct-icon');
-        if (path.includes(ReductBtnObj)) 
-            return this.openTask(task, taskIndex);
+    methods: {
+        //Ghost config
+        taskClicked(e, currentTarget, task, taskIndex, path) {
+            let ReductBtnObj = currentTarget.querySelector('.reduct-icon');
+            if (path.includes(ReductBtnObj)) 
+                return this.openTask(task, taskIndex);
 
-        let thisBlock = currentTarget.getBoundingClientRect();
+            let thisBlock = currentTarget.getBoundingClientRect();
 
-        height = thisBlock.height + 'px';
+            height = thisBlock.height + 'px';
 
-        let offSet = {
-            left: e.clientX - thisBlock.left,
-            top:  e.clientY - thisBlock.top
-        };
+            let offSet = {
+                left: e.clientX - thisBlock.left,
+                top:  e.clientY - thisBlock.top
+            };
 
-        let index = {
-            colum: this.columIndex,
-            task: taskIndex
-        };
+            let index = {
+                colum: this.columIndex,
+                task: taskIndex
+            };
 
-        this.$emit('activateGhost', {e, task, index, width: thisBlock.width, left: e.clientX, top: e.clientY, offSet});
-    },
-    //Quick menu config
-    openQuickMenu(task, taskIndex) {
-        let thisBlock = document.querySelector("[data-todo-index=" + JSON.stringify(this.columIndex + '' + taskIndex) + "]").getBoundingClientRect();
+            this.$emit('activateGhost', {e, task, index, width: thisBlock.width, left: e.clientX, top: e.clientY, offSet});
+        },
+        //Quick menu config
+        openQuickMenu(task, taskIndex) {
+            let thisBlock = document.querySelector("[data-todo-index=" + JSON.stringify(this.columIndex + '' + taskIndex) + "]").getBoundingClientRect();
 
-        let index = {
-            colum: this.columIndex,
-            task: taskIndex
-        };
+            let index = {
+                colum: this.columIndex,
+                task: taskIndex
+            };
 
-        this.$emit('openQuickMenu', {task, index, height: thisBlock.height , width: thisBlock.width, left: thisBlock.left, top: thisBlock.top});
-    },
-    openTask(task, taskIndex) {
-        let index = {
-            colum: this.columIndex,
-            task: taskIndex
-        };     
+            this.$emit('openQuickMenu', {task, index, height: thisBlock.height , width: thisBlock.width, left: thisBlock.left, top: thisBlock.top});
+        },
+        openTask(task, taskIndex) {
+            let index = {
+                colum: this.columIndex,
+                task: taskIndex
+            };     
 
-        this.$emit('openTask', {task, index});
-    },
-    //Add Task config
-    showAddTask() {
-        this.isAdd = true;
-    },
-    hideAddTask() {
-        this.isAdd = false;
+            this.$emit('openTask', {task, index});
+        },
+        //Add Task config
+        showAddTask() {
+            this.isAdd = true;
+        },
+        hideAddTask() {
+            this.isAdd = false;
 
-        this.addTaskTitle = this.numberInputVal[0].model = this.numberInputVal[1].model = this.numberInputVal[2].model = '';
-        this.radioPrioratyValue.model = 'low';
-    },
-    commitAddTask() {
-        let deadline = new Date();
-        if (Number(this.numberInputVal[0].model) + Number(this.numberInputVal[1].model) + Number(this.numberInputVal[2].model) == 0)
-            deadline.setDate(deadline.getDate() + 1); 
-        else {
-            deadline.setDate(deadline.getDate() + Number(this.numberInputVal[0].model));
-            deadline.setHours(deadline.getHours() + Number(this.numberInputVal[1].model));
-            deadline.setMinutes(deadline.getMinutes() + Number(this.numberInputVal[2].model));
-        }
+            this.addTaskTitle = this.numberInputVal[0].model = this.numberInputVal[1].model = this.numberInputVal[2].model = '';
+            this.radioPrioratyValue.model = 'low';
+        },
+        commitAddTask() {
+            let deadline = new Date();
+            if (Number(this.numberInputVal[0].model) + Number(this.numberInputVal[1].model) + Number(this.numberInputVal[2].model) == 0)
+                deadline.setDate(deadline.getDate() + 1); 
+            else {
+                deadline.setDate(deadline.getDate() + Number(this.numberInputVal[0].model));
+                deadline.setHours(deadline.getHours() + Number(this.numberInputVal[1].model));
+                deadline.setMinutes(deadline.getMinutes() + Number(this.numberInputVal[2].model));
+            }
 
-        let task = {
-            title: this.addTaskTitle,
-            prioraty: this.radioPrioratyValue.model,
-            deadline: deadline.getTime(),
-            description: ''
-        };
-
-        this.$axios({                
-            method: 'post',
-            url: '/api/tasks',
-            data: {
-                title: this.addTaskTitle,
+            let task = {
+                title: this.addTaskTitle.trim(),
                 prioraty: this.radioPrioratyValue.model,
                 deadline: deadline.getTime(),
-                description: ''           
-            },
-            headers: {
-                'Authorization': `token ${this.$store.getters['token/getToken']}`
-            }
-        })
-        .then(res => {
-            console.log(res);
-            this.$emit('addTask', {index: this.columIndex, task});
-            this.hideAddTask();
-        })
-        .catch(error => {
-            console.log(error);
-        })
+                description: ''
+            };
 
+            this.$emit('addTask', {index: this.columIndex, task});
+
+            this.hideAddTask();
+        }
     }
-  }
 }
 </script>
 

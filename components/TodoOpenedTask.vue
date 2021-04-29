@@ -118,7 +118,6 @@ export default {
         'isClicked'() {
             title = this.data.title;
             desc = this.data.description;
-            reqUrl = '/api/tasks/' + title.replace(' ', '%20');
         }
     },
     computed: {
@@ -196,47 +195,25 @@ export default {
             this.data.prioraty = this.radioPrioratyValue.model;
             this.data.deadline = deadline.getTime();
 
-            this.$axios({                
-                method: 'put',
-                url: reqUrl,
-                headers: {
-                    'Authorization': `token ${this.$store.getters['token/getToken']}`
-                },
-                data: {
-                    prioraty: this.data.prioraty,
-                    deadline: this.data.deadline
-                }
-            })
-            .then(res => {
-                this.hideReductTask();
-            })
+            this.$emit('editTask', {title, data: {
+                prioraty: this.data.prioraty,
+                deadline: this.data.deadline
+            }});
+
+            this.hideReductTask();
         },
         initReqTitle() {
             if (title != this.data.title) {
-                this.$axios({                
-                    method: 'put',
-                    url: reqUrl,
-                    headers: {
-                        'Authorization': `token ${this.$store.getters['token/getToken']}`
-                    },
-                    data: {
-                        title: this.data.title
-                    }
-                })
+                this.$emit('editTask', {title, data: {
+                    title: this.data.title.trim()
+                }});
             }
         },
         initReqDesc() {
             if (desc != this.data.description) {
-                this.$axios({                
-                    method: 'put',
-                    url: reqUrl,
-                    headers: {
-                        'Authorization': `token ${this.$store.getters['token/getToken']}`
-                    },
-                    data: {
-                        description: this.data.description
-                    }
-                });
+                this.$emit('editTask', {title, data: {
+                    description: this.data.description.trim()
+                }});
             }
         }
     }

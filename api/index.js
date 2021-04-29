@@ -1,23 +1,36 @@
-const express = require("express")
-const bodyParser = require("body-parser")
-const mongoose = require("mongoose")
+const config = require('./config');
+const express = require('express');
+const routes = require('./router');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
-const authRouter = require("./router/auth.routes")
-const tasksRoutes = require("./router/tasks.routes")
-const app = express()
+const mongoose = require('mongoose');
 
-app.use(bodyParser.json())
-app.use(express.urlencoded({extended: true}))
+const app = express();
 
-app.use("/auth", authRouter)
-app.use("/tasks", tasksRoutes)
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(express.urlencoded({extended: true}));
 
-mongoose.connect("mongodb+srv://MishaSokil:Warmisha_333444@todos.fhsuf.mongodb.net/todos", {
-    useNewUrlParser:true,
-    useUnifiedTopology:true,
-    useFindAndModify: false,
-    useCreateIndex: true
-})
+app.use('/auth', routes.authRoutes)
+app.use('/tasks', routes.tasksRoutes)
+
+const { moungoUri } = config.app;
+
+const start = async () => {
+    try {
+        await mongoose.connect(moungoUri, {//Connect mongoose
+            useNewUrlParser:true,
+            useUnifiedTopology:true,
+            useFindAndModify: false,
+            useCreateIndex: true
+        });
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+start();
 
 module.exports = {
     path: "/api/",

@@ -1,4 +1,4 @@
-export default function (context) {
-    if (context.app.context.app.$cookies.get('token'))
-        return context.redirect('/tasks')
+export default function ({app, redirect}) {
+    if (!app.$cookies.get('isAuth'))
+        return redirect('/')
 }   

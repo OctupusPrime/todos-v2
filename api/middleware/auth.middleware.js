@@ -1,20 +1,33 @@
 const jwt = require("jsonwebtoken")
 
-const SECRET = "MY_SECRET_KEY";
+const { secret } = require('../config/app').jwt;
 
 module.exports = (req, res, next) => {
     if (req.method === "OPTIONS")
         return next()
 
+        const accessToken = req.cookies.accessToken;
+
+        if (!accessToken)
+            return res.status(401).json({ message: 'Token not provided' })
+        
     try {
-        const token = req.headers.authorization.split(" ")[1]
-        if (!token) 
-            return res.status(401).json({message: "Auth error"})
-            
-        const decoded = jwt.verify(token, SECRET)
-        req.user = decoded
-        next()
+        const decoded = jwt.verify(accessToken, secret);
+
+        if (decoded.type !== 'access') {
+            return res.status(401).json({ message: 'Invalid token' })
+        }
+
+        req.user = decoded;
     } catch (e){
-        return res.status(401).json({message: "Server error"})
+        if (e instanceof jwt.TokenExpiredError)
+            return res.status(401).json({message: "Token expired"});
+
+        if (e instanceof jwt.JsonWebTokenError)
+            return res.status(401).json({message: "Invalid token"});
+
+        return res.status(401).json({message: "Server error (token)"});
     }
+
+    next();
 }

@@ -62,21 +62,10 @@ export default {
         },
         initReq() {
             if (title != this.data.title) {
-                let reqUrl = '/api/tasks/' + title.replace(' ', '%20');
-
-                this.$axios({                
-                    method: 'put',
-                    url: reqUrl,
-                    headers: {
-                    'Authorization': `token ${this.$store.getters['token/getToken']}`
-                    },
-                    data: {
-                        title: this.data.title
-                    }
-                })
-                .then(res => {
-                    this.$store.commit('overlay/close');
-                })
+                this.$emit('editTask', {title, data: {
+                    title: this.data.title.trim()
+                }});
+                this.$store.commit('overlay/close');
             }
         }
     }

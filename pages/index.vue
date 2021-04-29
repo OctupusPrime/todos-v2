@@ -8,10 +8,6 @@
 
 <script>
 export default {
-    layout: 'noAuth',
-    middleware: ['auth'],
-    mounted() {
-        console.log(this.$store.getters['token/getToken']);
-    }
+    layout: 'noAuth'
 }
 </script>

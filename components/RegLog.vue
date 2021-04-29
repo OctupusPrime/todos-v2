@@ -11,7 +11,7 @@
             <p>Dont have account? <span class="btn" @click="toggleForm">Sign up</span></p>
         </form>
         <form class="reg-log-form" v-else
-            @submit.prevent="Register">
+            @submit.prevent="reg">
             <input type="email" name="email" placeholder="Email" autocomplete="off" v-model="userEmail">
             <input type="password" name="password" maxlength="15" placeholder="Password" v-model="userPassword">
 
@@ -29,8 +29,8 @@ export default {
             isClicked: false,
             isLog: true,
 
-            userEmail: '',
-            userPassword: ''
+            userEmail: 'test@gmail.com',
+            userPassword: '123qwe'
         }
     },
     computed: {
@@ -48,32 +48,51 @@ export default {
     methods: {
         open() {
             this.isClicked = true;
-            console.log(this.isClicked);
+            // this.userEmail = this.userPassword = '';
         },
         close() {
             this.isClicked = false;
         },
         toggleForm() {
             this.isLog = !this.isLog;
+            // this.userEmail = this.userPassword = '';
         },
         //Form config
-        logIn() {
-            this.$axios({                
-                method: 'post',
-                url: '/api/auth/log',
-                data: {
+        async logIn() {
+            try {
+                await this.$axios.$post('auth/log', {
                     email: this.userEmail,
                     password: this.userPassword
-                }
-            })
-            .then(res => {
-                console.log(res);
-                this.$store.dispatch('token/login', res.data.token);
-            })
+                });
+
+                this.$cookies.set('isAuth', true, {
+                    path: '/',
+                    maxAge: 604800
+                });
+
+                this.$router.push('/tasks');        
+            } catch (e) {
+                this.userEmail = this.userPassword = '';
+                console.log(e);
+            }
         },
-        Register() {
-            this.$store.dispatch('token/logout');
-            //Дописать
+        async reg() {
+            try {
+                await this.$axios.$post('auth/reg', {
+                    email: this.userEmail,
+                    password: this.userPassword
+                });
+
+                this.$cookies.set('isAuth', true, {
+                    path: '/',
+                    maxAge: 604800
+                });
+
+                this.$router.push('/tasks');        
+            } catch (e) {
+                this.userEmail = this.userPassword = '';
+                console.log(e);
+            }
         }
     }
 }

@@ -15,4 +15,4 @@ export const getters = {
     getOverlayVal(state) {
       return state.isOpen
     }
-  }
+}

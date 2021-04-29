@@ -1,4 +1,4 @@
-const {Schema, model, ObjectId} = require("mongoose")
+const { Schema, model, ObjectId } = require("mongoose")
 
 let date = new Date()
 date.setDate(date.getDate() + 1);

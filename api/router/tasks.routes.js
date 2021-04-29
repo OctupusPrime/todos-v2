@@ -1,13 +1,13 @@
-const { Router } = require("express")
-const authMiddleware = require("../middleware/auth.middleware")
-const taskListController = require("../controllers/taskListController")
-const router = Router()
+const { Router } = require("express");
+const hasToken = require("../middleware/auth.middleware");
+const taskListController = require("../controllers/taskListController");
+const router = Router();
 
 
-router.get("/"               , authMiddleware, taskListController.getTasksList)
-router.post("/"              , authMiddleware, taskListController.addTaskToList)
-router.put("/:title"         , authMiddleware, taskListController.updateTaskInList)
-router.delete("/:title"      , authMiddleware, taskListController.deleteTaskfromList)
-router.put("/relocate/:title", authMiddleware, taskListController.relocateTask)
+router.get("/"               , hasToken, taskListController.getTasksList);
+router.post("/"              , hasToken, taskListController.addTaskToList);
+router.put("/:title"         , hasToken, taskListController.updateTaskInList);
+router.delete("/:title"      , hasToken, taskListController.deleteTaskfromList);
+router.put("/relocate/:title", hasToken, taskListController.relocateTask);
 
-module.exports = router
+module.exports = router;

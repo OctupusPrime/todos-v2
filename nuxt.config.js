@@ -26,7 +26,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~plugins/fontawesome',
-    '~plugins/vue-resize',
+    '~plugins/vue-resize'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -41,19 +41,19 @@ export default {
     "~/api/index"
   ],
 
+  //Axios config
+  axios: {
+    baseURL: 'http://localhost:3000/api',
+    credentials: true
+  },
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
-    ['nuxt-vuex-localstorage', {
-      localStorage: ['token']
-    }],
     'cookie-universal-nuxt'
   ],
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-    transpile: [
-      'nuxt-vuex-localstorage'
-    ]
   }
 }

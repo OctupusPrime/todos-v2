@@ -51,10 +51,6 @@ export default {
             this.isActive = true;
 
             firstPos = index;
-
-            this.$nextTick(() => {
-                this.$emit('removeTaskFromArr');
-            });   
         },
         drag(e) {
             if (this.isActive) {

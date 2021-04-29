@@ -44,10 +44,6 @@ export default {
 </script>
 
 <style scoped>
-    .app {
-        min-height: 100vh;    
-    }
-
     h2 {
         font-size: 1.125rem;
     }

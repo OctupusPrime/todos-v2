@@ -27,6 +27,12 @@ export default {
             default: false
         }
     },
+    watch: {
+        'value'(val) {
+            const elem = this.$refs.textArea;
+            this.resize(elem);
+        }
+    },
     methods: {
         resize(e) {
             e.style.height = 'auto';
