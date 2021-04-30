@@ -8,7 +8,7 @@
                 <p class="main-body">
                     Todos helps people manage<br>their time and get more done  
                 </p>
-                <button class="main-btn btn bg-black">Try Todos for free</button>
+                <button class="main-btn btn bg-black" @click="openRegLog">Try Todos for free</button>
             </div>
             <div class="main-img-container">
                 <img src="~static/main-img-ilustration.png" alt="simple plant on white desk and white wall" class="main-image pd-left-50">
@@ -24,7 +24,7 @@
                         About this app
                     </h2>
                     <p class="sub-main-body">         
-                        Hi there this application consists of a full rest api with refresh and access tokens and a connection to the mongodb database. Also, the entire client is built according to the example of Trello with its own features and full adaptability.<br>Want to see more? Checkout my portfolio.
+                        Hi there this application consists of a rest api with refresh and access tokens and a connection to the mongodb database. Also, the entire client is built according to the example of Trello with its own features and full adaptability.<br><br>Want to see more? Checkout my portfolio.
                     </p>
                     <a href="#" class="sub-main-btn btn bg-rounded-white bold">Portfolio</a>
                 </div>
@@ -41,7 +41,13 @@
 <script>
 export default {
     layout: 'noAuth',
-    middleware: ['auth']
+    middleware: ['auth'],
+    methods: {
+        openRegLog() {
+            this.$store.commit('overlay/open');
+            this.$store.commit('regLog/open');
+        }
+    }
 }
 </script>
 
@@ -62,12 +68,12 @@ export default {
 
     .main-title {
         font-size: 3.125rem;
-        padding-bottom: 1.7em;
+        padding-bottom: 1.2em;
     }
     .main-body {
         font-size: 1.625rem;
         line-height: 120%;
-        padding-bottom: 2.2em;
+        padding-bottom: 2.5em;
     }
     .main-btn{
         font-size: 1.5rem;
