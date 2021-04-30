@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" :class="{'loaded': isLoaded}">
     <header class="bg-white">
         <div class="container flex desctop">
             <div class="site-logo grow-2">
@@ -52,7 +52,8 @@ export default {
             isLog: true,
 
             userEmail: '',
-            userPassword: ''
+            userPassword: '',
+            isLoaded: false
         }
     },
     computed: {
@@ -129,13 +130,23 @@ export default {
                 console.log(e);
             }
         }
+    },
+    mounted() {
+        this.isLoaded = true;
     }
 }
 </script>
 
+
+
 <style scoped>
     .app {
         background: #fff;
+        opacity: 0;
+        transition: opacity 2s ease;
+    }
+    .loaded {
+        opacity: 1;
     }
 
     header {

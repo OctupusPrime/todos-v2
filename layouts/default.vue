@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" :class="{'loaded': isLoaded}">
     <header>
         <div class="container flex bg-white desctop shadow">
             <div class="site-logo">
@@ -48,7 +48,8 @@ import { mapActions } from "vuex";
 export default {
     data: () => {
       return {
-        isSetingsOpen: false
+        isSetingsOpen: false,
+        isLoaded: false
       }
     },
     computed: {
@@ -101,9 +102,9 @@ export default {
           }
       }
     },
-    beforeMount() {
-      this.refreshToken();
-
+    async beforeMount() {
+      await this.refreshToken();
+      this.isLoaded = true;
       setInterval(function () {
         this.refreshToken();
       }.bind(this), 1700000)//28 Minutes 20 Seconds
@@ -116,6 +117,11 @@ export default {
     position: relative;
     min-height: 100vh;    
     background: #F5F5F5;
+    opacity: 0;
+    transition: opacity 2s ease;
+  }
+  .loaded {
+    opacity: 1;
   }
 
   .settings-aside {
