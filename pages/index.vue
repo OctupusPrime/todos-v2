@@ -130,7 +130,8 @@ export default {
         }
 
         .main-info,
-        .sub-main-info {
+        .sub-main-info,
+        footer {
             flex-direction: column;
             text-align: center;
         }
