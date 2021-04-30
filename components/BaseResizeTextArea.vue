@@ -27,16 +27,10 @@ export default {
             default: false
         }
     },
-    watch: {
-        'value'(val) {
-            const elem = this.$refs.textArea;
-            this.resize(elem);
-        }
-    },
     methods: {
         resize(e) {
             e.style.height = 'auto';
-            e.style.height = e.scrollHeight + 'px'
+            e.style.height = e.scrollHeight + 'px';
         },
         submitArea(e) {
             this.$emit('submitTextArea')
@@ -49,13 +43,20 @@ export default {
     mounted() {
         const elem = this.$refs.textArea;
         this.resize(elem);
+        setTimeout(function() {
+            this.resize(elem);
+        }.bind(this), 10);
+    },
+    updated() {
+        const elem = this.$refs.textArea;
+        this.resize(elem); 
     }
 }
 </script>
 
 <style scoped>
     .resible-text-area {
-        overflow: auto;
+        overflow: hidden;
         resize: none;
     }
 </style>

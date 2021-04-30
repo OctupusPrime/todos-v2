@@ -29,8 +29,8 @@ export default {
             isClicked: false,
             isLog: true,
 
-            userEmail: 'test@gmail.com',
-            userPassword: '123qwe'
+            userEmail: '',
+            userPassword: ''
         }
     },
     computed: {
@@ -48,14 +48,14 @@ export default {
     methods: {
         open() {
             this.isClicked = true;
-            // this.userEmail = this.userPassword = '';
+            this.userEmail = this.userPassword = '';
         },
         close() {
             this.isClicked = false;
         },
         toggleForm() {
             this.isLog = !this.isLog;
-            // this.userEmail = this.userPassword = '';
+            this.userEmail = this.userPassword = '';
         },
         //Form config
         async logIn() {
@@ -71,6 +71,7 @@ export default {
                 });
 
                 this.$router.push('/tasks');        
+                this.$store.commit('overlay/close');
             } catch (e) {
                 this.userEmail = this.userPassword = '';
                 console.log(e);
@@ -88,7 +89,8 @@ export default {
                     maxAge: 604800
                 });
 
-                this.$router.push('/tasks');        
+                this.$router.push('/tasks');   
+                this.$store.commit('overlay/close');     
             } catch (e) {
                 this.userEmail = this.userPassword = '';
                 console.log(e);

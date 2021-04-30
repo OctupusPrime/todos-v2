@@ -11,10 +11,10 @@
                                 :class="{'ghost': !!task.height}"
                                 :data-todo-index="columIndex + '' + index" 
                                 
-                                @mousedown.left="taskClicked($event, $event.currentTarget, data.taskList[index], index, $event.path)"
-                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, data.taskList[index], index, $event.path)"
+                                @mousedown.left="taskClicked($event, $event.currentTarget, Object.assign({}, data.taskList[index]), index, $event.path)"
+                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, Object.assign({}, data.taskList[index]), index, $event.path)"
                                 
-                                @click.right.prevent="openQuickMenu(data.taskList[index], index)">
+                                @click.right.prevent="openQuickMenu(Object.assign({}, data.taskList[index]), index)">
 
                     <BaseResizeTextArea name="todo-title" 
                                         :maxHeight="100"
@@ -26,7 +26,7 @@
                         :class="task.prioraty">
                         <p class="todo-prioraty bold">{{task.prioraty}}</p>
                     </div>
-                    <TodoDeadline :finishDate="task.deadline" :dateNow="dateNow"/> 
+                    <TodoDeadline :finishDate="task.deadline" :dateNow="dateNow" :isFinished="data.columTitle === 'Done'"/> 
 
                     <span class="reduct-icon btn">
                         <font-awesome-icon icon="pen" />
@@ -63,7 +63,28 @@
 <script>
 let height = 0;
 export default {
-    props: ['data', 'columIndex', 'ghostColum', 'ghostTask', 'dateNow'],
+    props: {
+        data: {
+            type: Object,
+            required: true
+        },
+        columIndex: {
+            type: Number,
+            required: true          
+        },
+        ghostColum: {
+            type: Number,
+            required: true          
+        },    
+        ghostTask: {
+            type: Number,
+            required: true          
+        },     
+        dateNow: {
+            type: Number,
+            required: true          
+        }
+    },
     data: () => {
         return {
             addTaskTitle: '',
@@ -131,6 +152,10 @@ export default {
                 task: taskIndex
             };
 
+            task.isFinished = false;
+            if (this.data.columTitle === 'Done')
+                task.isFinished = true;
+
             this.$emit('activateGhost', {e, task, index, width: thisBlock.width, left: e.clientX, top: e.clientY, offSet});
         },
         //Quick menu config
@@ -142,13 +167,21 @@ export default {
                 task: taskIndex
             };
 
+            task.isFinished = false;
+            if (this.data.columTitle === 'Done')
+                task.isFinished = true;
+
             this.$emit('openQuickMenu', {task, index, height: thisBlock.height , width: thisBlock.width, left: thisBlock.left, top: thisBlock.top});
         },
         openTask(task, taskIndex) {
             let index = {
                 colum: this.columIndex,
                 task: taskIndex
-            };     
+            };    
+            
+            task.isFinished = false;
+            if (this.data.columTitle === 'Done')
+                task.isFinished = true;
 
             this.$emit('openTask', {task, index});
         },

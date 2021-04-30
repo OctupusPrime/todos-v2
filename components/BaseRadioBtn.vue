@@ -13,7 +13,12 @@
 
 <script>
 export default {
-    props: ['switchValue']
+    props: {
+        switchValue: {
+            type: Object,
+            required: true
+        }
+    }
 }
 </script>
 

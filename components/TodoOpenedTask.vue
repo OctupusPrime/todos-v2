@@ -14,7 +14,7 @@
                     :class="data.prioraty">
                     <p class="todo-prioraty bold">{{data.prioraty}}</p>
                 </div>
-                <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow"/> 
+                <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow" :isFinished="data.isFinished"/> 
 
                 <span class="reduct-icon btn" @click="openReductTask">
                     <font-awesome-icon icon="pen" />
@@ -79,7 +79,20 @@ let reqUrl = '';
 const   cd = 24 * 60 * 60 * 1000,// hr, min, sec, ms
         ch = 60 * 60 * 1000;//min, sec, ms
 export default {
-    props: ['data', 'colum', 'dateNow'],
+    props: {
+        data: {
+            type: Object,
+            required: true
+        },
+        colum: {
+            type: Number,
+            required: true
+        },
+        dateNow: {
+            type: Number,
+            required: true          
+        }
+    },
     data: () => {
         return {
             isClicked: false,

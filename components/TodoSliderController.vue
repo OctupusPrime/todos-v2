@@ -12,7 +12,16 @@ var isCliked = false;
 var firstPos = 0;
 var firstSize = 0;
 export default {
-    props: ['taskMargin', 'taskTitle', 'slidesAmount'],
+    props: {
+        taskMargin: {
+            type: Number,
+            required: true
+        },
+        slidesAmount: {
+            type: Number,
+            required: true        
+        }
+    },
     data: function () {
         return {
             slideWidht: 0,

@@ -12,14 +12,23 @@
             :class="data.prioraty">
             <p class="todo-prioraty bold">{{data.prioraty}}</p>
         </div>
-        <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow"/> 
+        <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow" :isFinished="data.isFinished"/> 
     </div>    
 </template>
 
 <script>
 let title = '';
 export default {
-    props: ['data', 'dateNow'],
+    props: {
+        data: {
+            type: Object,
+            required: true
+        },
+        dateNow: {
+            type: Number,
+            required: true          
+        }
+    },
     data: () => {
         return {
             isClicked: false,

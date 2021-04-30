@@ -31,6 +31,7 @@
  
 <script>
 export default {
+    middleware: ['auth'],
     methods: {
         openOverlay() {
             this.$store.commit('overlay/open');

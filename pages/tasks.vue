@@ -71,8 +71,8 @@ export default {
       dateNow: new Date().getTime(), 
 
       ghostIndex: {
-        colum: '-',
-        task: '-'
+        colum: -1,
+        task: -1
       },
 
       currentTaskData: {},
@@ -235,6 +235,7 @@ export default {
     let self = this
     setInterval(function () {
       self.dateNow = new Date().getTime();
+      self.dateNow = Number(self.dateNow);
     }, 60000)
   }
 }

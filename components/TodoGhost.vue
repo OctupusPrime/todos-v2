@@ -13,7 +13,7 @@
             :class="data.prioraty">
             <p class="todo-prioraty bold">{{data.prioraty}}</p>
         </div>
-        <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow"/> 
+        <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow" :isFinished="data.isFinished"/> 
     </div>    
 </template>
 
@@ -21,7 +21,20 @@
 let columBoxs;
 let firstPos;
 export default {
-    props: ['data', 'index', 'dateNow'],
+    props: {
+        data: {
+            type: Object,
+            required: true
+        },
+        index: {
+            type: Object,
+            required: true       
+        },
+        dateNow: {
+            type: Number,
+            required: true                
+        }
+    },
     data: () => {
         return {
             width: 0,
@@ -69,7 +82,7 @@ export default {
                 else    
                     this.$emit('initReq', {status: this.index.colum, index: this.index.task});
 
-                this.index.colum = this.index.task = '-';
+                this.index.colum = this.index.task = -1;
             }
         },
         posEngine() {

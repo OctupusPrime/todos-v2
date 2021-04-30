@@ -1,6 +1,7 @@
 <template>
-    <div class="todo-opts" :class="{'high': isExpired, 'blue': !isExpired}">
-        <p class="todo-deadline semi-bold" >{{timerValues}}</p>
+    <div class="todo-opts" :class="{'high': isExpired && !isFinished, 'blue': !isExpired}">
+        <p v-if="isFinished">finished</p>
+        <p class="todo-deadline semi-bold" v-else>{{timerValues}}</p>
     </div>
 </template>
 
@@ -8,7 +9,19 @@
 var cd = 24 * 60 * 60 * 1000,// hr, min, sec, ms
     ch = 60 * 60 * 1000;//min, sec, ms
 export default {
-    props: ['finishDate', 'dateNow'],
+    props: {
+        finishDate: {
+            type: Number
+        },
+        dateNow: {
+            type: Number,
+            required: true
+        },
+        isFinished: {
+            type: Boolean,
+            default: false
+        }
+    },
     data: () => {
         return {
             difference_ms: 1,

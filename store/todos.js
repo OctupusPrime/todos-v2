@@ -26,26 +26,43 @@ export const mutations = {
 
 export const actions = {
     async getTodos({commit}) {
-        const todos = await this.$axios.$get('tasks');
-        commit('initTodos', todos);
+        try {
+            const todos = await this.$axios.$get('tasks');
+            commit('initTodos', todos);
+        } catch(e) {
+            console.log(e);
+        }
     },
     async relocateTodo({commit}, params) {
         const { title, status, index } = params;
-
-        await this.$axios.$put('tasks/relocate/' + title.replace(' ', '%20'), {
-            status: status,
-            index: index
-        });
+        
+        try {
+            await this.$axios.$put('tasks/relocate/' + title.replace(' ', '%20'), {
+                status: status,
+                index: index
+            });
+        } catch(e) {
+            console.log(e);
+        }
     },
     async addTodo({commit}, params) {
         const { data } = params;
+        try {
+            await this.$axios.$post('tasks', data);
+        } catch(e) {
+            console.log(e);
+        }
         commit('addTaksToArr', params);
-        await this.$axios.$post('tasks', data);
+        
     },
     async deleteTodo({commit}, params) {
         const { title } = params;
+        try {
+            await this.$axios.$delete('tasks/' + title.replace(' ', '%20'));
+        } catch(e) {
+            console.log(e);
+        }
         commit('removeTaskFromArr', params);
-        await this.$axios.$delete('tasks/' + title.replace(' ', '%20'));
     },
     async editTodo({commit, state}, params) {
         const { column, task, title, data } = params;
@@ -59,10 +76,14 @@ export const actions = {
         if (data.title)
             newData.title = data.title;
 
+        try {
+            await this.$axios.$put('tasks/' + title.replace(' ', '%20'), data);
+        } catch(e) {
+            console.log(e);
+        }
+
         commit('removeTaskFromArr', params);
         commit('addTaksToArr', {column, task, data: newData});
-
-        await this.$axios.$put('tasks/' + title.replace(' ', '%20'), data);
     }
 }
 

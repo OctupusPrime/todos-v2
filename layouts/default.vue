@@ -2,28 +2,15 @@
   <div class="app">
     <header>
         <div class="container flex bg-white desctop">
-            <div class="site-logo grow-2">
+            <div class="site-logo">
                 <img src="~static/Todos-logo.svg" alt="">
                 <p class="subtitle">.Todos</p>
             </div>
-            <nav>
-                <ul>
-                    <li>
-                        <nuxt-link active-class="current-page" to="/tasks">Home</nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link active-class="current-page" to="/about">About author</nuxt-link>
-                    </li>
-                </ul>
-            </nav>
             <div class="settings btn">
                 <font-awesome-icon icon="cog" />
             </div>
         </div>
         <div class="container flex bg-white mobile"><!-- Mobile menu -->
-            <div class="nav btn" @click="activeMobMenu">
-                <font-awesome-icon icon="bars" />
-            </div>
             <div class="site-logo">
                 <img src="~static/Todos-logo.svg" alt="">
             </div>
@@ -32,18 +19,6 @@
             </div>
         </div>
 
-        <aside class="mobile-menu-nav bg-white" :class="{'mobile-nav-active': isShow}">
-            <nav>
-                <ul>
-                    <li @click="closeMobMenu">
-                        <nuxt-link active-class="current-page" to="/tasks">Home</nuxt-link>
-                    </li>
-                    <li @click="closeMobMenu">
-                        <nuxt-link active-class="current-page" to="/about">About author</nuxt-link>
-                    </li>
-                </ul>
-            </nav>        
-        </aside>
 
     </header>
 
@@ -60,7 +35,6 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-    middleware: ['auth'],
     data: () => {
       return {
         isMobileClick: false
@@ -169,14 +143,7 @@ export default {
     margin-left: .5em;
   }
 
-  nav a {
-    display: block;
-    font-size: 1.125rem;
-    text-transform: uppercase;
-    padding-bottom: 3px;
-  }
-
-  header svg {
+  .settings {
     font-size: 1.2rem;
   }
 
@@ -188,9 +155,7 @@ export default {
   .site-logo {
     display: flex;
     align-items: center;
-  }
-  .grow-2 {
-    flex-grow: 2;
+    justify-content: space-between;
   }
   .site-logo img {
     width: 65px;
@@ -198,55 +163,6 @@ export default {
 
   .mobile .site-logo img{
     width: 45px;    
-  }
-
-  nav {
-    flex-grow: 11;
-
-    padding-left: .5em;
-  }
-
-  nav ul {
-    list-style: none;
-    padding: 0;
-
-    display: flex;
-  }
-
-  nav li {
-    padding-right: 2.5em;
-  }
-  nav li:last-child {
-    padding: 0;
-  }
-
-  .current-page {
-    border-bottom: 2px solid #737373;
-  }
-
-  .mobile-menu-nav {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 10;
-    transform: translate(-100%, 0);
-    width: fit-content;
-    transition: all .3s ease;
-  }
-  .mobile-menu-nav nav{
-    padding: 0;
-    margin-top: 1em;
-  }
-  .mobile-menu-nav nav ul {
-    flex-direction: column;
-  }
-  .mobile-menu-nav  nav li {
-    padding: 1.5em 1em;
-    text-align: center;
-  }
-  .mobile-nav-active {
-    transform: translate(0, 0);
   }
 
   .overlay-background {

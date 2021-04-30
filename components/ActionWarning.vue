@@ -10,17 +10,29 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+
 export default {
-    props: ['data', 'emit'],
+    props: {
+        data: {
+            type: String,
+            required: true
+        },
+        emit: {
+            type: String,
+            required: true
+        }
+    },
     data: () => {
         return {
             isClicked: false
         }
     },
     computed: {
+      ...mapState('overlay', ['isOpenOverlay']),
         isShow() {
             if (this.isClicked) {
-                if (!this.$store.getters['overlay/getOverlayVal']) {
+                if (!this.isOpenOverlay) {
                     this.close();
                     return false;
                 }
@@ -30,13 +42,15 @@ export default {
         }
     },
     methods: {
+        ...mapMutations('overlay', ['closeOverlay']),
+
         open(emit) {
             this.isClicked = true;
             this.warningEmit = emit;
         },
         close() {
             this.isClicked = false;
-            this.$store.commit('overlay/close');
+            this.closeOverlay();
         },
         submit() {
             this.$emit(this.emit);

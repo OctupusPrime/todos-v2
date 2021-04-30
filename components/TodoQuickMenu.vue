@@ -32,7 +32,12 @@
 
 <script>
 export default {
-    props: ['data', 'colum'],
+    props: {
+        colum: {
+            type: Number,
+            required: true
+        }
+    },
     data: () => {
         return {
             isClicked: false,
