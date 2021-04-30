@@ -1,12 +1,19 @@
 <template>
     <div class="todo-opened-task bg-white" v-if="isShow">
         <div class="main-todo-info">
-            <BaseResizeTextArea name="opened-task-title" 
+            <BaseResizeTextArea v-if="!data.isFinished"
+                                name="opened-task-title" 
                                 :maxHeight="100"
                                 :enterSubmit="true"
                                 placeholder="Init task title"
                                 @submitTextArea="initReqTitle"
-                                v-model="data.title"/>
+                                v-model="data.title"
+                                ref="taskTitle"/>
+            <BaseResizeTextArea v-else
+                                name="opened-task-title" 
+                                :maxHeight="100"
+                                v-model="data.title"
+                                readonly/>
             <p class="todo-subtittle">In colum {{selectData[colum]}}</p>
 
             <div class="todo-info" v-if="!isReduct">
@@ -16,7 +23,7 @@
                 </div>
                 <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow" :isFinished="data.isFinished"/> 
 
-                <span class="reduct-icon btn" @click="openReductTask">
+                <span class="reduct-icon btn" @click="openReductTask" v-if="!data.isFinished">
                     <font-awesome-icon icon="pen" />
                 </span>
             </div>
@@ -35,12 +42,18 @@
 
             <h4 class="semi-bold">Description</h4> 
             <div class="todo-description">
-                <BaseResizeTextArea name="opened-task-description" 
+                <BaseResizeTextArea v-if="!data.isFinished"
+                                    name="opened-task-description" 
                                     :maxHeight="250"
                                     placeholder="Init task description"
                                     v-model="data.description"
                                     @submitTextArea="initReqDesc"/>
-                                    
+                <BaseResizeTextArea v-else
+                                    name="opened-task-description" 
+                                    :maxHeight="250"
+                                    v-model="data.description"
+                                    placeholder="None desc"
+                                    readonly/>
             </div>
 
         </div>
@@ -75,7 +88,6 @@
 <script>
 let title  = '';
 let desc   = '';
-let reqUrl = '';
 const   cd = 24 * 60 * 60 * 1000,// hr, min, sec, ms
         ch = 60 * 60 * 1000;//min, sec, ms
 export default {
@@ -140,6 +152,11 @@ export default {
                 if (!this.$store.getters['overlay/getOverlayVal']) {
                     this.close();
                     return false;
+                }
+                if (!this.data.isFinished) {
+                    this.$nextTick(() => {
+                        this.$refs.taskTitle.$el.focus();
+                    })
                 }
                 return true;
             }
@@ -255,9 +272,6 @@ export default {
         flex-grow: 2;
     }
 
-    .todo-title {
-        padding-bottom: 0;
-    }
     .todo-subtittle {
         font-size: .875rem;
         color: #737373;

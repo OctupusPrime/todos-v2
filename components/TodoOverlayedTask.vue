@@ -2,12 +2,19 @@
     <div class="todo-overlayed-task bg-white"
         :style="{width: width + 'px', left: position.left + 'px', top: position.top + 'px'}"
         v-if="isShow">
-        <BaseResizeTextArea name="overlayred-task-title" 
+        <BaseResizeTextArea v-if="!data.isFinished"
+                            name="overlayred-task-title" 
                             :maxHeight="100"
                             :enterSubmit="true"
                             placeholder="Init task title"
                             @submitTextArea="initReq"
-                            v-model="data.title"/>
+                            v-model="data.title"
+                            ref="taskTitle"/>
+        <BaseResizeTextArea v-else
+                            name="overlayred-task-title" 
+                            :maxHeight="100"
+                            v-model="data.title"
+                            readonly/>
         <div class="todo-opts"
             :class="data.prioraty">
             <p class="todo-prioraty bold">{{data.prioraty}}</p>
@@ -51,6 +58,11 @@ export default {
                 if (!this.$store.getters['overlay/getOverlayVal']) {
                     this.close();
                     return false;
+                }
+                if (!this.data.isFinished) {
+                    this.$nextTick(() => {
+                        this.$refs.taskTitle.$el.focus();
+                    })
                 }
                 return true;
             }

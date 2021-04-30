@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-
 export default {
     props: {
         data: {
@@ -29,10 +27,9 @@ export default {
         }
     },
     computed: {
-      ...mapState('overlay', ['isOpenOverlay']),
         isShow() {
             if (this.isClicked) {
-                if (!this.isOpenOverlay) {
+                if (!this.$store.getters['overlay/getOverlayVal']) {
                     this.close();
                     return false;
                 }
@@ -42,7 +39,6 @@ export default {
         }
     },
     methods: {
-        ...mapMutations('overlay', ['closeOverlay']),
 
         open(emit) {
             this.isClicked = true;
@@ -50,7 +46,7 @@ export default {
         },
         close() {
             this.isClicked = false;
-            this.closeOverlay();
+            this.$store.commit('overlay/close');
         },
         submit() {
             this.$emit(this.emit);

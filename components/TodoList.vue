@@ -1,10 +1,10 @@
 <template>
-    <article class="todo-row">
+    <article class="todo-row" ref="row">
         <h2 class="todo-row-title">
             {{data.columTitle}} 
             <p class="todo-row-length" v-if="data.taskList.length > 0">{{data.taskList.length}}</p> 
         </h2>
-            <div class="todo-row-list">
+            <div class="todo-row-list" :class="{'isAdding': data.columTitle === 'New'}">
                 <p v-if="arrWithGhost.length === 0" class="todo-list-placeholder">Nothing here 😪</p>
                 <div class="todo-list-item bg-white" v-for="(task, index) in arrWithGhost" :key="task.title" 
                                 :style="{height: task.height}"
@@ -40,7 +40,8 @@
                                         :maxHeight="100"
                                         :enterSubmit="true"
                                         placeholder="Init task title"
-                                        v-model="addTaskTitle"/>
+                                        v-model="addTaskTitle"
+                                        ref="refAddTaskTitle"/>
 
                     <BaseRadioBtn :switchValue="radioPrioratyValue" v-model="radioPrioratyValue.model"/>
 
@@ -52,7 +53,7 @@
                     </div> 
                 </form>
 
-                <div class="todo-add-card btn" v-else @click="showAddTask">
+                <div class="todo-add-card btn" v-else-if="data.columTitle === 'New'" @click="showAddTask">
                     <font-awesome-icon icon="plus" />
                     <p class="semi-bold">Card</p>
                 </div>
@@ -188,6 +189,9 @@ export default {
         //Add Task config
         showAddTask() {
             this.isAdd = true;
+            this.$nextTick(() => {
+                this.$refs.refAddTaskTitle.$el.focus();
+            });
         },
         hideAddTask() {
             this.isAdd = false;
@@ -214,7 +218,10 @@ export default {
 
             this.$emit('addTask', {index: this.columIndex, task});
 
-            this.hideAddTask();
+            this.addTaskTitle = '';
+            this.$nextTick(() => {
+                this.$refs.refAddTaskTitle.$el.focus();
+            });
         }
     }
 }
@@ -302,13 +309,15 @@ export default {
         border-radius: 5px;
 
         padding: .75em;
-        padding-bottom: 0;
         overflow-y: auto;
 
         max-height: calc(100% - 36px);
         height: fit-content;
 
         position: relative;
+    }
+    .isAdding {
+        padding-bottom: 0;
     }
 
     .todo-list-add-task {

@@ -13,7 +13,8 @@
                                 :value="item.model"
                                 @keydown="filter($event)" 
                                 @blur="validate($event, item.max, index)"
-                                @input="handleInput($event.target, index)">
+                                @input="handleInput($event.target, index)"
+                                autocomplete="off">
 
             <div class="ipt-add btn" @click="minus($event, index)">
                 <font-awesome-icon icon="chevron-down" />

@@ -46,14 +46,11 @@ export default {
         document.addEventListener('click', function() {
             if (this.isOpen) 
                 amount++;
-
             if (amount > 1) {
                 this.close();
                 amount = 0;
             }
-
         }.bind(this)); 
-        // this.maxWidth = document.querySelector('.select-options').offsetWidth + 'px';  
         this.currentChoise = this.data[this.current];
     }
 }

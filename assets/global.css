@@ -2,7 +2,6 @@ body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
-    background: #F5F5F5;
 }
 
 img {
@@ -78,6 +77,9 @@ button {
 .semi-bold {
     font-weight: 600;
 }
+.black {
+    font-weight: 900;
+}
 
 /* ====================
     Layout
@@ -102,7 +104,3 @@ button {
 .bg-white {
     background: #fff;
 }
-
-/* ====================
-    Media
-==================== */
