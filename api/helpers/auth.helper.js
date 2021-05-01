@@ -1,4 +1,4 @@
-const uuid = require('uuid/v4'); 
+const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
 const { tokens, secret } = require('../config/app').jwt;
 
@@ -17,7 +17,7 @@ class authHelper {
 
     generateRefreshToken () {
         const payload = {
-            id: uuid(),
+            id: uuidv4(),
             type: tokens.refresh.type
         };
         const options = { expiresIn: tokens.refresh.expiresIn };
