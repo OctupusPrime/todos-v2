@@ -55,6 +55,7 @@ export default {
     main {
         padding: 0;
     }
+    
 /* Typography */
     .bg-black {
         background: #000;
