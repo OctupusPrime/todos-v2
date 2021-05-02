@@ -3,7 +3,7 @@
     <header class="bg-white">
         <div class="container flex desctop">
             <div class="site-logo grow-2">
-                <img src="~static/Todos-logo.svg" alt="">
+                <img src="~assets/images/logo.svg" alt="Todos logo">
                 <p class="subtitle">.Todos</p>
             </div>
             <h2 class="rounded btn" @click="openOverlay">Sign / Log</h2>
@@ -11,7 +11,7 @@
         </div>
         <div class="container flex mobile">
             <div class="site-logo">
-                <img src="~static/Todos-logo.svg" alt="">
+                <img src="~assets/images/logo.svg" alt="Todos logo">
             </div>
             <h2 class="rounded btn" @click="openOverlay">Sign / Log</h2>
         </div>
@@ -23,7 +23,7 @@
         <form class="reg-log-form" v-if="isLog" 
             @submit.prevent="logIn">
 
-            <input type="email" name="email" placeholder="Email" autocomplete="off" v-model="userEmail" ref="inputEmail">
+            <input type="email" name="email" placeholder="Email" v-model="userEmail" ref="inputEmail">
             <input type="password" name="password" maxlength="15" placeholder="Password" v-model="userPassword">
 
             <button type="submit">Log In</button>
@@ -32,7 +32,7 @@
         </form>
         <form class="reg-log-form" v-else
             @submit.prevent="reg">
-            <input type="email" name="email" placeholder="Email" autocomplete="off" v-model="userEmail">
+            <input type="email" name="email" placeholder="Email" v-model="userEmail">
             <input type="password" name="password" maxlength="15" placeholder="Password" v-model="userPassword">
 
             <button type="submit">Create account</button>

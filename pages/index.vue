@@ -11,13 +11,13 @@
                 <button class="main-btn btn bg-black" @click="openRegLog">Try Todos for free</button>
             </div>
             <div class="main-img-container">
-                <img src="~static/main-img-ilustration.png" alt="simple plant on white desk and white wall" class="main-image pd-left-50">
+                <img src="~assets/images/main-img-ilustration.png" alt="simple plant on white desk and white wall" class="main-image pd-left-50">
             </div>
         </section>
         <div class="sub-main-bg bg-black ">
             <section class="sub-main-info flex container">
                 <div class="sub-main-img-container">
-                    <img src="~static/My_selfie.png" alt="Just my selfie" class="sub-main-image pd-right-50">
+                    <img src="~assets/images//My_selfie.png" alt="Just my selfie" class="sub-main-image pd-right-50">
                 </div>  
                 <div class="sub-main-text">
                     <h2 class="sub-main-title">

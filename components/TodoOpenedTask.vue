@@ -23,9 +23,7 @@
                 </div>
                 <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow" :isFinished="data.isFinished"/> 
 
-                <span class="reduct-icon btn" @click="openReductTask" v-if="!data.isFinished">
-                    <font-awesome-icon icon="pen" />
-                </span>
+                <button class="reduct-icon btn" @click="openReductTask" v-if="!data.isFinished" />
             </div>
 
             <div class="todo-reduct" v-else>

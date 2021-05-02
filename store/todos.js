@@ -47,22 +47,21 @@ export const actions = {
     },
     async addTodo({commit}, params) {
         const { data } = params;
+        commit('addTaksToArr', params);
         try {
             await this.$axios.$post('tasks', data);
         } catch(e) {
             console.log(e);
         }
-        commit('addTaksToArr', params);
-        
     },
     async deleteTodo({commit}, params) {
         const { title } = params;
+        commit('removeTaskFromArr', params);
         try {
             await this.$axios.$delete('tasks/' + title.replace(' ', '%20'));
         } catch(e) {
             console.log(e);
         }
-        commit('removeTaskFromArr', params);
     },
     async editTodo({commit, state}, params) {
         const { column, task, title, data } = params;
@@ -76,14 +75,14 @@ export const actions = {
         if (data.title)
             newData.title = data.title;
 
+        commit('removeTaskFromArr', params);
+        commit('addTaksToArr', {column, task, data: newData});
+
         try {
             await this.$axios.$put('tasks/' + title.replace(' ', '%20'), data);
         } catch(e) {
             console.log(e);
         }
-
-        commit('removeTaskFromArr', params);
-        commit('addTaksToArr', {column, task, data: newData});
     }
 }
 

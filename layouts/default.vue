@@ -3,7 +3,7 @@
     <header>
         <div class="container flex bg-white desctop shadow">
             <div class="site-logo">
-                <img src="~static/Todos-logo.svg" alt="Todos logo">
+                <img src="~assets/images/logo.svg" alt="Todos logo">
                 <p class="subtitle">.Todos</p>
             </div>
             <div class="settings btn" @click="openSet">
@@ -12,7 +12,7 @@
         </div>
         <div class="container flex bg-white mobile shadow"><!-- Mobile menu -->
             <div class="site-logo">
-                <img src="~static/Todos-logo.svg" alt="">
+                <img src="~assets/images/logo.svg" alt="Todos logo">
             </div>
             <div class="settings btn" @click="openSet">
                 <font-awesome-icon icon="cog" />

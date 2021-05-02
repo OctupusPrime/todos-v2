@@ -28,9 +28,7 @@
                     </div>
                     <TodoDeadline :finishDate="task.deadline" :dateNow="dateNow" :isFinished="data.columTitle === 'Done'"/> 
 
-                    <span class="reduct-icon btn">
-                        <font-awesome-icon icon="pen" />
-                    </span>
+                    <button class="reduct-icon btn"></button>
                 </div>
 
 
@@ -136,7 +134,7 @@ export default {
         //Ghost config
         taskClicked(e, currentTarget, task, taskIndex, path) {
             let ReductBtnObj = currentTarget.querySelector('.reduct-icon');
-            if (path.includes(ReductBtnObj)) 
+            if (e.target === ReductBtnObj) 
                 return this.openTask(task, taskIndex);
 
             let thisBlock = currentTarget.getBoundingClientRect();
@@ -345,6 +343,11 @@ export default {
 
     .reduct-icon {
         float: right;
+        height: 25px;
+        width: 25px;
+        border-radius: 5px;
+        background: url('~assets/images/pen.svg') no-repeat center, #EBEBEB;
+        background-size: 15px;
     }
 
     .todo-opts{
