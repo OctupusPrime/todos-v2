@@ -51,6 +51,7 @@ export default {
                 hours = 0;
             }
 
+            this.isExpired = false; 
             if (this.difference_ms <  -60000)
                 this.isExpired = true; 
                 

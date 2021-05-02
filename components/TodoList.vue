@@ -11,8 +11,8 @@
                                 :class="{'ghost': !!task.height}"
                                 :data-todo-index="columIndex + '' + index" 
                                 
-                                @mousedown.left="taskClicked($event, $event.currentTarget, Object.assign({}, data.taskList[index]), index, $event.path)"
-                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, Object.assign({}, data.taskList[index]), index, $event.path)"
+                                @mousedown.left="taskClicked($event, $event.currentTarget, Object.assign({}, data.taskList[index]), index)"
+                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, Object.assign({}, data.taskList[index]), index)"
                                 
                                 @click.right.prevent="openQuickMenu(Object.assign({}, data.taskList[index]), index)">
 
@@ -22,13 +22,15 @@
                                         class="todo-title"
                                         readonly/>
 
-                    <div class="todo-opts"
-                        :class="task.prioraty">
-                        <p class="todo-prioraty bold">{{task.prioraty}}</p>
-                    </div>
-                    <TodoDeadline :finishDate="task.deadline" :dateNow="dateNow" :isFinished="data.columTitle === 'Done'"/> 
+                    <div class="todo-opts-row">
+                        <div class="todo-opts"
+                            :class="task.prioraty">
+                            <p class="todo-prioraty bold">{{task.prioraty}}</p>
+                        </div>
+                        <TodoDeadline :finishDate="task.deadline" :dateNow="dateNow" :isFinished="data.columTitle === 'Done'"/> 
 
-                    <button class="reduct-icon btn"></button>
+                        <button class="reduct-icon btn"></button>
+                    </div>
                 </div>
 
 
@@ -132,7 +134,7 @@ export default {
     },
     methods: {
         //Ghost config
-        taskClicked(e, currentTarget, task, taskIndex, path) {
+        taskClicked(e, currentTarget, task, taskIndex) {
             let ReductBtnObj = currentTarget.querySelector('.reduct-icon');
             if (e.target === ReductBtnObj) 
                 return this.openTask(task, taskIndex);
@@ -261,7 +263,6 @@ export default {
 
     .resible-text-area {
         font-size: 1.25rem;
-        margin-bottom: .3em;
     }
 
     .todo-title {
@@ -335,26 +336,26 @@ export default {
     .ghost {
         background: #C6C6C6;
     }
-    .ghost .todo-opts,
-    .ghost .todo-title,
-    .ghost .reduct-icon {
+    .ghost .todo-opts-row,
+    .ghost .todo-title {
         display: none;
     }
 
-    .reduct-icon {
-        float: right;
-        height: 25px;
-        width: 25px;
-        border-radius: 5px;
-        background: url('~assets/images/pen.svg') no-repeat center, #EBEBEB;
-        background-size: 15px;
+    .todo-opts-row {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 0 -.3125em;
     }
 
     .todo-opts{
+        flex-grow: 1;
         display: inline-block;
-        margin-right: .625em;
+        margin: 5px .3125em 0 .3125em;
         padding: .3em .6em;
         border-radius: 5px;
+        text-align: center;
     }
     .low {
         background: #deebd9;
@@ -377,8 +378,21 @@ export default {
         text-shadow: 0px 0px 5px rgba(59, 134, 255, 0.5);
     }
 
+    .reduct-icon {
+        flex-grow: 2;
+        margin: 5px .3125em 0 .3125em;
+        height: 30px;
+        width: 30px;
+        border-radius: 5px;
+        background: url('~assets/images/pen.svg') no-repeat center, #EBEBEB;
+        background-size: 15px;
+    }
+
+    .clear {
+        background: #fff
+    }
+
     .todo-add-card {
-        width: 95%;
         margin-top: .5em;
         padding: .25em 0 .375em 0;
 
@@ -391,9 +405,8 @@ export default {
 
         position: sticky;
         bottom: 0;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, 0);
+        left: 0;
+        right: 0;
     }
 
     .radio-btn {

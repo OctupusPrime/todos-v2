@@ -15,11 +15,15 @@
                             :maxHeight="100"
                             v-model="data.title"
                             readonly/>
-        <div class="todo-opts"
-            :class="data.prioraty">
-            <p class="todo-prioraty bold">{{data.prioraty}}</p>
+                            
+        <div class="todo-opts-row">
+            <div class="todo-opts"
+                :class="data.prioraty">
+                <p class="todo-prioraty bold">{{data.prioraty}}</p>
+            </div>
+            <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow" :isFinished="data.isFinished"/> 
+            <button class="reduct-icon clear btn"></button>
         </div>
-        <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow" :isFinished="data.isFinished"/> 
     </div>    
 </template>
 

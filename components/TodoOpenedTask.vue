@@ -1,43 +1,71 @@
 <template>
     <div class="todo-opened-task bg-white" v-if="isShow">
-        <div class="main-todo-info">
-            <BaseResizeTextArea v-if="!data.isFinished"
-                                name="opened-task-title" 
-                                :maxHeight="100"
-                                :enterSubmit="true"
-                                placeholder="Init task title"
-                                @submitTextArea="initReqTitle"
-                                v-model="data.title"
-                                ref="taskTitle"/>
-            <BaseResizeTextArea v-else
-                                name="opened-task-title" 
-                                :maxHeight="100"
-                                v-model="data.title"
-                                readonly/>
-            <p class="todo-subtittle">In colum {{selectData[colum]}}</p>
+        <div class="todo-opened-task-flex-wrapper">
+            <div class="main-todo-info">
+                <BaseResizeTextArea v-if="!data.isFinished"
+                                    name="opened-task-title" 
+                                    :maxHeight="100"
+                                    :enterSubmit="true"
+                                    placeholder="Init task title"
+                                    @submitTextArea="initReqTitle"
+                                    v-model="data.title"
+                                    ref="taskTitle"/>
+                <BaseResizeTextArea v-else
+                                    name="opened-task-title" 
+                                    :maxHeight="100"
+                                    v-model="data.title"
+                                    readonly/>
+                <p class="todo-subtittle">In colum {{selectData[colum]}}</p>
 
-            <div class="todo-info" v-if="!isReduct">
-                <div class="todo-opts"
-                    :class="data.prioraty">
-                    <p class="todo-prioraty bold">{{data.prioraty}}</p>
+                <div class="todo-opts-row" v-if="!isReduct">
+                    <div class="todo-opts"
+                        :class="data.prioraty">
+                        <p class="todo-prioraty bold">{{data.prioraty}}</p>
+                    </div>
+                    <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow" :isFinished="data.isFinished"/> 
+
+                    <button class="reduct-icon btn" @click="openReductTask" v-if="!data.isFinished" />
                 </div>
-                <TodoDeadline :finishDate="data.deadline" :dateNow="dateNow" :isFinished="data.isFinished"/> 
 
-                <button class="reduct-icon btn" @click="openReductTask" v-if="!data.isFinished" />
-            </div>
+                <div class="todo-reduct" v-else>
+                    <BaseRadioBtn :switchValue="radioPrioratyValue" v-model="radioPrioratyValue.model"/>
 
-            <div class="todo-reduct" v-else>
-                <BaseRadioBtn :switchValue="radioPrioratyValue" v-model="radioPrioratyValue.model"/>
+                    <BaseNumberInput :inputVal="numberInputVal"/>
 
-                <BaseNumberInput :inputVal="numberInputVal"/>
-
-                <div class="todo-list-buttons-row">
-                    <p class="btn-item btn" @click="hideReductTask">Cancel</p>
-                    <p class="btn-item btn bg-blue" @click="commitReductTask">Reduct</p>    
-                </div> 
+                    <div class="todo-list-buttons-row">
+                        <p class="btn-item btn" @click="hideReductTask">Cancel</p>
+                        <p class="btn-item btn bg-blue" @click="commitReductTask">Reduct</p>    
+                    </div> 
+                </div>
             </div>
 
 
+            <ul class="aside-todo-menu">
+                <li class="quick-menu-item btn">
+                    <h3 class="quick-menu-item-title normal" @click="openForm">Move</h3>
+
+                    <div class="quick-menu-item-form-container bg-white" v-if="isMoveOpened">
+                        <div class="quick-menu-item-form-title">
+                            <h3 class="normal">Move task</h3>
+                            <span class="icon" @click="closeForm">
+                                <font-awesome-icon icon="times" />
+                            </span>
+
+                        </div>
+                        <BaseSelectOptn :data="selectData" 
+                                        :current="colum"
+                                        @changedChoise="changedChoise"/>
+                        <p class="item-form-submit btn" @click="initEmit('moveTask', moveSelectValue)">Move</p>
+                    </div>
+
+                </li>
+                <li class="quick-menu-item btn" @click="initEmit('deleteTask')">
+                    <h3 class="quick-menu-item-title red normal">Delete</h3>
+                </li>
+            </ul>
+        </div>
+
+        <div class="todo-description-container">
             <h4 class="semi-bold">Description</h4> 
             <div class="todo-description">
                 <BaseResizeTextArea v-if="!data.isFinished"
@@ -53,33 +81,7 @@
                                     placeholder="None desc"
                                     readonly/>
             </div>
-
         </div>
-
-
-        <ul class="aside-todo-menu">
-            <li class="quick-menu-item btn">
-                <h3 class="quick-menu-item-title normal" @click="openForm">Move</h3>
-
-                 <div class="quick-menu-item-form-container bg-white" v-if="isMoveOpened">
-                    <div class="quick-menu-item-form-title">
-                        <h3 class="normal">Move task</h3>
-                        <span class="icon" @click="closeForm">
-                            <font-awesome-icon icon="times" />
-                        </span>
-
-                    </div>
-                    <BaseSelectOptn :data="selectData" 
-                                    :current="colum"
-                                    @changedChoise="changedChoise"/>
-                    <p class="item-form-submit btn" @click="initEmit('moveTask', moveSelectValue)">Move</p>
-                </div>
-
-            </li>
-            <li class="quick-menu-item btn" @click="initEmit('deleteTask')">
-                <h3 class="quick-menu-item-title red normal">Delete</h3>
-            </li>
-        </ul>
     </div>    
 </template>
 
@@ -151,11 +153,6 @@ export default {
                     this.close();
                     return false;
                 }
-                if (!this.data.isFinished) {
-                    this.$nextTick(() => {
-                        this.$refs.taskTitle.$el.focus();
-                    })
-                }
                 return true;
             }
             return false;
@@ -185,12 +182,15 @@ export default {
                 hours = 0;
             }
 
+            this.isExpired = false; 
             if (difference_ms <  -60000)
                 this.isExpired = true; 
 
-            this.numberInputVal[0].model = days;
-            this.numberInputVal[1].model = hours;
-            this.numberInputVal[2].model = minutes;
+            if (!this.isExpired) {
+                this.numberInputVal[0].model = days;
+                this.numberInputVal[1].model = hours;
+                this.numberInputVal[2].model = minutes;
+            }
 
             this.radioPrioratyValue.model = this.data.prioraty;
         },
@@ -257,13 +257,15 @@ export default {
 
         position: absolute;
         left: 50%;
-        top: 15%;
+        top: 10%;
         transform: translate(-50%, 0);
         z-index: 10;
-
-        display: flex;
-        justify-content: flex-start;
     }
+
+    .todo-opened-task-flex-wrapper {
+        display: flex;
+        justify-content: space-between;
+     }
 
 /* Typography */
     .main-todo-info {
@@ -273,7 +275,7 @@ export default {
     .todo-subtittle {
         font-size: .875rem;
         color: #737373;
-        padding-bottom: .75em;
+        padding: .5em 0;
     }
 
     h4 {

@@ -31,10 +31,6 @@ export default {
             type: Array
         }
     },
-    data: () => {
-        return {
-        }
-    },
     methods: {
         filter(e) {
             if ((e.keyCode > 31 && (e.keyCode < 48 || e.keyCode > 57)) && e.keyCode !== 46) 
@@ -92,7 +88,10 @@ export default {
         width: 3em;
         font-size: 1rem;
         text-align: center;
-        color: #3B86FF;
         text-shadow: 0px 0px 5px rgba(59, 134, 255, 0.5);
+    }
+    .deadline-input,
+    .deadline-input::placeholder {
+        color: #3B86FF;
     }
 </style>

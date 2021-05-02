@@ -107,8 +107,8 @@ export default {
                 this.$router.push('/tasks');        
                 this.$store.commit('overlay/close');
             } catch (e) {
-                this.userEmail = this.userPassword = '';
-                console.log(e);
+                // this.userEmail = this.userPassword = '';
+                console.log(e.response.data.message);
             }
         },
         async reg() {
