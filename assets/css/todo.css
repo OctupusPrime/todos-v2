@@ -1,0 +1,88 @@
+.todo-title {
+    cursor: default;
+}
+
+.resible-text-area {
+    font-size: 1.25rem;
+}
+
+.todo-opts-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: -.16em -.3125em 0 -.3125em;
+}
+
+.todo-opts{
+    flex-grow: 1;
+    display: inline-block;
+    margin: 5px .3125em 0 .3125em;
+    padding: .3em .6em;
+    border-radius: 5px;
+    text-align: center;
+    font-size: .875rem;
+}
+.low {
+    background: #deebd9;
+    color: #32A000;
+    text-shadow: 0px 0px 5px rgba(50, 160, 0, 0.5);
+}
+.medium {
+    background: #f8e9d9;
+    color: #E6AA68;
+    text-shadow: 0px 0px 5px rgba(230, 170, 104, 0.5);
+}
+.high {
+    background: #fdcccc;
+    color: #FA3333;
+    text-shadow: 0px 0px 5px rgba(250, 51, 51, 0.5);
+}
+.blue {
+    background: #cee0ff;
+    color: #3B86FF;
+    text-shadow: 0px 0px 5px rgba(59, 134, 255, 0.5);
+}
+
+.reduct-icon {
+    flex-grow: 2;
+    margin: 5px .3125em 0 .3125em;
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+    background: url('~assets/images/pen.svg') no-repeat center, #EBEBEB;
+    background-size: 15px;
+}
+
+.clear {
+    background: #fff
+}
+
+.todo-list-buttons-row {
+    display: flex;
+    justify-content: space-between;
+
+    padding-top: .375em;
+}
+
+.radio-btn {
+    padding: .5em 0;
+}
+
+
+.btn-item {
+    border-radius: 5px;
+    background: #000;
+    color: #fff;
+    padding: .3em .6em;
+}
+
+.bg-blue {
+    background: #3B86FF;
+}
+
+.errors {
+    font-size: .8rem;
+    color: #FA3333;     
+    text-align: center;
+} 

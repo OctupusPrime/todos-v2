@@ -2,6 +2,7 @@
     <div class="todo-overlayed-task bg-white"
         :style="{width: width + 'px', left: position.left + 'px', top: position.top + 'px'}"
         v-if="isShow">
+        <p class="errors" >{{errors}}</p>
         <BaseResizeTextArea v-if="!data.isFinished"
                             name="overlayred-task-title" 
                             :maxHeight="100"
@@ -28,6 +29,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 let title = '';
 export default {
     props: {
@@ -54,6 +56,10 @@ export default {
     watch: {
         'isClicked'() {
             title = this.data.title;
+        },
+        'data.title'() {
+            if (this.errors)
+                this.$store.commit('todos/clearError');
         }
     },
     computed: {
@@ -71,9 +77,11 @@ export default {
                 return true;
             }
             return false;
-        }
+        },
+        ...mapState('todos', ['errors'])
     },
     methods: {
+
         open(width, left, top) {
             this.width = width;
 
@@ -85,12 +93,11 @@ export default {
         close() {
             this.isClicked = false;
         },
-        initReq() {
+        async initReq() {
             if (title != this.data.title) {
                 this.$emit('editTask', {title, data: {
                     title: this.data.title.trim()
-                }});
-                this.$store.commit('overlay/close');
+                }, isClose: true});
             }
         }
     }
@@ -98,6 +105,8 @@ export default {
 </script>
 
 <style scoped>
+    @import '~assets/css/todo.css' all;
+    
     .todo-overlayed-task  {
         padding: .375em .75em;
         box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.1);

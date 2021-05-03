@@ -2,6 +2,7 @@
     <div class="todo-opened-task bg-white" v-if="isShow">
         <div class="todo-opened-task-flex-wrapper">
             <div class="main-todo-info">
+                <p class="errors" >{{errors}}</p>
                 <BaseResizeTextArea v-if="!data.isFinished"
                                     name="opened-task-title" 
                                     :maxHeight="100"
@@ -86,6 +87,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 let title  = '';
 let desc   = '';
 const   cd = 24 * 60 * 60 * 1000,// hr, min, sec, ms
@@ -143,6 +145,10 @@ export default {
         'isClicked'() {
             title = this.data.title;
             desc = this.data.description;
+        },
+        'data.title'() {
+            if (this.errors)
+                this.$store.commit('todos/clearError');
         }
     },
     computed: {
@@ -156,7 +162,8 @@ export default {
                 return true;
             }
             return false;
-        }
+        },
+        ...mapState('todos', ['errors'])
     },
     methods: {
         open() {
@@ -249,6 +256,8 @@ export default {
 </script>
 
 <style scoped>
+    @import '~assets/css/todo.css' all;
+
     .todo-opened-task {
         width: 95%;
         max-width: 500px;
@@ -275,7 +284,7 @@ export default {
     .todo-subtittle {
         font-size: .875rem;
         color: #737373;
-        padding: .5em 0;
+        padding-top: .3em;
     }
 
     h4 {
@@ -309,7 +318,6 @@ export default {
     }
 /* Layout */
     .aside-todo-menu {
-        border-left: 1px solid #767676;;
         padding-left: .5em;
         margin-left: .5em;
     }

@@ -1,8 +1,10 @@
 export const state = () => ({
-    todos: []
+    todos: [],
+    errors: ''
 })
 
 export const mutations = {
+    //Todos
     initTodos(state, newState) {
         state.todos = newState;
     },
@@ -17,10 +19,12 @@ export const mutations = {
         const { column, task } = params;
         state.todos[Number(column)].taskList.splice(Number(task), 1);
     },
-    editTask(state, params) {
-        const { column, task, data } = params;
-        let newVal = {...state.todos[Number(column)].taskList[Number(task)], ...data};
-        state.todos[Number(column)].taskList[Number(task)] = newVal;
+    //Errors
+    initError(state, err) {
+        state.errors = err;
+    },
+    clearError(state) {
+        state.errors = ''
     }
 }
 
@@ -47,12 +51,13 @@ export const actions = {
     },
     async addTodo({commit}, params) {
         const { data } = params;
-        commit('addTaksToArr', params);
         try {
             await this.$axios.$post('tasks', data);
         } catch(e) {
-            console.log(e);
+            return commit('initError', e.response.data.message);
         }
+        commit('clearError');
+        commit('addTaksToArr', params);
     },
     async deleteTodo({commit}, params) {
         const { title } = params;
@@ -75,19 +80,25 @@ export const actions = {
         if (data.title)
             newData.title = data.title;
 
-        commit('removeTaskFromArr', params);
-        commit('addTaksToArr', {column, task, data: newData});
-
         try {
             await this.$axios.$put('tasks/' + title.replace(' ', '%20'), data);
         } catch(e) {
-            console.log(e);
+            return commit('initError', e.response.data.message);
         }
+
+        commit('clearError');
+
+        commit('removeTaskFromArr', params);
+        commit('addTaksToArr', {column, task, data: newData});
     }
 }
 
 export const getters = {
     getTodos(state) {
-      return state.todos
+      return state.todos;
+    },
+    
+    getErrors(state) {
+        return state.errors;
     }
 }

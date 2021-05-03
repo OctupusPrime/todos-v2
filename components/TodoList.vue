@@ -36,6 +36,7 @@
 
                 <form class="todo-list-add-task bg-white" v-if="isAdd"
                     @submit.prevent="commitAddTask">
+                    <p class="errors" >{{errors}}</p>
                     <BaseResizeTextArea name="add-task-title" 
                                         :maxHeight="100"
                                         :enterSubmit="true"
@@ -62,6 +63,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 let height = 0;
 export default {
     props: {
@@ -130,6 +132,13 @@ export default {
             }
 
             return arr;
+        },
+        ...mapState('todos', ['errors'])
+    },
+    watch: {
+        'addTaskTitle'() {
+            if (this.errors)
+                this.$store.commit('todos/clearError');
         }
     },
     methods: {
@@ -227,7 +236,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+    @import '~assets/css/todo.css' all;
+
     .todo-row {
         display: inline-block;
         width: 300px;
@@ -261,23 +272,10 @@ export default {
         transform: translate(100%, -50%);
     }
 
-    .resible-text-area {
-        font-size: 1.25rem;
-    }
-
-    .todo-title {
-        cursor: default;
-    }
-
     .todo-list-placeholder {
         font-size: 1.125rem;
         color: #767676;
         text-align: center;
-    }
-
-    .todo-prioraty,
-    .todo-deadline {
-        font-size: .875rem;
     }
 
     .todo-add-card p {
@@ -341,57 +339,6 @@ export default {
         display: none;
     }
 
-    .todo-opts-row {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        flex-wrap: wrap;
-        margin: 0 -.3125em;
-    }
-
-    .todo-opts{
-        flex-grow: 1;
-        display: inline-block;
-        margin: 5px .3125em 0 .3125em;
-        padding: .3em .6em;
-        border-radius: 5px;
-        text-align: center;
-    }
-    .low {
-        background: #deebd9;
-        color: #32A000;
-        text-shadow: 0px 0px 5px rgba(50, 160, 0, 0.5);
-    }
-    .medium {
-        background: #f8e9d9;
-        color: #E6AA68;
-        text-shadow: 0px 0px 5px rgba(230, 170, 104, 0.5);
-    }
-    .high {
-        background: #fdcccc;
-        color: #FA3333;
-        text-shadow: 0px 0px 5px rgba(250, 51, 51, 0.5);
-    }
-    .blue {
-        background: #cee0ff;
-        color: #3B86FF;
-        text-shadow: 0px 0px 5px rgba(59, 134, 255, 0.5);
-    }
-
-    .reduct-icon {
-        flex-grow: 2;
-        margin: 5px .3125em 0 .3125em;
-        height: 30px;
-        width: 30px;
-        border-radius: 5px;
-        background: url('~assets/images/pen.svg') no-repeat center, #EBEBEB;
-        background-size: 15px;
-    }
-
-    .clear {
-        background: #fff
-    }
-
     .todo-add-card {
         margin-top: .5em;
         padding: .25em 0 .375em 0;
@@ -407,10 +354,6 @@ export default {
         bottom: 0;
         left: 0;
         right: 0;
-    }
-
-    .radio-btn {
-        margin-bottom: 6px;
     }
 
     .todo-list-buttons-row {

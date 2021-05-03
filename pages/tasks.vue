@@ -47,10 +47,10 @@
                     @deleteTask="openWarningDelete"
                     ref="TodoQuickMenu"/>
 
-    <ActionWarning  :data="warningText"
+    <TodoActionWarning  :data="warningText"
                     :emit="watningEmitVal"
                     @deleteTask="deleteTask"
-                    ref="ActionWarning"/>
+                    ref="TodoActionWarning"/>
 
     <TodoSliderController :taskMargin="50" 
                           :slidesAmount="todos.length"
@@ -90,7 +90,8 @@ export default {
     }
   },
   computed: {
-     ...mapState('todos', ['todos'])
+    ...mapState('todos', ['todos']),
+    ...mapState('todos', ['errors'])
   },
   methods: {
     ...mapMutations('todos', ['addTaksToArr']),
@@ -100,6 +101,7 @@ export default {
     ...mapActions('todos', ['deleteTodo']),
     ...mapActions('todos', ['relocateTodo']),
     ...mapActions('todos', ['editTodo']),
+
     handleResize ({ width, height }) {
       if (width > 600) 
         return this.sliderScrollX = 'transform: translateX(0px);';
@@ -107,14 +109,18 @@ export default {
       this.$refs.todoSlider.resized(width);
       this.$refs.sliderContainer.scrollLeft = 0;
     },
-    editTask(val) {
-      const {title, data} = val;
-      this.editTodo({
+    async editTask(val) {
+      const {title, data, isClose} = val;
+      await this.editTodo({
         title: title,
         column: this.openedTaskIndex.colum,
         task: this.openedTaskIndex.task,
         data: data
       });   
+
+      if (isClose) 
+        if (!this.errors)
+          this.$store.commit('overlay/close');
     },
     //Slider config
     changePosition(val) {
@@ -228,12 +234,12 @@ export default {
       this.$refs.TodoOverlayedTask.close();
       this.$refs.TodoQuickMenu.close();
 
-      this.$refs.ActionWarning.open();
+      this.$refs.TodoActionWarning.open();
     }
   },
   created() {
     let self = this
-    setInterval(function () {
+    setInterval(function () {//Deadline timer
       self.dateNow = new Date().getTime();
       self.dateNow = Number(self.dateNow);
     }, 60000)
@@ -253,6 +259,7 @@ export default {
     overflow-y: hidden;
   }
   main {
+    padding-top: 125px;
     position: relative;
     display: flex;
     align-items: flex-start;
@@ -271,6 +278,7 @@ export default {
     }
     main {
       width: 100%;
+      padding-top: 80px;
       padding-bottom: 64px; /* Padding from sldier controller */
     }
   }

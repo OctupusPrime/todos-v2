@@ -81,6 +81,12 @@ button {
     font-weight: 900;
 }
 
+.errors {
+    font-size: 1.2rem;
+    color: #FA3333;
+    text-align: center;
+} 
+
 /* ====================
     Layout
 ==================== */

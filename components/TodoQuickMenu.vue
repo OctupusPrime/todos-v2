@@ -115,7 +115,7 @@ export default {
     }
 
     .quick-menu-item-form-title .icon {
-        font-size: .75rem;
+        font-size: .9rem;
         margin-left: 1em;
     }
 

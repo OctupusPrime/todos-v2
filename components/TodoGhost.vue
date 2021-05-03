@@ -128,6 +128,8 @@ export default {
 </script>
 
 <style scoped>
+    @import '~assets/css/todo.css' all;
+
     .todo-task-ghost {
         cursor: grabbing;
         padding: .375em .75em;
