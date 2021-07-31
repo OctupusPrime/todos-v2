@@ -26,14 +26,13 @@
                     <p class="sub-main-body">         
                         Hi there this application consists of a rest api with refresh and access tokens and a connection to the mongodb database. Also, the entire client is built according to the example of Trello with its own features and full adaptability.<br><br>Want to see more? Checkout my portfolio.
                     </p>
-                    <a href="#" class="sub-main-btn btn bg-rounded-white bold">Portfolio</a>
+                    <a href="https://octupusprime.github.io/portfolio" class="sub-main-btn btn bg-rounded-white bold" target="_blank">Portfolio</a>
                 </div>
             </section>
         </div>
         <footer class="container flex">
             <h3 class="footer-title bold">By Misha Sokil</h3>
-            <p class="footer-body">095-855-31-78</p>
-            <p class="footer-body">rasiapypkin2014@gmail.com</p>
+            <h3>Have a nice day</h3>
         </footer>
     </main>
 </template> 
@@ -58,7 +57,7 @@ export default {
     
 /* Typography */
     .bg-black {
-        background: #000;
+        background: #121212;
         color: #fff;
     }
     .bg-rounded-white {
