@@ -12,7 +12,7 @@
                                 :data-todo-index="columIndex + '' + index" 
                                 
                                 @mousedown.left="taskClicked($event, $event.currentTarget, Object.assign({}, data.taskList[index]), index)"
-                                @touchstart="taskClicked($event.touches[0], $event.currentTarget, Object.assign({}, data.taskList[index]), index)"
+                                @touchstart.prevent="taskClicked($event.touches[0], $event.currentTarget, Object.assign({}, data.taskList[index]), index)"
                                 
                                 @click.right.prevent="openQuickMenu(Object.assign({}, data.taskList[index]), index)">
 
