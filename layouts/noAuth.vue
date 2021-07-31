@@ -1,5 +1,13 @@
 <template>
-  <div class="app" :class="{'loaded': isLoaded}">
+  <div class="app">
+
+    <div class="page-loader" :class="{'hide': isLoaded}">
+      <div class="loader">
+        <img src="~assets/images/logo.svg" alt="Todos logo">
+        <p class="loader-subtitle semi-bold">It may take a while.</p>
+      </div>
+    </div>
+
     <header class="bg-white">
         <div class="container flex">
             <div class="site-logo grow-2">
@@ -7,7 +15,6 @@
                 <p class="subtitle">.Todos</p>
             </div>
             <h2 class="rounded btn" @click="openReg">Sign / Log</h2>
-
         </div>
     </header>
 
@@ -16,24 +23,33 @@
     <RegLogForm ref="regForm"/>
 
        <Nuxt />
+       
   </div>   
 </template>
  
 <script>
+import { mapMutations } from "vuex";
 export default {
+    name: 'noAuth',
     data: () => {
-        return {
-            isLoaded: false
-        }
+      return {
+        isLoaded: false
+      }
     },
     methods: {
+        ...mapMutations('todos', ['notLoaded']),
         openReg() {
             this.$refs.overlay.open();
             this.$refs.regForm.open();
         }
     },
+    beforeMount() {
+        this.notLoaded();
+    },
     mounted() {
-        this.isLoaded = true;
+        setTimeout(function() {
+            this.isLoaded = true;
+        }.bind(this), 500)
     }
 }
 </script>
@@ -45,11 +61,7 @@ export default {
 
     .app {
         background: #fff;
-        opacity: 0;
-        transition: opacity 2s ease;
-    }
-    .loaded {
-        opacity: 1;
+        position: relative;
     }
    
     .rounded {

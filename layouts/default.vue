@@ -1,5 +1,12 @@
 <template>
-  <div class="app" :class="{'loaded': isLoaded}">
+  <div class="app">
+
+    <div class="page-loader" :class="{'hide': isLoaded}">
+      <div class="loader">
+        <img src="~assets/images/logo.svg" alt="Todos logo">
+        <p class="loader-subtitle semi-bold">It may take a while.</p>
+      </div>
+    </div>
 
     <header>
         <div class="container flex bg-white shadow">
@@ -16,7 +23,7 @@
     <OverlayBg ref="overlay"/>
 
        <Nuxt />
-
+    
     <aside class="settings-aside bg-white" :class="{'opened': isShow}">
         <h2>Settings</h2>
         <div class="settings-cell">
@@ -35,12 +42,12 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
+    name: 'default',
     data: () => {
       return {
-        isSetingsOpen: false,
-        isLoaded: false
+        isSetingsOpen: false
       }
     },
     computed: {
@@ -53,7 +60,8 @@ export default {
                 return true;
             }
             return false;
-        }
+        },
+        ...mapState('todos', ['isLoaded']),
     },
     methods: {
       ...mapActions('todos', ['getTodos']),
@@ -79,7 +87,6 @@ export default {
         async refreshToken() {
           try {
             await this.$axios.$post('auth/refresh-token');
-            this.getTodos();
             this.$cookies.set('isAuth', true, {
                 path: '/',
                 maxAge: 604800
@@ -92,7 +99,7 @@ export default {
     },
     async beforeMount() {
       await this.refreshToken();
-      this.isLoaded = true;
+      await this.getTodos();
       setInterval(function () {
         this.refreshToken();
       }.bind(this), 1700000)//28 Minutes 20 Seconds
@@ -107,11 +114,7 @@ export default {
     position: relative;
     min-height: 100vh;    
     background: #F5F5F5;
-    opacity: 0;
-    transition: opacity 2s ease;
-  }
-  .loaded {
-    opacity: 1;
+    position: relative;
   }
 
   .settings-aside {

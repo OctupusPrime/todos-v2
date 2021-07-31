@@ -1,12 +1,14 @@
 export const state = () => ({
     todos: [],
-    errors: ''
+    errors: '',
+    isLoaded: false
 })
 
 export const mutations = {
     //Todos
-    initTodos(state, newState) {
+    initTodos(state, newState, commit) {
         state.todos = newState;
+        state.isLoaded = true;
     },
     clearTodos(state) {
         state.todos = [];
@@ -25,7 +27,11 @@ export const mutations = {
     },
     clearError(state) {
         state.errors = ''
-    }
+    },
+    //isLoaded 
+    notLoaded(state) {
+        state.isLoaded = false;
+    } 
 }
 
 export const actions = {

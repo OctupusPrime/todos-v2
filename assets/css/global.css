@@ -126,3 +126,54 @@ button {
 .bg-white {
     background: #fff;
 }
+
+/*Page loader*/
+
+.page-loader {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #F5F5F5;
+    z-index: 10;
+    opacity: 1;
+    visibility: visible;
+    transition: all 1s ease;
+  }
+  .hide {
+    opacity: 0;
+    visibility: hidden;
+  }
+  .loader {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation-iteration-count: infinite;
+  }
+  .loader img {
+    width: 65px;
+    animation-duration: 2.5s;
+    animation-name: loader;
+    animation-iteration-count: infinite;
+  }
+  .loader-subtitle {
+    font-size: 1.5rem;
+    margin-top: .5em;
+  }
+
+  @keyframes loader {
+    from {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(.8);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
