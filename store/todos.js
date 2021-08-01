@@ -77,21 +77,23 @@ export const actions = {
     async editTodo({commit, state}, params) {
         const { column, task, title, data } = params;
         let newData = Object.assign({}, state.todos[Number(column)].taskList[Number(task)]);
+        let reqTitle = title
         if (data.deadline)
             newData.deadline = data.deadline;
         if (data.prioraty)
             newData.prioraty = data.prioraty;
         if (data.description)
             newData.description = data.description;
-        if (data.title)
+        if (data.title) 
             newData.title = data.title;
+        else 
+            reqTitle = newData.title
 
         try {
-            await this.$axios.$put('tasks/' + title.replace(' ', '%20'), data);
+            await this.$axios.$put('tasks/' + reqTitle.replace(' ', '%20'), data);
         } catch(e) {
             return commit('initError', e.response.data.message);
         }
-
         commit('clearError');
 
         commit('removeTaskFromArr', params);
