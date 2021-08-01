@@ -245,11 +245,12 @@ export default {
             }
         },
         initReqDesc() {
+            console.log(this.data.description)
             if (desc != this.data.description) {
                 this.$emit('editTask', {title, data: {
                     description: this.data.description.trim()
                 }});
-            }
+            }       
         }
     }
 }

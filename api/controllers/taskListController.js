@@ -125,7 +125,7 @@ class TaskListController {
                 update['context.$.prioraty'] = prioraty
             if (deadline)
                 update['context.$.deadline'] = deadline
-            if (description)
+            if (description || description === '')
                 update['context.$.description'] = description
 
             await TaskList.updateOne({"author": req.user.userId, "context.title": req.params.title}, 

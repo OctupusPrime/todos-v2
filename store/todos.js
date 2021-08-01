@@ -82,7 +82,7 @@ export const actions = {
             newData.deadline = data.deadline;
         if (data.prioraty)
             newData.prioraty = data.prioraty;
-        if (data.description)
+        if (data.description || data.description === '')
             newData.description = data.description;
         if (data.title) 
             newData.title = data.title;

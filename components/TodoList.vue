@@ -217,7 +217,7 @@ export default {
                 deadline.setHours(deadline.getHours() + Number(this.numberInputVal[1].model));
                 deadline.setMinutes(deadline.getMinutes() + Number(this.numberInputVal[2].model));
             }
-
+            console.log(deadline)
             let task = {
                 title: this.addTaskTitle.trim(),
                 prioraty: this.radioPrioratyValue.model,
