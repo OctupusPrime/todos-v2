@@ -125,10 +125,10 @@ export default {
     position: fixed;
     right: 0;
     top: 0;
+    bottom: 0;
     transform: translate(100%, 0);
 
     padding: 1.25em 2.25em 0 2.25em;
-    border-bottom-left-radius: 5px;
     box-shadow: 0px 5px 7px -5px rgba(0, 0, 0, 0.25);
 
     transition: transform .3s ease;
@@ -193,6 +193,9 @@ export default {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    position: absolute;
+    bottom: 20px;
+    right: 36px;
     color: #3B86FF;
   }
 
