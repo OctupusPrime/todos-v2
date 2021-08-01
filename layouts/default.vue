@@ -14,6 +14,9 @@
                 <img src="~assets/images/logo.svg" alt="Todos logo">
                 <p class="subtitle">.Todos</p>
             </div>
+            <nav>
+              <a href="/help" class="semi-bold" target="_blank">/help</a>
+            </nav>
             <div class="settings btn" @click="openSet">
                 <font-awesome-icon icon="cog" />
             </div>
@@ -136,7 +139,16 @@ export default {
     transform: translate(0, 0);
   }
 
+  header .container {
+    justify-content: flex-start;
+  }
+
 /* Typography */
+  nav a {
+    font-size: 1.5rem;
+    margin-left: 1.5em;
+  }
+
   .settings {
     font-size: 1.2rem;
   }
@@ -182,5 +194,9 @@ export default {
     align-items: center;
     justify-content: flex-end;
     color: #3B86FF;
+  }
+
+  header .settings {
+    margin-left: auto;
   }
 </style>
