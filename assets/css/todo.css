@@ -83,6 +83,7 @@
 
 .errors {
     font-size: .8rem;
+    padding: .5em 0;
     color: #FA3333;     
     text-align: center;
 } 

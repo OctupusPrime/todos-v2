@@ -36,7 +36,7 @@
 
                 <form class="todo-list-add-task bg-white" v-if="isAdd"
                     @submit.prevent="commitAddTask">
-                    <p class="errors" >{{errors}}</p>
+                    <p class="errors" v-if="errors">{{errors}}</p>
                     <BaseResizeTextArea name="add-task-title" 
                                         :maxHeight="100"
                                         :enterSubmit="true"
@@ -198,9 +198,9 @@ export default {
         //Add Task config
         showAddTask() {
             this.isAdd = true;
-            this.$nextTick(() => {
+            setTimeout(function () {
                 this.$refs.refAddTaskTitle.$el.focus();
-            });
+            }.bind(this), 150)
         },
         hideAddTask() {
             this.isAdd = false;

@@ -87,11 +87,11 @@ button {
 .normal{
     font-weight: 500;
 }
-.bold {
-    font-weight: 700;
-}
 .semi-bold {
     font-weight: 600;
+}
+.bold {
+    font-weight: 700;
 }
 .black {
     font-weight: 900;
@@ -99,6 +99,7 @@ button {
 
 .errors {
     font-size: 1.2rem;
+    padding-bottom: 1em;
     color: #FA3333;
     text-align: center;
 } 

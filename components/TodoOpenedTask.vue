@@ -2,7 +2,7 @@
     <div class="todo-opened-task bg-white" v-if="isShow">
         <div class="todo-opened-task-flex-wrapper">
             <div class="main-todo-info">
-                <p class="errors" >{{errors}}</p>
+                <p class="errors" v-if="errors">{{errors}}</p>
                 <BaseResizeTextArea v-if="!data.isFinished"
                                     name="opened-task-title" 
                                     :maxHeight="100"

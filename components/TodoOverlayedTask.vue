@@ -2,7 +2,7 @@
     <div class="todo-overlayed-task bg-white"
         :style="{width: width + 'px', left: position.left + 'px', top: position.top + 'px'}"
         v-if="isShow">
-        <p class="errors" >{{errors}}</p>
+        <p class="errors" v-if="errors">{{errors}}</p>
         <BaseResizeTextArea v-if="!data.isFinished"
                             name="overlayred-task-title" 
                             :maxHeight="100"

@@ -3,7 +3,7 @@
         <form class="reg-log-form" v-if="isLog" 
             @submit.prevent="logIn">
 
-            <p class="errors">{{errors}}</p>
+            <p class="errors" v-if="errors">{{errors}}</p>
 
             <input type="email" name="email" placeholder="Email" v-model="userEmail" ref="inputEmail">
             <input type="password" name="password" maxlength="15" placeholder="Password" v-model="userPassword">
@@ -15,7 +15,7 @@
         <form class="reg-log-form" v-else
             @submit.prevent="reg">
 
-            <p class="errors">{{errors}}</p>
+            <p class="errors" v-if="errors">{{errors}}</p>
 
             <input type="email" name="email" placeholder="Email" v-model="userEmail">
             <input type="password" name="password" maxlength="15" placeholder="Password" v-model="userPassword">
