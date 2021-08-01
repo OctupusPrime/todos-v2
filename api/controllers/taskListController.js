@@ -90,13 +90,10 @@ class TaskListController {
             task = {
                 title: title,
                 description: description,
-                deadline: Number(deadline),
+                deadline: Number(deadline) || null,
                 prioraty: prioraty,
                 index: statusNewTasksArr.length
             }         
-
-            if (!deadline)
-                task.deadline = undefined
 
             await TaskList.findOneAndUpdate(
                 { "author": req.user.userId }, 
@@ -121,19 +118,19 @@ class TaskListController {
             if (req.params.title !== title && updateTasks)
                 return res.status(404).json({message: `Tasks with title ${ title } already exist`})
 
-            //Set updated values//Переделать
+            let update = {}
+            if (title) 
+                update['context.$.title'] = title
             if (prioraty)
-                await TaskList.findOneAndUpdate({"author": req.user.userId, "context.title": req.params.title}, 
-                    {$set: { "context.$.prioraty": prioraty } })       
+                update['context.$.prioraty'] = prioraty
             if (deadline)
-                await TaskList.findOneAndUpdate({"author": req.user.userId, "context.title": req.params.title}, 
-                    {$set: { "context.$.deadline": deadline } })  
-            if (description)      
-                await TaskList.findOneAndUpdate({"author": req.user.userId, "context.title": req.params.title}, 
-                    {$set: { "context.$.description": description } })     
-            if (title)
-                await TaskList.findOneAndUpdate({"author": req.user.userId, "context.title": req.params.title}, 
-                    {$set: { "context.$.title": title } })
+                update['context.$.deadline'] = deadline
+            if (description)
+                update['context.$.description'] = description
+
+            await TaskList.updateOne({"author": req.user.userId, "context.title": req.params.title}, 
+                {$set: update
+            })  
             
             return res.send({message: "Task was updated"})
         } catch(e) {
