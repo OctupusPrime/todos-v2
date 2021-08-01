@@ -17,7 +17,7 @@
         <div class="sub-main-bg bg-black ">
             <section class="sub-main-info flex container">
                 <div class="sub-main-img-container">
-                    <img src="~assets/images//My_selfie.png" alt="Just my selfie" class="sub-main-image pd-right-50">
+                    <img src="~assets/images/My_selfie.png" alt="Just my selfie" class="sub-main-image pd-right-50">
                 </div>  
                 <div class="sub-main-text">
                     <h2 class="sub-main-title">
