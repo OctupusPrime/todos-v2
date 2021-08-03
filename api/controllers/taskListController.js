@@ -99,7 +99,7 @@ class TaskListController {
                 { "author": req.user.userId }, 
                 { $push: { context: task } }
             );
-            return res.json({message: "Tasks was created"})
+            return res.send(task)
         } catch(e) {
             console.log(e);
             return res.status(500).json({message: "Server error"})
@@ -117,7 +117,6 @@ class TaskListController {
             const updateTasks = await TaskList.findOne({"author": req.user.userId, "context.title": title})//Check Updated title
             if (req.params.title !== title && updateTasks)
                 return res.status(404).json({message: `Tasks with title ${ title } already exist`})
-
             let update = {}
             if (title) 
                 update['context.$.title'] = title
@@ -128,10 +127,7 @@ class TaskListController {
             if (description || description === '')
                 update['context.$.description'] = description
 
-            await TaskList.updateOne({"author": req.user.userId, "context.title": req.params.title}, 
-                {$set: update
-            })  
-            
+            await TaskList.updateOne({"author": req.user.userId, "context.title": req.params.title}, { $set: update })  
             return res.send({message: "Task was updated"})
         } catch(e) {
             console.log(e)
@@ -163,9 +159,7 @@ class TaskListController {
             return res.status(500).json({message: "Server error"})
         }
     }
-    // let arr = []
-    // if (!arr[0])
-    //     console.log('Emty arr')
+
     async relocateTask(req, res) {
         try {
             const{status, index} = req.body 

@@ -46,7 +46,7 @@ class authController {
             res.cookie('refreshToken', refreshToken, tokens.refresh.cookieOptns); 
             res.cookie('accessToken', accessToken, tokens.access.cookieOptns); 
 
-            return res.json({message: "User was created"})
+            return res.json({message: "User was created"});
         } catch (e) {
             console.log(e);
             return res.status(500).json({message: "Server error"})
@@ -70,7 +70,7 @@ class authController {
             res.cookie('refreshToken', refreshToken, tokens.refresh.cookieOptns); 
             res.cookie('accessToken', accessToken, tokens.access.cookieOptns); 
     
-            return res.send('Auntificated');
+            return res.json({message: "Auntificated"})
         } catch (e) {
             console.log(e);
             return res.status(500).json({message: "Server error"});
@@ -108,7 +108,7 @@ class authController {
             res.cookie('refreshToken', refreshToken, tokens.refresh.cookieOptns); 
             res.cookie('accessToken', accessToken, tokens.access.cookieOptns); 
     
-            return res.send('Tokens refreshed');
+            return res.json({message: "Token refreshed"})
 
         } catch (e) {
             if (e instanceof jwt.TokenExpiredError)
