@@ -56,38 +56,35 @@ export const actions = {
         }
     },
     async addTodo({commit}, params) {
-        const { data } = params;
+        const { column, task, data } = params;
+        let addedTodo = {};
         try {
-            await this.$axios.$post('tasks', data);
+            addedTodo = await this.$axios.$post('tasks', data);
+            delete addedTodo.index
         } catch(e) {
             return commit('initError', e.response.data.message);
         }
         commit('clearError');
-        commit('addTaksToArr', params);
+        commit('addTaksToArr', { column, task, data: addedTodo });
     },
     async deleteTodo({commit}, params) {
         const { title } = params;
-        commit('removeTaskFromArr', params);
         try {
             await this.$axios.$delete('tasks/' + title.replace(' ', '%20'));
         } catch(e) {
             console.log(e);
         }
+        commit('removeTaskFromArr', params);
     },
     async editTodo({commit, state}, params) {
         const { column, task, title, data } = params;
-        let newData = Object.assign({}, state.todos[Number(column)].taskList[Number(task)]);
-        let reqTitle = title
-        if (data.deadline)
-            newData.deadline = data.deadline;
-        if (data.prioraty)
-            newData.prioraty = data.prioraty;
-        if (data.description || data.description === '')
-            newData.description = data.description;
+        let currentTodo = Object.assign({}, state.todos[Number(column)].taskList[Number(task)]);
+        let reqTitle;
+        
         if (data.title) 
-            newData.title = data.title;
+            reqTitle = title
         else 
-            reqTitle = newData.title
+            reqTitle = currentTodo.title
 
         try {
             await this.$axios.$put('tasks/' + reqTitle.replace(' ', '%20'), data);
@@ -97,16 +94,6 @@ export const actions = {
         commit('clearError');
 
         commit('removeTaskFromArr', params);
-        commit('addTaksToArr', {column, task, data: newData});
-    }
-}
-
-export const getters = {
-    getTodos(state) {
-      return state.todos;
-    },
-    
-    getErrors(state) {
-        return state.errors;
+        commit('addTaksToArr', {column, task, data: {...currentTodo, ...data}});
     }
 }
