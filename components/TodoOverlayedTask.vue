@@ -105,8 +105,6 @@ export default {
 </script>
 
 <style scoped>
-    @import '~assets/css/todo.css' all;
-    
     .todo-overlayed-task  {
         padding: .375em .75em;
         box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.1);

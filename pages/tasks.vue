@@ -247,7 +247,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped>  
   .main-wrapper {
     position: relative;
 

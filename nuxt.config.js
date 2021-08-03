@@ -22,6 +22,8 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '~assets/css/global.css',
+    '~assets/css/todo.css',
+    '~assets/css/header.css',
     '~/node_modules/vue-resize/dist/vue-resize.css'
   ],
 

@@ -256,8 +256,6 @@ export default {
 </script>
 
 <style scoped>
-    @import '~assets/css/todo.css' all;
-
     .todo-opened-task {
         width: 95%;
         max-width: 500px;

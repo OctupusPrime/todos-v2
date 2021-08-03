@@ -237,8 +237,6 @@ export default {
 </script>
 
 <style scoped>
-    @import '~assets/css/todo.css' all;
-
     .todo-row {
         display: inline-block;
         width: 300px;
