@@ -1,5 +1,7 @@
 # .Todos
-[**Live demo**](https://vue-todos-nuxt.herokuapp.com/)
+<p align="center">
+  <img alt="Todos application image" src="https://raw.githubusercontent.com/OctupusPrime/portfolio/master/src/assets/img/work1.png">
+</p>  
 
 ## Installation Setup
 
@@ -23,13 +25,13 @@ npm run start
 # generate static project
 npm run generate
 ```
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+If you dont want install [**Live demo**](https://vue-todos-nuxt.herokuapp.com/)  
 
 ## Description
 
 This is a full stack application for taking notes in columns. *Inspired by [Trello](https://trello.com).*
 
-  
 ### Key features : 
 * **Safety** _(All tokens are stored on the backend with the httpOnly tag)_;
 * **Registration, Authentication** _(Ability to create an account to access your notes)_;
@@ -42,6 +44,7 @@ This is a full stack application for taking notes in columns. *Inspired by [Trel
 * **Adaptable for any device**;
 
 ## Documentation
+
 ### Front End part
 ---
 #### Plugins
@@ -52,7 +55,7 @@ This is a full stack application for taking notes in columns. *Inspired by [Trel
 | [cookie-universal-nuxt](https://www.npmjs.com/package/cookie-universal-nuxt) | Used to create isAuth cookie on client |
 | [vue-resize](https://www.npmjs.com/package/vue-resize) | Used to detect element size change |
 
-#### Folders
+**#### Folders**
 * ##### assets  
 It stores the ***global styles*** in the css folder, and the ***gifs / images*** folders hold the original gifs and photos *(so you might think)*.  
 
@@ -99,7 +102,7 @@ Add click out from Add todo and quick menu.
 | [uuid](https://www.npmjs.com/package/uuid) | Used to create a unique id for refresh token |
 #### Routes
 * ##### **Authification**
----
+
 **Registration**  
 Registates user	  
 Path: */api/auth/reg*  
@@ -113,7 +116,7 @@ Method: **POST**
 
 **Response**  
 On success, the HTTP status code in the response header is 200 OK and the response message *"User was created"*.
-----  
+
 **Log in**  
 Log in user.  
 Path: */api/auth/log*  
@@ -127,7 +130,7 @@ Method: **POST**
 
 **Response**  
 On success, the HTTP status code in the response header is 200 OK and the response message *"Auntificated"*.
----
+
 **Log out**  
 Log out user.  
 Path: */api/auth/logout*  
@@ -135,7 +138,7 @@ Method: **POST**
 
 **Response**  
 On success, the HTTP status code in the response header is 200 OK and the response message *"User logout"*.
----
+
 **Refresh tokens**  
 Log out user  
 Path: */api/auth/logout*  
@@ -148,7 +151,7 @@ Method: **POST**
 
 **Response**  
 On success, the HTTP status code in the response header is 200 OK and the response message *"Token refreshed"*.
----
+
 * ##### **Tasks**
 ---
 **Get tasks**  
@@ -163,7 +166,7 @@ Method: **GET**
 
 **Response**  
 On success, the HTTP status code in the response header is 200 OK and the response body contains tasks list.
----
+
 **Add task**  
 Added task to array	
 Path: */api/tasks*  
@@ -183,7 +186,7 @@ Method: **POST**
 
 **Response**  
 On success, the HTTP status code in the response header is 200 OK and the response body contains of added task.
----
+
 **Update  task**  
 Update task values.  
 Path: */api/tasks:title*  
@@ -207,7 +210,7 @@ PATH PARAMETER | TYPE | REQUIRED |
 
 **Response**  
 On success, the HTTP status code in the response header is 200 OK and message *"Task was updated"*.
----
+
 **Delete  task**  
 Update task values.  
 Path: */api/tasks:title*  
@@ -224,7 +227,7 @@ PATH PARAMETER | TYPE | REQUIRED |
 
 **Response**  
 On success, the HTTP status code in the response header is 200 OK and message *"Task was deleted"*.
----
+
 **Relocate  task**  
 Relocate task in columns and index.  
 Path: */api/tasks:title*  
@@ -245,8 +248,8 @@ PATH PARAMETER | TYPE | REQUIRED |
 | index<br>*(Which index put)* | number  | **Required** |
 
 **Response**  
-On success, the HTTP status code in the response header is 200 OK and message *"Task was relocated"*.
----
+On success, the HTTP status code in the response header is 200 OK and message *"Task was relocated"*.  
+
 #### Bugs
 When in one column too many tasks relocate route doesn't work properly and put tasks in random spots.
 #### For future me 
@@ -254,7 +257,7 @@ When in one column too many tasks relocate route doesn't work properly and put t
  Add to response to updated task in update task.
  
  ### Authors
- [**Misha Sokil**](https://github.com/kevinwairi)
+ [**Misha Sokil**](https://github.com/OctupusPrime)
  
  ### License
  MIT © Misha Sokil
