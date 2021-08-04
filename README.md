@@ -55,7 +55,7 @@ This is a full stack application for taking notes in columns. *Inspired by [Trel
 | [cookie-universal-nuxt](https://www.npmjs.com/package/cookie-universal-nuxt) | Used to create isAuth cookie on client |
 | [vue-resize](https://www.npmjs.com/package/vue-resize) | Used to detect element size change |
 
-**#### Folders**
+#### Folders
 * ##### assets  
 It stores the ***global styles*** in the css folder, and the ***gifs / images*** folders hold the original gifs and photos *(so you might think)*.  
 
