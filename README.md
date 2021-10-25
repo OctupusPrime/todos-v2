@@ -26,7 +26,9 @@ npm run start
 npm run generate
 ```
 
-If you dont want install [**Live demo**](https://vue-todos-nuxt.herokuapp.com/)  
+If you dont want install [**Live app**](https://vue-todos-nuxt.herokuapp.com/)  
+Login    - test@gmail.com
+Password - 123qwe
 
 ## Description
 
