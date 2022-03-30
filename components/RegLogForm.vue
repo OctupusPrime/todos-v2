@@ -9,6 +9,7 @@
             <input type="password" name="password" maxlength="15" placeholder="Password" v-model="userPassword">
 
             <button type="submit">Log In</button>
+            <button type="button" @click="demo" class="btn">Demo mode</button>
 
             <p>Dont have account? <span class="btn" @click="toggleForm">Sign up</span></p>
         </form>
@@ -65,6 +66,12 @@ export default {
         toggleForm() {
             this.isLog = !this.isLog;
             this.userEmail = this.userPassword = '';
+        },
+        //demo log
+        demo() {
+            this.userEmail = 'test@gmail.com';
+            this.userPassword = '123qwe';
+            this.logIn()
         },
         //Form config
         async logIn() {
